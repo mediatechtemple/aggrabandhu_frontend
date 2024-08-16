@@ -1,0 +1,63 @@
+.profile-container {
+    background-color: rgb(231, 222, 222);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+  }
+  
+  .profile-picture {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+  
+  .details {
+    margin-top: 20px;
+  }
+  
+  #edit-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  #edit-form {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .profile-container label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+  
+  .profile-container  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  #save-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+  
