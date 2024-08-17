@@ -1,64 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableHead, TableBody, TableRow, TableCell, TableSortLabel, IconButton, Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
-import { makeStyles } from '@mui/styles';
 import DonationLedgerModal from './DonationLedgerModal';
+import { styled } from '@mui/system';
 
-const useStyles = makeStyles({
-  table: {
-    border: '1px solid #ddd',
-    minWidth: '600px',
-    width: '100%',
-    overflowX: 'auto',
+const StyledTable = styled(Table)({
+  border: '1px solid #ddd',
+  minWidth: '600px',
+  width: '100%',
+  overflowX: 'auto',
+});
+
+
+
+const StyledTableCell = styled(TableCell)({
+  border: '1px solid #ddd',
+  padding: '8px',
+  textAlign: 'center',
+});
+
+const StyledHeaderCell = styled(StyledTableCell)({
+  background: '#1976d2',
+  color: 'white',
+  cursor: 'pointer',
+});
+
+const StyledTableSortLabel = styled(TableSortLabel)({
+  color: 'inherit', // Inherit color from StyledHeaderCell
+  '&:hover': {
+    color: 'inherit', // Prevent color change on hover
   },
-  tableCell: {
-    border: '1px solid #ddd',
-    padding: '8px',
-    color: '#007bff',
-    fontWeight: 'bold',
+  '&.Mui-active': {
+    color: 'inherit', // Prevent color change on click
   },
-  headerRow: {
-    background: '#1976d2',
-  },
-  headerCell: {
-    cursor: 'pointer',
-    color: 'white',
-    border: '1px solid #ddd',
-    textAlign: 'center',
-    paddingTop: '0px',
-    paddingBottom: '0px',
-  },
-  TCell: {
-    cursor: 'pointer',
-    color: 'black',
-    border: '1px solid #ddd',
-    textAlign: 'center',
-  },
-  sortLabel: {
-    '&.Mui-active': {
-      color: 'inherit',
-    },
-    '&:hover': {
-      color: 'inherit',
-    },
+  '&.Mui-focusVisible': {
+    color: 'inherit', // Prevent color change on focus
   },
 });
 
-const SortableTable = ({ sortedRows, sortConfig, handleSort, getSortIcon, openHandler }) => {
-  const classes = useStyles();
-  const [rowsData,setRowsData]=useState([]);
-  console.log(rowsData);
 
+const SortableTable = ({ sortedRows, sortConfig, handleSort, getSortIcon, openHandler }) => {
+  const [rowsData, setRowsData] = useState([]);
   const [ledgerOpen, setLedgerOpen] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState(null);
 
-
-
-//How this would work here brother let's we start it to continue it......
-
-  useEffect(()=>setRowsData(sortedRows),[sortedRows]);
+  useEffect(() => {
+    setRowsData(sortedRows);
+  }, [sortedRows]);
 
   const handleLedgerOpen = (donation) => {
     setLedgerOpen(true);
@@ -70,47 +58,44 @@ const SortableTable = ({ sortedRows, sortConfig, handleSort, getSortIcon, openHa
     setSelectedDonation(null);
   };
 
-  function handleStatusToggle(index){
-    window.alert('hello brohter how are you!!!!!   '+ index)
-  }
-
- 
+  const handleStatusToggle = (index) => {
+    window.alert('Hello brother, how are you!!!!! ' + index);
+  };
 
   return (
     <>
-      <Table className={classes.table}>
+      <StyledTable>
         <TableHead>
-          <TableRow className={classes.headerRow}>
-            {['srNo', 'code', 'name', 'mobileNo', 'district', 'state', 'startDate', 'endDate', 'noOfDonation', 'totalDonation', 'paymentDetails', 'donationLedger', 'profile', 'action', 'status','remark'].map((column) => (
-              <TableCell className={classes.headerCell} key={column}>
-                <TableSortLabel
+          <TableRow>
+            {['srNo', 'code', 'name', 'mobileNo', 'district', 'state', 'startDate', 'endDate', 'noOfDonation', 'totalDonation', 'paymentDetails', 'donationLedger', 'profile', 'action', 'status', 'remark'].map((column) => (
+              <StyledHeaderCell key={column}>
+                <StyledTableSortLabel
                   active={sortConfig.key === column}
                   direction={sortConfig.key === column ? sortConfig.direction : 'asc'}
                   onClick={() => handleSort(column)}
                   IconComponent={() => getSortIcon(column, sortConfig)}
-                  classes={{ root: classes.sortLabel }}
                 >
                   {column === 'srNo' ? 'Sr. No' : column.charAt(0).toUpperCase() + column.slice(1).replace(/([A-Z])/g, ' $1').trim()}
-                </TableSortLabel>
-              </TableCell>
+                </StyledTableSortLabel>
+              </StyledHeaderCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rowsData.map((member,index) => (
+          {rowsData.map((member, index) => (
             <TableRow key={member.srNo}>
-              <TableCell className={classes.TCell}>{member.srNo}</TableCell>
-              <TableCell className={classes.TCell}>{member.code}</TableCell>
-              <TableCell className={classes.TCell}>{member.name}</TableCell>
-              <TableCell className={classes.TCell}>{member.mobileNo}</TableCell>
-              <TableCell className={classes.TCell}>{member.district}</TableCell>
-              <TableCell className={classes.TCell}>{member.state}</TableCell>
-              <TableCell className={classes.TCell}>{member.startDate}</TableCell>
-              <TableCell className={classes.TCell}>{member.endDate}</TableCell>
-              <TableCell className={classes.TCell}>{member.noOfDonation}</TableCell>
-              <TableCell className={classes.TCell}>{member.totalDonation}</TableCell>
-              <TableCell className={classes.TCell}>{member.paymentDetails}</TableCell>
-              <TableCell className={classes.TCell}>
+              <StyledTableCell>{member.srNo}</StyledTableCell>
+              <StyledTableCell>{member.code}</StyledTableCell>
+              <StyledTableCell>{member.name}</StyledTableCell>
+              <StyledTableCell>{member.mobileNo}</StyledTableCell>
+              <StyledTableCell>{member.district}</StyledTableCell>
+              <StyledTableCell>{member.state}</StyledTableCell>
+              <StyledTableCell>{member.startDate}</StyledTableCell>
+              <StyledTableCell>{member.endDate}</StyledTableCell>
+              <StyledTableCell>{member.noOfDonation}</StyledTableCell>
+              <StyledTableCell>{member.totalDonation}</StyledTableCell>
+              <StyledTableCell>{member.paymentDetails}</StyledTableCell>
+              <StyledTableCell>
                 <Button
                   variant="contained"
                   color="primary"
@@ -118,27 +103,21 @@ const SortableTable = ({ sortedRows, sortConfig, handleSort, getSortIcon, openHa
                 >
                   {member.donationLedger}
                 </Button>
-              </TableCell>
-              <TableCell className={classes.TCell}><a href={member.profile}>View Profile</a></TableCell>
-              <TableCell className={classes.TCell}>
+              </StyledTableCell>
+              <StyledTableCell><a href={member.profile}>View Profile</a></StyledTableCell>
+              <StyledTableCell>
                 <IconButton aria-label="edit" onClick={() => openHandler(member)}>
                   <EditIcon />
                 </IconButton>
-                {/* <IconButton aria-label="hold">
-                  <PauseCircleOutlineIcon />
-                </IconButton>
-                <IconButton aria-label="resume">
-                  <PlayCircleOutlineIcon />
-                </IconButton> */}
-              </TableCell>
-              <TableCell className={classes.TCell} onClick={() => handleStatusToggle(index)}>
+              </StyledTableCell>
+              <StyledTableCell onClick={() => handleStatusToggle(index)}>
                 {member.status === 'active' ? 'Active' : 'Inactive'}
-              </TableCell>
-              <TableCell className={classes.TCell}>{member.remark}</TableCell>
+              </StyledTableCell>
+              <StyledTableCell>{member.remark}</StyledTableCell>
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </StyledTable>
       <DonationLedgerModal
         open={ledgerOpen}
         handleClose={handleLedgerClose}

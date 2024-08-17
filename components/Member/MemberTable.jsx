@@ -9,36 +9,35 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/system';
 import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-// import EditFormModal from '../EditFormModal/EditFormModal'; 
 import DonationModal from '../Icons/DonationModal';
 import MembershipModal1 from './MembershipModal1';
 
-const useStyles = makeStyles({
-  table: {
-    border: '1px solid #ddd',
-    minWidth: 600,
-  },
-  tableCell: {
-    border: '1px solid #ddd',
-    padding: '8px',
-  },
-  headerRow: {
-    background: "#1976d2",
-  },
-  headerCell: {
-    cursor: 'pointer',
-    color: 'white',
-    display: 'flex',
-    alignItems: 'center',
-  },
+const StyledTable = styled(Table)({
+  border: '1px solid #ddd',
+  minWidth: 600,
 });
 
-const MemberTable = ({ members, removeMember, editMember, id,open, handleClose, handleOpen }) => {
-  const classes = useStyles();
+const StyledTableCell = styled(TableCell)({
+  border: '1px solid #ddd',
+  padding: '8px',
+});
+
+const StyledHeaderRow = styled(TableRow)({
+  background: '#1976d2',
+});
+
+const StyledHeaderCell = styled('div')({
+  cursor: 'pointer',
+  color: 'white',
+  display: 'flex',
+  alignItems: 'center',
+});
+
+const MemberTable = ({ members, removeMember, editMember, id, open, handleClose, handleOpen }) => {
   const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
@@ -59,7 +58,7 @@ const MemberTable = ({ members, removeMember, editMember, id,open, handleClose, 
   const handleSort = (key) => {
     setSortConfig(prev => ({
       key,
-      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc'
+      direction: prev.key === key && prev.direction === 'asc' ? 'desc' : 'asc',
     }));
   };
 
@@ -79,7 +78,7 @@ const MemberTable = ({ members, removeMember, editMember, id,open, handleClose, 
 
   const openModal = (row) => {
     setModalData(row.timesDonationMade);
-    setSelectedMember(row)
+    setSelectedMember(row);
   };
 
   const closeModal = () => {
@@ -106,24 +105,24 @@ const MemberTable = ({ members, removeMember, editMember, id,open, handleClose, 
 
   return (
     <>
-      <Table className={classes.table} id={id}>
+      <StyledTable id={id}>
         <TableHead>
-          <TableRow className={classes.headerRow}>
+          <StyledHeaderRow>
             {columns.map(({ key, label, sortable = true }) => (
-              <TableCell key={key} className={classes.tableCell} onClick={sortable ? () => handleSort(key) : null}>
-                <div className={classes.headerCell}>
+              <StyledTableCell key={key} onClick={sortable ? () => handleSort(key) : null}>
+                <StyledHeaderCell>
                   {label} {sortable && getSortIcon(key)}
-                </div>
-              </TableCell>
+                </StyledHeaderCell>
+              </StyledTableCell>
             ))}
-            <TableCell className={classes.tableCell} style={{ color: 'white' }}>Actions</TableCell>
-          </TableRow>
+            <StyledTableCell style={{ color: 'white' }}>Actions</StyledTableCell>
+          </StyledHeaderRow>
         </TableHead>
         <TableBody>
           {sortedMembers.map((member) => (
             <TableRow key={member.id}>
               {columns.map(({ key }) => (
-                <TableCell key={key} className={classes.tableCell}>
+                <StyledTableCell key={key}>
                   {key === 'timesDonationMade' || key === 'totalAmountDonated' ? (
                     <span
                       style={{ cursor: 'pointer', color: '#007bff', fontWeight: 'bold' }}
@@ -134,9 +133,9 @@ const MemberTable = ({ members, removeMember, editMember, id,open, handleClose, 
                   ) : (
                     member[key]
                   )}
-                </TableCell>
+                </StyledTableCell>
               ))}
-              <TableCell className={classes.tableCell}>
+              <StyledTableCell>
                 <Tooltip title="Edit">
                   <IconButton onClick={() => handleOpen(member)} aria-label="edit">
                     <EditIcon />
@@ -147,13 +146,12 @@ const MemberTable = ({ members, removeMember, editMember, id,open, handleClose, 
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
-              </TableCell>
+              </StyledTableCell>
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </StyledTable>
 
-      
       {modalData && (
         <DonationModal
           modalData={modalData}
