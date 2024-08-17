@@ -61,6 +61,7 @@ const Member = () => {
     let result = members;
 
     // Apply search filter
+    //
     if (searchQuery) {
       result = result.filter(member =>
         member.name.toLowerCase().includes(searchQuery.toLowerCase())
