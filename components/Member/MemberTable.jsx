@@ -38,6 +38,8 @@ const StyledHeaderCell = styled('div')({
 });
 
 const MemberTable = ({ members, removeMember, editMember, id, open, handleClose, handleOpen }) => {
+
+
   const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
@@ -45,6 +47,7 @@ const MemberTable = ({ members, removeMember, editMember, id, open, handleClose,
 
   const sortedMembers = useMemo(() => {
     const sortableMembers = [...members];
+
     if (sortConfig.key) {
       sortableMembers.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.direction === 'asc' ? -1 : 1;
@@ -85,9 +88,11 @@ const MemberTable = ({ members, removeMember, editMember, id, open, handleClose,
     setModalData(null);
   };
 
+
+
   const getSortIcon = (key) => {
     if (sortConfig.key === key) {
-      return sortConfig.direction === 'asc' ? <FaSortUp /> : <FaSortDown />;
+      return sortConfig.direction === 'asc' ? <FaSortUp/> : <FaSortDown/>;
     }
     return <FaSort />;
   };

@@ -215,18 +215,18 @@ const Member = () => {
         </Box>
        
         <Box display="flex" justifyContent="space-between">
-        <Box padding='1px'>
-          {/* <Icon generatePdf={generatePdf} copyToClipboard={copyToClipboard} printTable={printTable} downloadCsv={downloadCsv}/> */}
-          <Iconsss tableId="my-tablee"/>
-        </Box>
-        <Box display="flex" justifyContent="flex-end" mb={2}>
-            <StateFilter states={states} selectedState={selectedState} onSelectState={handleStateChange}/>
-            <DistrictFilter  districts={districts} selectedDistrict={selectedDistrict} onSelectDistrict={handleDistrictChange}/>
-          
-            <Filter filters={filters} onFilterChange={handleFilterChange} />
-            <Box display="flex" justifyContent="flex-end" mb={2}>
-              <Search onSearch={handleSearch} />
-            </Box>
+          <Box padding='1px'>
+            {/* <Icon generatePdf={generatePdf} copyToClipboard={copyToClipboard} printTable={printTable} downloadCsv={downloadCsv}/> */}
+            <Iconsss tableId="my-tablee"/>
+          </Box>
+          <Box display="flex" justifyContent="flex-end" mb={2}>
+              <StateFilter states={states} selectedState={selectedState} onSelectState={handleStateChange}/>
+              <DistrictFilter  districts={districts} selectedDistrict={selectedDistrict} onSelectDistrict={handleDistrictChange}/>
+            
+              <Filter filters={filters} onFilterChange={handleFilterChange} />
+              <Box display="flex" justifyContent="flex-end" mb={2}>
+                <Search onSearch={handleSearch} />
+              </Box>
           </Box>
         </Box>
         
@@ -243,6 +243,7 @@ const Member = () => {
         id="my-tablee"
         open={open} handleClose={handleClose} handleOpen={handleOpen}
         />
+
         <Pagination
           page={page}
           pageSize={pageSize}

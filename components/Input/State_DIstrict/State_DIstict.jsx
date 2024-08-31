@@ -1,168 +1,112 @@
-'use client'
-'use client'
-import React, { useEffect, useState } from 'react';
-import { Modal, Box, Button, TextField, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+'use client';
+import React, { useState, Suspense, lazy } from 'react';
+import { Box, Button, CircularProgress } from '@mui/material';
+import useStates from './customHook/useStates';
+import useDistricts from './customHook/useDistricts';
+import useModal from './customHook/useModal';
+
+// Lazy load components
+const StateTable = lazy(() => import('./StateTable'));
+const DistrictTable = lazy(() => import('./DistrictTable'));
+const AddDistrictModal = lazy(() => import('./AddDistrictModal'));
+const AddStateModal = lazy(() => import('./AddStateModal'));
 
 const StateDistrictManager = () => {
-  const [states, setStates] = useState([]);
-  const [districts, setDistricts] = useState([]);
-//////////////////////////////////////////////////////////////////////////////
+  // Custom Hooks
+  const { states, addState, deleteState } = useStates();
+  const { districts, addDistrict, deleteDistrict } = useDistricts();
+  const {
+    openStateModal,
+    openDistrictModal,
+    openStateModalHandler,
+    closeStateModalHandler,
+    openDistrictModalHandler,
+    closeDistrictModalHandler,
+  } = useModal();
 
-  const [openStateModal, setOpenStateModal] = useState(false);
-  const [openDistrictModal, setOpenDistrictModal] = useState(false);
-
-////////////////////////////////////////////////////////////////////////////
-
+  // State management for form fields
   const [currentState, setCurrentState] = useState('');
   const [stateCode, setStateCode] = useState('');
-
-///////////////////////////////////////////////////////////////////////////
-
   const [currentDistrict, setCurrentDistrict] = useState('');
   const [selectedState, setSelectedState] = useState(null);
-
   const [viewDistricts, setViewDistricts] = useState(false);
 
-  //////////////////////////////////////////////////////////////////////////
-  useEffect(() => {
-    const storedStates = localStorage.getItem('states');
-    const storedDistrict = localStorage.getItem('district');
-    if (storedStates) {
-      setStates(JSON.parse(storedStates));
-    }
-    if(storedDistrict){
-      setDistricts(JSON.parse(storedDistrict));
-    }
-  }, []);
-  
-
+  // Handlers
   const handleAddState = () => {
-     // Update the states array
-  const updatedStates = [...states, { name: currentState, state_code: stateCode }];
-  
-  // Save the updated states array to localStorage
-  localStorage.setItem('states', JSON.stringify(updatedStates));
-
-  // Update the state and reset form fields
-  setStates(updatedStates);
-  setCurrentState('');
-  setStateCode('');
-  setOpenStateModal(false);
+    addState(currentState, stateCode);
+    setCurrentState('');
+    setStateCode('');
+    closeStateModalHandler();
   };
-//this one is to add district of States here according to me....
+
   const handleAddDistrict = () => {
-    const updatedDistrict=[...districts, { name: currentDistrict, state: selectedState }];
-
-    localStorage.setItem('district', JSON.stringify(updatedDistrict));
-
-    //////////////
-    setDistricts(updatedDistrict);
+    addDistrict(currentDistrict, selectedState);
     setCurrentDistrict('');
-    setOpenDistrictModal(false);
+    closeDistrictModalHandler();
   };
 
   const handleDeleteState = (stateName) => {
-    setStates(states.filter((state) => state.name !== stateName));
-    setDistricts(districts.filter((district) => district.state !== stateName));
+    deleteState(stateName);
+    // If needed, you can handle additional logic for deleting related districts
   };
 
   const handleDeleteDistrict = (districtName) => {
-    setDistricts(districts.filter((district) => district.name !== districtName));
+    deleteDistrict(districtName);
   };
 
   const openDistrictForm = (stateName) => {
     setSelectedState(stateName);
-    setOpenDistrictModal(true);
+    openDistrictModalHandler();
   };
 
   return (
     <div>
-        <Box sx={{display:'flex', justifyContent:'flex-end'}}>
-         <Button variant="contained" onClick={() => setOpenStateModal(true)}>Add State</Button>
-        </Box>
-      <TableContainer component={Paper} sx={{ mt: 2 }}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', border: '2px solid #ddd', backgroundColor: '#1976d2', color: 'white', textAlign: 'center' }}>State Name</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', border: '2px solid #ddd', backgroundColor: '#1976d2', color: 'white', textAlign: 'center' }}>State-Code</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', border: '2px solid #ddd', backgroundColor: '#1976d2', color: 'white', textAlign: 'center' }}>Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {states.map((state, index) => (
-              <TableRow key={index}>
-                <TableCell sx={{textAlign:'center',border: '2px solid #ddd'}}>{state.name}</TableCell>
-                <TableCell sx={{textAlign:'center',border: '2px solid #ddd'}}>{state.state_code}</TableCell>
-                <TableCell sx={{textAlign:'center',border: '2px solid #ddd'}}>
-                  <Button variant="outlined" onClick={() => openDistrictForm(state.name)}>Add District</Button>
-                  <Button variant="outlined" onClick={() => { setSelectedState(state.name); setViewDistricts(true); }}>View Districts</Button>
-                  <Button variant="outlined" color="error" onClick={() => handleDeleteState(state.name)}>Delete</Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button variant="contained" onClick={openStateModalHandler}>
+          Add State
+        </Button>
+      </Box>
+      <Suspense fallback={<CircularProgress />}>
+        <StateTable
+          states={states}
+          openDistrictForm={openDistrictForm}
+          setSelectedState={setSelectedState}
+          setViewDistricts={setViewDistricts}
+          handleDeleteState={handleDeleteState}
+        />
+      </Suspense>
 
-      <Modal open={openStateModal} onClose={() => setOpenStateModal(false)}>
-        <Box sx={{ p: 4, bgcolor: 'background.paper', margin: 'auto', mt: 4, width: 300 }}>
-          <Typography variant="h6">Add State</Typography>
-          <TextField
-            label="State Name"
-            value={currentState}
-            onChange={(e) => setCurrentState(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="State Code"
-            value={stateCode}
-            onChange={(e) => setStateCode(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <Button variant="contained" onClick={handleAddState} fullWidth>Add State</Button>
-        </Box>
-      </Modal>
+      <Suspense fallback={<CircularProgress />}>
+        <AddStateModal
+          open={openStateModal}
+          onClose={closeStateModalHandler}
+          currentState={currentState}
+          stateCode={stateCode}
+          setCurrentState={setCurrentState}
+          setStateCode={setStateCode}
+          handleAddState={handleAddState}
+        />
+      </Suspense>
 
-      <Modal open={openDistrictModal} onClose={() => setOpenDistrictModal(false)}>
-        <Box sx={{ p: 4, bgcolor: 'background.paper', margin: 'auto', mt: 4, width: 300 }}>
-          <Typography variant="h6">Add District for {selectedState}</Typography>
-          <TextField
-            label="District Name"
-            value={currentDistrict}
-            onChange={(e) => setCurrentDistrict(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <Button variant="contained" onClick={handleAddDistrict} fullWidth>Add District</Button>
-        </Box>
-      </Modal>
+      <Suspense fallback={<CircularProgress />}>
+        <AddDistrictModal
+          open={openDistrictModal}
+          onClose={closeDistrictModalHandler}
+          selectedState={selectedState}
+          currentDistrict={currentDistrict}
+          setCurrentDistrict={setCurrentDistrict}
+          handleAddDistrict={handleAddDistrict}
+        />
+      </Suspense>
 
       {viewDistricts && (
-        <TableContainer component={Paper} sx={{ mt: 2 }}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell sx={{ fontWeight: 'bold', border: '2px solid #ddd', backgroundColor: '#1976d2', color: 'white', textAlign: 'center' }}>District Name</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', border: '2px solid #ddd', backgroundColor: '#1976d2', color: 'white', textAlign: 'center' }}>State</TableCell>
-                <TableCell sx={{ fontWeight: 'bold', border: '2px solid #ddd', backgroundColor: '#1976d2', color: 'white', textAlign: 'center' }}>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {districts.filter(d => d.state === selectedState).map((district, index) => (
-                <TableRow key={index}>
-                  <TableCell sx={{textAlign:'center',border: '2px solid #ddd'}}>{district.name}</TableCell>
-                  <TableCell sx={{textAlign:'center',border: '2px solid #ddd'}}>{district.state}</TableCell>
-                  <TableCell sx={{textAlign:'center',border: '2px solid #ddd'}}>
-                    <Button variant="outlined" color="error" onClick={() => handleDeleteDistrict(district.name)}>Delete</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Suspense fallback={<CircularProgress />}>
+          <DistrictTable
+            districts={districts}
+            selectedState={selectedState}
+            handleDeleteDistrict={handleDeleteDistrict}
+          />
+        </Suspense>
       )}
     </div>
   );

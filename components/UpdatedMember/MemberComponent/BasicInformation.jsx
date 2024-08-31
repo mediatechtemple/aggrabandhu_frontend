@@ -7,6 +7,7 @@ const BasicInformation = ({
   handleFileChange,
 }) => {
   
+  
   const [gotraOptions, setGotraOptions] = useState([]);
   const [professionsOptions, setProfessionsOptions] = useState([]);
   // Fetch the array from localStorage when the component mounts
@@ -29,6 +30,7 @@ const BasicInformation = ({
       fullWidth
       margin="normal"
     />
+
     <FormControl fullWidth margin="normal">
       <InputLabel>Gotra</InputLabel>
       <Select
@@ -44,20 +46,30 @@ const BasicInformation = ({
         ))}
       </Select>
     </FormControl>
+
+
     <Button variant="contained" component="label" fullWidth>
       Upload Photo
       <input
         type="file"
         accept="image/*"
         hidden
+        name="Photo"
         onChange={handleFileChange}
       />
     </Button>
+    {formData.Photo && (
+        <Typography variant="body2" sx={{ mt: 2 }}>
+          Selected file: {formData.Photo.name}
+        </Typography>
+      )}
+
     {formData.photo && (
       <Typography variant="body1" sx={{ mt: 2 }}>
         Selected File: {formData.photo}
       </Typography>
     )}
+
     <TextField
       label="Name"
       name="name"
@@ -67,6 +79,7 @@ const BasicInformation = ({
       margin="normal"
       required
     />
+
     <TextField
       label="Father's Name"
       name="fatherName"
@@ -76,6 +89,7 @@ const BasicInformation = ({
       margin="normal"
       required
     />
+
     <TextField
       label="Mother's Name"
       name="motherName"
@@ -85,6 +99,7 @@ const BasicInformation = ({
       margin="normal"
       required
     />
+
     <TextField
       type="date"
       label="Date of Birth"
@@ -97,9 +112,10 @@ const BasicInformation = ({
         shrink: true,
       }}
     />
+
     <FormControl fullWidth margin="normal">
       <InputLabel>Marital Status</InputLabel>
-      <Select
+      <Select 
         value={formData.maritalStatus}
         onChange={handleChange}
         name="maritalStatus"
@@ -111,6 +127,8 @@ const BasicInformation = ({
         <MenuItem value="divorced">Divorced</MenuItem>
       </Select>
     </FormControl>
+
+    
     {formData.maritalStatus === 'married' && (
       <TextField
         label="Spouse Name"

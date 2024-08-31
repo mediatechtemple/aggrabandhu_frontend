@@ -3,6 +3,7 @@ import React from 'react';
 import { IconButton, Box } from '@mui/material';
 import { GetApp as GetAppIcon, PictureAsPdf as PictureAsPdfIcon, Print as PrintIcon, FileCopy as FileCopyIcon } from '@mui/icons-material';
 import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 const Iconsss = ({ tableId, columnsToExclude = [] }) => {
 
     const copyToClipboard = () => {
@@ -36,10 +37,12 @@ const Iconsss = ({ tableId, columnsToExclude = [] }) => {
       
       
       const generatePdf = () => {
+
         const doc = new jsPDF();
         doc.text('Table Data', 14, 10);
       
         const table = document.getElementById(tableId);
+
         const rows = Array.from(table.querySelectorAll('tr')).map(row =>
           Array.from(row.querySelectorAll('th, td'))
             .filter((_, index) => !columnsToExclude.includes(index))
@@ -52,8 +55,12 @@ const Iconsss = ({ tableId, columnsToExclude = [] }) => {
         });
       
         doc.save('table_data.pdf');
+
       };
       
+
+
+
       const downloadCsv = () => {
         const table = document.getElementById(tableId);
         const rows = Array.from(table.querySelectorAll('tr'));

@@ -1,7 +1,9 @@
 'use client';
-import { useState, useEffect } from 'react';
-import GotraForm from './GotraForm';
-import GotraTable from './GotraTable';
+import { useState, useEffect, lazy, Suspense } from 'react';
+// Lazy load components
+
+const GotraForm = lazy(() => import('./GotraForm'));
+const GotraTable = lazy(() => import('./GotraTable'));
 import { TextField, Paper, Stack, Box, Button, Dialog } from '@mui/material';
 
 const GotraPage = () => {
@@ -77,12 +79,15 @@ const GotraPage = () => {
 
       <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)}>
         <Paper elevation={3} padding={2}>
+        <Suspense fallback={<div>Loading form...</div>}>
           <GotraForm
-            onSubmit={handleAddGotra}
-            initialValue={editIndex !== null ? gotras[editIndex] : ''}
-            formTitle={editIndex !== null ? 'Edit Gotra' : 'Add Gotra'}
-            label={'Gotra'}
-          />
+              onSubmit={handleAddGotra}
+              initialValue={editIndex !== null ? gotras[editIndex] : ''}
+              formTitle={editIndex !== null ? 'Edit Gotra' : 'Add Gotra'}
+              label={'Gotra'}
+            />
+        </Suspense>
+          
           
         </Paper>
       </Dialog>
@@ -94,13 +99,17 @@ const GotraPage = () => {
         onChange={(e) => setSearch(e.target.value)}
         fullWidth
       />
-      <GotraTable
-      HeaderData={HeaderData}
-        gotras={filteredGotras}
-        onEdit={handleEditGotra}
-        onDelete={handleDeleteGotra}
 
-      />
+      <Suspense fallback={<div>Loading table...</div>}>
+        <GotraTable
+          HeaderData={HeaderData}
+          gotras={filteredGotras}
+          onEdit={handleEditGotra}
+          onDelete={handleDeleteGotra}
+
+        />
+      </Suspense>
+      
 
     </Stack>
   );

@@ -1,24 +1,24 @@
 'use client'
-import React, { useEffect, useState } from 'react';
-import { Button, Box, Dialog, DialogContent, DialogActions, TextField, MenuItem, FormControl, InputLabel, Select, Divider, List, ListItem, ListItemText, DialogTitle, ListItemButton, Typography, Table, TableHead, TableRow, TableBody, TableCell, IconButton, TableSortLabel} from '@mui/material';
-import { border, minWidth } from '@mui/system';
-import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
-import EditIcon from '@mui/icons-material/Edit';
-import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
-// import SortableTable from '@/app/component/DonationManagement/SortableTable'
-import Iconsss from '../Icons/Iconsss';
-import Pagination from '../Member/Pagination';
-import data from '@/utils/donationTableData'
-import StateFilter from '../Member/StateFilter';
-import DistrictFilter from '../Member/DistrictFilter';
-import Search from '../Member/Search';
-import DateRangeFilter from '../Member/DatedRangeFilter';
-import ReferenceSearch from '../Member/ReferenceSearch';
-import DonationFormDialog from'./DonationFormDialog';
+import React, { Suspense, useEffect, useState } from 'react';
+import { Button, Box,Typography} from '@mui/material';
 
-import SearchMemberDialog from './SearchMemberDialog'
-import SortableTable from './SortableTable';
+import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
+
+import Iconsss from '../Icons/Iconsss';
+
+import data from '@/utils/donationTableData'
+
+
+
+const Pagination = React.lazy(() => import('../Member/Pagination'));
+const StateFilter = React.lazy(() => import('../Member/StateFilter'));
+const DistrictFilter = React.lazy(() => import('../Member/DistrictFilter'));
+const Search = React.lazy(() => import('../Member/Search'));
+const ReferenceSearch = React.lazy(() => import('../Member/ReferenceSearch'));
+const DonationFormDialog = React.lazy(() => import('./DonationFormDialog'));
+const SearchMemberDialog = React.lazy(() => import('./SearchMemberDialog'));
+const SortableTable = React.lazy(() => import('./SortableTable'));
+
 
 
 /////////////////////////////////////////////////////////////////////
@@ -30,6 +30,7 @@ import SortableTable from './SortableTable';
   };
   //////////////////////////////////////////////////////////////////////////////
 
+  const Loading = () => <div>Loading...</div>;
 
 //////////////////////////////////
 const ParentComponent = () => {
@@ -59,22 +60,7 @@ const ParentComponent = () => {
 
 
 
-    
-    
-    // const [formData, setFormData] = useState({
-    //   userId: '',
-    //   name: '',
-    //   startDate: '',
-    //   endDate: '',
-    //   receivingMethod: '',
-    //   upiId: '',
-    //   upiNumber: '',
-    //   qrCode: null,
-    //   bankName: '',
-    //   accountNumber: '',
-    //   ifscCode: ''
-    // });
- 
+  
 
 
 
@@ -221,15 +207,6 @@ const handleDateRangeChange = (start, end) => {
       );
     }
 
-    // // Apply role filter
-    // if (filters.role) {
-    //   result = result.filter(member => member.role === filters.role);
-    // }
-
-    // // Apply active status filter
-    // if (filters.isActive) {
-    //   result = result.filter(member => member.status === 'active');
-    // }
     
     // // Apply state filter
     if (selectedState) {
@@ -250,14 +227,6 @@ const handleDateRangeChange = (start, end) => {
     
 
   
-
-    // Apply date range filter
-    // if (startDate && endDate) {
-    //   result = result.filter(member => {
-    //     const memberJoiningDate = new Date(member.joiningDate);
-    //     return memberJoiningDate >= startDate && memberJoiningDate <= endDate;
-    //   });
-    // }
 
     // Calculate total pages for pagination
     setTotalPages(Math.ceil(result.length / pageSize));
@@ -313,271 +282,88 @@ const handleDateRangeChange = (start, end) => {
             <Box display="flex" justifyContent="flex-end" mb={2} >
                 {/* <Filter filters={filters} onFilterChange={handleFilterChange} /> */}
                 <Box display="flex" justifyContent="flex-end" mb={2}>
+                <Suspense fallback={<Loading />}>
                   <StateFilter states={states} selectedState={selectedState} onSelectState={handleStateChange}/>
 
                   <DistrictFilter  districts={districts} selectedDistrict={selectedDistrict} onSelectDistrict={handleDistrictChange}/>
 
                   <Search onSearch={handleNameSearch} /> 
+                </Suspense>
                 </Box>
             </Box>
         </Box>
         <Box display="flex" justifyContent="flex-end" mb={2}>
           {/* <DateRangeFilter onDateRangeChange={handleDateRangeChange} /> */}
+          <Suspense fallback={<Loading />}>
           <ReferenceSearch onSearch={RefernceHandler} />
-        </Box>
-      <Box borderBottom="1px solid #bcd1c2"  marginBottom='5px'  color="white" sx={{  overflowX: 'auto',  }}>
-     
-            <SortableTable
-            sortedRows={searchResults}
-            sortConfig={sortConfig}
-            handleSort={handleSort}
-            getSortIcon={getSortIcon}
-            openHandler={handleOpen}
-            />
+          </Suspense>
         </Box>
 
-             <Pagination
+      <Box borderBottom="1px solid #bcd1c2"  marginBottom='5px'  color="white" sx={{  overflowX: 'auto',  }}>
+          
+          <Suspense fallback={<Loading />}>
+          <SortableTable
+                sortedRows={searchResults}
+                sortConfig={sortConfig}
+                handleSort={handleSort}
+                getSortIcon={getSortIcon}
+                openHandler={handleOpen}
+                />
+          </Suspense>
+            
+        </Box>
+
+        
+
+        <Suspense fallback={<Loading />}>
+        <Pagination
                 page={page}
                 pageSize={pageSize}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
                 onPageSizeChange={handlePageSizeChange}
             />
-       
-        
-       <DonationFormDialog
-        popupOpen={popupOpen}
-        handleClose={handleClose}
-        userId={userId}
-        setUserId={setUserId}
-        name={name}
-        setName={setName}
-        startDate={startDate}
-        setStartDate={setStartDate}
-        endDate={endDate}
-        setEndDate={setEndDate}
-        receivingMethod={receivingMethod}
-        setReceivingMethod={setReceivingMethod}
-        bankName={bankName}
-        setBankName={setBankName}
-        accountNumber={accountNumber}
-        setAccountNumber={setAccountNumber}
-        ifscCode={ifscCode}
-        setIfscCode={setIfscCode}
-        upiId={upiId}
-        setUpiId={setUpiId}
-        upiNumber={upiNumber}
-        setUpiNumber={setUpiNumber}
-        handleFileChange={handleFileChange}
-        handleSubmit={handleSubmit}
-        handleSearchDialogOpen={handleSearchDialogOpen}
-        receivingMethods={receivingMethods}
-        setReceivingMethods={setReceivingMethods}
-        
-      />
-      <SearchMemberDialog
-        searchDialogOpen={searchDialogOpen}
-        handleSearchDialogClose={handleSearchDialogClose}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        handleSearch={handleSearch}
-        searchResults={searchResults}
-        handleSelectMember={handleSelectMember}
-      />
-
-
-
-      {/* here dialog will get open here brother..... */}
-      {/* <Dialog open={popupOpen} onClose={handleClose}>
-        <DialogTitle>Donation Form</DialogTitle>
-        <DialogContent>
-          <Box sx={{ mb: 2 }}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSearchDialogOpen}
-              sx={{ mb: 2 }}
-            >
-              Search Member by ID 
-            </Button>
-            <TextField
-              autoFocus
-              margin="dense"
-              label="User ID"
-              fullWidth
-              variant="outlined"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
+            <DonationFormDialog
+              popupOpen={popupOpen}
+              handleClose={handleClose}
+              userId={userId}
+              setUserId={setUserId}
+              name={name}
+              setName={setName}
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              receivingMethod={receivingMethod}
+              setReceivingMethod={setReceivingMethod}
+              bankName={bankName}
+              setBankName={setBankName}
+              accountNumber={accountNumber}
+              setAccountNumber={setAccountNumber}
+              ifscCode={ifscCode}
+              setIfscCode={setIfscCode}
+              upiId={upiId}
+              setUpiId={setUpiId}
+              upiNumber={upiNumber}
+              setUpiNumber={setUpiNumber}
+              handleFileChange={handleFileChange}
+              handleSubmit={handleSubmit}
+              handleSearchDialogOpen={handleSearchDialogOpen}
+              receivingMethods={receivingMethods}
+              setReceivingMethods={setReceivingMethods}
+              
             />
-            <TextField
-              margin="dense"
-              label="Name"
-              fullWidth
-              variant="outlined"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+            <SearchMemberDialog
+              searchDialogOpen={searchDialogOpen}
+              handleSearchDialogClose={handleSearchDialogClose}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              handleSearch={handleSearch}
+              searchResults={searchResults}
+              handleSelectMember={handleSelectMember}
             />
-            <TextField
-              margin="dense"
-              label="Start Date"
-              type="date"
-              fullWidth
-              variant="outlined"
-              InputLabelProps={{ shrink: true }}
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-            <TextField
-              margin="dense"
-              label="End Date"
-              type="date"
-              fullWidth
-              variant="outlined"
-              InputLabelProps={{ shrink: true }}
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-            />
-            <FormControl fullWidth variant="outlined" margin="dense">
-            <InputLabel>Receiving Method</InputLabel>
-            <Select
-              value={receivingMethod}
-              onChange={(e) => setReceivingMethod(e.target.value)}
-              label="Receiving Method"
-            >
-              <MenuItem value="">None</MenuItem>
-              <MenuItem value="bank">Bank Transfer</MenuItem>
-            </Select>
-          </FormControl>
-          {receivingMethod === 'bank' && (
-            <Box
-              sx={{
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                padding: '16px',
-                marginTop: '16px',
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  borderBottom: '1px solid #ccc',
-                  paddingBottom: '8px',
-                  marginBottom: '8px',
-                 color:'#1976d2'
-                }}
-              >
-                Bank Details
-              </Typography>
-              <TextField
-                margin="dense"
-                label="Bank Name"
-                fullWidth
-                variant="outlined"
-                value={bankName}
-                onChange={(e) => setBankName(e.target.value)}
-              />
-              <TextField
-                margin="dense"
-                label="Account Number"
-                fullWidth
-                variant="outlined"
-                value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
-              />
-              <TextField
-                margin="dense"
-                label="IFSC Code"
-                fullWidth
-                variant="outlined"
-                value={ifscCode}
-                onChange={(e) => setIfscCode(e.target.value)}
-              />
-            </Box>
-          )
-        }
-            <TextField
-            margin="dense"
-            label="UPI ID"
-            fullWidth
-            variant="outlined"
-            value={upiId}
-            onChange={(e) => setUpiId(e.target.value)}
-          />
-          <TextField
-            margin="dense"
-            label="UPI Number"
-            fullWidth
-            variant="outlined"
-            value={upiNumber}
-            onChange={(e) => setUpiNumber(e.target.value)}
-          />
-
-          <Button
-            variant="outlined"
-            component="label"
-            fullWidth
-            margin="dense"
-          >
-            Upload QR Code
-            <input
-              type="file"
-              hidden
-              accept="image/*"
-              onChange={handleFileChange}
-            />
-          </Button>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleSubmit} color="primary">
-            Submit
-          </Button>
-          <Button onClick={handleClose} color="secondary">
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog> */}
-
-{/* here we will search for item to */}
-      {/* <Dialog open={searchDialogOpen} onClose={handleSearchDialogClose}>
-        <DialogTitle>Search Member</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            label="Search Person by ID "
-            fullWidth
-            variant="outlined"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            // onKeyPress={handleKeyPress}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSearch}
-            sx={{ marginTop: 1, display: 'block', mx: 'auto' }}
-          >
-            Search
-          </Button>
-          <Divider sx={{ my: 2 }} />
-          {searchResults.length > 0 ? (
-            <List>
-              {searchResults.map((member) => (
-                <ListItemButton  key={member.id} onClick={() => handleSelectMember(member)}>
-                  <ListItemText primary={`${member.code} - ${member.name}`} /> <Button>add</Button>
-                </ListItemButton>
-              ))}
-            </List>
-          ) : (
-            <Typography>No member exists</Typography>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleSearchDialogClose} color="secondary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog> */}
+      </Suspense>
+             
     </div>
   );
 };
