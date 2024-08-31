@@ -88,7 +88,7 @@ const Member = () => {
             
             <Suspense fallback={<div>Loading...</div>}>
             <FilterSection filters={filters} handleFilterChange={handleFilterChange} />
-
+            
             <MembershipModal2  
                 open={isFormOpen} 
                 handleClose={closeForm} 
