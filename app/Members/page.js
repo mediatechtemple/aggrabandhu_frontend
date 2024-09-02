@@ -7,9 +7,9 @@ const page = () => {
   
   return (
     <div>
+      <Member/>
       {/* <Member/> */}
-      {/* <Member/> */}
-      <h2>hello</h2>
+      {/* <h2>hello</h2> */}
     </div>
   )
 }

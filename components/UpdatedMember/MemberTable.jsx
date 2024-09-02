@@ -34,10 +34,10 @@ const MemberTable = ({members,openForm,columns}) => {
             <TableRow key={member['referenceId']}>
               {
                 columns.map(column=>{
-                return   column.id==='actions'? ( <TableCell>
+                return   column.id==='actions'? ( <TableCell key={column.id}>
                     <Button onClick={() => openForm(member)}>Edit</Button>
                   </TableCell>):
-                  <TableCell>{typeof member[column.id]==='object' ? `${member[column.id]['name']}  (${member[column.id]['relationship']})`  : member[column.id]}</TableCell>
+                  <TableCell key={column.id}>{typeof member[column.id]==='object' ? `${member[column.id]['name']}  (${member[column.id]['relationship']})`  : member[column.id]}</TableCell>
                 })  
               }
             </TableRow>

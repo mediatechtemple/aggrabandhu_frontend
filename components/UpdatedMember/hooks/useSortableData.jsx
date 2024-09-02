@@ -2,7 +2,6 @@ import { useState, useMemo } from 'react';
 import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 const useSortableData = (items, config = { key: '', direction: 'asc' }) => {
   const [sortConfig, setSortConfig] = useState(config);
-console.log(items)
   const sortedItems = useMemo(() => {
     const sortableItems = [...items];
     if (sortConfig.key) {

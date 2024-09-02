@@ -57,7 +57,6 @@ const Member = () => {
         handleFilterChange
     } = useFilters(members);
 
-    console.log(filteredMembers);
 
     const {
         page,
@@ -84,11 +83,14 @@ const Member = () => {
             <Box borderBottom="1px solid #bcd1c2" padding="5px" marginBottom='5px' bgcolor="#007bff" color="white">
                 <Typography>Member List</Typography>
             </Box>
-            
-            
+
+
+
+
             <Suspense fallback={<div>Loading...</div>}>
             <FilterSection filters={filters} handleFilterChange={handleFilterChange} />
-            
+
+
             <MembershipModal2  
                 open={isFormOpen} 
                 handleClose={closeForm} 
@@ -98,6 +100,7 @@ const Member = () => {
                 handleFileChange={handleFileChange}
                 handleNomineeChange={handleNomineeChange}
             />
+            
             <MemberTable members={currentRows} openForm={openForm} columns={columns}/>
             
             <Pagination
