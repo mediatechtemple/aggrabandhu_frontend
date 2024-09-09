@@ -1,7 +1,7 @@
 
-// import Member from "@/components/Member/Member"
+import Member from "@/components/Member/Member"
 
-import Member from "@/components/UpdatedMember/Member"
+// import Member from "@/components/UpdatedMember/Member"
 
 const page = () => {
   

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-const AddressInformation = ({ formData, handleChange }) => {
+const AddressInformation = ({ formData, handleChange ,handlePincodeChange}) => {
   const[states,setStates]=useState([]);
   const[districts,setDistricts]=useState([]);
   useEffect(()=>{
@@ -26,7 +26,47 @@ const AddressInformation = ({ formData, handleChange }) => {
       multiline
       rows={4}
     />
-    <FormControl fullWidth margin="normal">
+
+<TextField
+      label="Pincode"
+      name="pincode"
+      value={formData.pincode}
+      onChange={handlePincodeChange}
+      fullWidth
+      margin="normal"
+      required
+      type="number"
+    />
+
+    {/* here will be my code  */}
+    {/* {errorMessage && (
+        <Typography color="error" variant="body2" sx={{ mb: 2 }}>
+          {errorMessage}
+        </Typography>
+      )} */}
+
+      <TextField
+        label="State"
+        type="text"
+        variant="outlined"
+        fullWidth
+        value={formData.state}
+        // disabled
+        sx={{ mb: 2 }}
+      />
+
+      <TextField
+        label="District"
+        type="text"
+        variant="outlined"
+        fullWidth
+        value={formData.district}
+        // disabled
+        sx={{ mb: 2 }}
+      />
+
+
+    {/* <FormControl fullWidth margin="normal">
       <InputLabel>District</InputLabel>
       <Select
         value={formData.district}
@@ -41,6 +81,8 @@ const AddressInformation = ({ formData, handleChange }) => {
         }
       </Select>
     </FormControl>
+
+
     <FormControl fullWidth margin="normal">
       <InputLabel>State</InputLabel>
       <Select
@@ -55,17 +97,8 @@ const AddressInformation = ({ formData, handleChange }) => {
           )
         }
       </Select>
-    </FormControl>
-    <TextField
-      label="Pincode"
-      name="pincode"
-      value={formData.pincode}
-      onChange={handleChange}
-      fullWidth
-      margin="normal"
-      required
-      type="number"
-    />
+    </FormControl> */}
+    
   </>
 };
 

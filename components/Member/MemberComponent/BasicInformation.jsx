@@ -5,6 +5,7 @@ const BasicInformation = ({
   formData,
   handleChange,
   handleFileChange,
+  
 }) => {
   
   const [gotraOptions, setGotraOptions] = useState([]);
@@ -29,6 +30,9 @@ const BasicInformation = ({
       fullWidth
       margin="normal"
     />
+
+
+
     <FormControl fullWidth margin="normal">
       <InputLabel>Gotra</InputLabel>
       <Select
@@ -44,20 +48,41 @@ const BasicInformation = ({
         ))}
       </Select>
     </FormControl>
-    <Button variant="contained" component="label" fullWidth>
-      Upload Photo
-      <input
-        type="file"
-        accept="image/*"
-        hidden
-        onChange={handleFileChange}
-      />
-    </Button>
-    {formData.photo && (
-      <Typography variant="body1" sx={{ mt: 2 }}>
-        Selected File: {formData.photo}
-      </Typography>
-    )}
+
+
+
+
+
+   <Button variant="contained" component="label" fullWidth>
+        Upload Photo
+        <input
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleFileChange}
+        />
+      </Button>
+
+      {/* Show selected file name */}
+      {formData.photo && (
+        <>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            Selected File: {formData.photo}
+          </Typography>
+
+          {/* Display the image below */}
+          <img
+            src={formData.photoUrl}
+            alt={formData.photo}
+            style={{ marginTop: '10px', maxWidth: '20%', height: 'auto' }}
+          />
+        </>
+      )}
+
+
+
+
+
     <TextField
       label="Name"
       name="name"
@@ -97,6 +122,9 @@ const BasicInformation = ({
         shrink: true,
       }}
     />
+
+
+
     <FormControl fullWidth margin="normal">
       <InputLabel>Marital Status</InputLabel>
       <Select
@@ -142,8 +170,6 @@ const BasicInformation = ({
     </FormControl>
 
 
-
-
     <TextField
       label="Password"
       name="password"
@@ -154,6 +180,17 @@ const BasicInformation = ({
       margin="normal"
       required
     />
+     <TextField
+      label="Confirt_Password"
+      name="confirmPassword"
+      type="password"
+      value={formData.confirmPassword}
+      onChange={handleChange}
+      fullWidth
+      margin="normal"
+      required
+    />
+
 
 
     

@@ -69,12 +69,14 @@ const Member = () => {
 
     //   console.log(currentRows[0])
     return (
-        <>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <div >
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} >
                 <Typography variant="h4" gutterBottom color='#007bff'>
                     Member Management
                 </Typography>
-                <Button variant="contained" onClick={openForm} sx={{ backgroundColor: '#1976d2' }}>
+                <Button
+                 variant="contained" 
+                 onClick={openForm} sx={{ backgroundColor: '#1976d2' }}>
                     Apply for New Membership
                 </Button>
             </Box>
@@ -100,7 +102,7 @@ const Member = () => {
                 handleFileChange={handleFileChange}
                 handleNomineeChange={handleNomineeChange}
             />
-            
+
             <MemberTable members={currentRows} openForm={openForm} columns={columns}/>
             
             <Pagination
@@ -111,7 +113,7 @@ const Member = () => {
                 onPageSizeChange={handlePageSizeChange}
             />
             </Suspense>
-        </>
+        </div>
     );
 }
 

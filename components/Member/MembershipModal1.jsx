@@ -10,9 +10,6 @@ import NomineeDetails from './MemberComponent/NomineeDetails';
 import DiseaseAndRules from './MemberComponent/DiseaseAndRules';
 
 const MembershipModal1 = ({open,handleClose,initialData}) => {
-//   const [open, setOpen] = useState(false);
-
-
   const [formData, setFormData] = useState({
     referenceId: '',
     gotra: '',
@@ -26,6 +23,7 @@ const MembershipModal1 = ({open,handleClose,initialData}) => {
     mobile: '',
     otp: '',
     password: '',
+    confirmPassword: '',
     email: '',
     address: '',
     district: '',
@@ -44,6 +42,7 @@ const MembershipModal1 = ({open,handleClose,initialData}) => {
   });
 
 
+  const [errorMessage, setErrorMessage] = useState('');
 
 
   const [otp, setOtp] = useState('');
@@ -66,6 +65,36 @@ if(initialData){
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handlePincodeChange = async (e) => {
+    const pincode = e.target.value;
+    setFormData((prevState) => ({ ...prevState, pincode })); // Preserve old state
+
+    if (pincode.length === 6) {
+      try {
+        // Fetch data from the Postal API based on the pincode
+        const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+        const data = await response.json();
+
+        if (data[0].Status === 'Success') {
+          const postOffice = data[0].PostOffice[0];
+          setFormData((prevState) => ({
+            ...prevState, // Preserve existing pincode
+            state: postOffice.State,
+            district: postOffice.District,
+          }));
+          setErrorMessage('');
+        } else {
+          setErrorMessage('Invalid Pincode. Please enter a valid 6-digit pincode.');
+        }
+      } catch (error) {
+        setErrorMessage('Error fetching data. Please try again later.');
+      }
+    }
+
+
+    
   };
 
   const handleNomineeChange = (index, field, value) => {
@@ -91,12 +120,12 @@ if(initialData){
     setFormData({ ...formData, diseaseFile: e.target.files[0] });
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
     if (file) {
-      setFormData({ ...formData, photo: file.name });
-    } else {
-      setFormData({ ...formData, photo: '' });
+      // Create a URL for the selected image and update the formData
+      const imageUrl = URL.createObjectURL(file);
+      setFormData({ ...formData, photo: file.name, photoUrl: imageUrl });
     }
   };
 
@@ -118,6 +147,11 @@ if(initialData){
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (formData.password !== formData.confirmPassword) {
+      setErrorMessage("Passwords do not match!");
+      alert("hello here one password does not match");
+      return;
+    }
     console.log('Applying for membership with:', formData);
     handleClose();
   };
@@ -171,6 +205,7 @@ if(initialData){
           handleFileChange={handleFileChange}
           handleAadharFileChange={handleAadharFileChange}
           handleVoterIdFileChange={handleVoterIdFileChange}
+          
         />
 
         {/* here Email verification code will come */}
@@ -186,6 +221,7 @@ if(initialData){
         <AddressInformation
           formData={formData}
           handleChange={handleChange}
+          handlePincodeChange={handlePincodeChange}
         />
         <IdentificationDocuments
           formData={formData}
@@ -197,6 +233,8 @@ if(initialData){
           formData={formData}
           handleNomineeChange={handleNomineeChange}
         />
+
+
         <DiseaseAndRules
           formData={formData}
           handleDiseaseChange={handleDiseaseChange}

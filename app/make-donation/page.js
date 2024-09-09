@@ -1,8 +1,8 @@
 import React from 'react'
-import Donation from '@/components/DonationManagement/Donation'
+import MakeDonation from '@/components/MakeDonation/MakeDonation'
 const page = () => {
   return (
-    <Donation/>
+    <MakeDonation/>
   )
 }
 

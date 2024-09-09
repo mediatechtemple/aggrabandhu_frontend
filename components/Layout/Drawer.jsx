@@ -66,6 +66,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers' },
             { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations' },
             { text: 'Notification Management', icon: <NotificationsIcon />, route: '/Notification-Management' },
+            {text:'Make Donation',icon:<VolunteerActivismIcon/>,route:'/make-donation'}
           ].map((item) => (
             <Link href={item.route} passHref key={item.text}>
               <ListItem >

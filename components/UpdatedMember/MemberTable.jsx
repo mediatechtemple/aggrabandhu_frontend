@@ -5,12 +5,7 @@ import useSortableData from './hooks/useSortableData';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 const MemberTable = ({members,openForm,columns}) => {
-
-
- 
-
   
-
   // export default dataArray;
   
   const { items: sortedData, handleSort,getSortIcon } = useSortableData(members);

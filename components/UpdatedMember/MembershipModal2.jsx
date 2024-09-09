@@ -4,7 +4,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Button,
   TextField,
   InputAdornment,
   IconButton,
@@ -31,7 +30,8 @@ const MembershipModal1 = ({
     handleNomineeChange
  }) => {
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <>
+      <Dialog open={open} onClose={handleClose} >
       <DialogTitle>New Membership</DialogTitle>
       <DialogContent>
 
@@ -71,15 +71,25 @@ const MembershipModal1 = ({
         />
 
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit} color="primary">
-          Submit
-        </Button>
+      <DialogActions >
+       <button 
+        onClick={handleClose} 
+        className="bg-blue-500 text-white font-medium py-2 px-4 rounded "
+      >
+        Cancel
+      </button>
+
+        <button 
+          onClick={handleSubmit} 
+          className="bg-blue-500 text-white font-medium py-2 px-4 rounded "
+        >
+        submit
+      </button>
       </DialogActions>
-    </Dialog>
+      </Dialog>
+    </>
+      
+    
   );
 };
 
