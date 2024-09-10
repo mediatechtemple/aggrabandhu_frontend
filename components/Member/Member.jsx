@@ -195,10 +195,10 @@ const Member = () => {
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} >
         <Typography variant="h4" gutterBottom color='#007bff' >
-          Member Management
+          Doners Management
         </Typography>
         <Button variant="contained" onClick={handleOpen} sx={{ backgroundColor: '#1976d2' }}>
-            Apply for New Membership
+            Apply for New Donership
         </Button>
       </Box>
 
@@ -211,7 +211,7 @@ const Member = () => {
       <box style={{ border: '1px solid #bcd1c2' }}>
 
         <Box borderBottom="1px solid #bcd1c2" padding="5px" marginBottom='5px' bgcolor="#007bff" color="white">
-          <Typography>Member List</Typography>
+          <Typography>Donar List</Typography>
         </Box>
        
         <Box display="flex" justifyContent="space-between">

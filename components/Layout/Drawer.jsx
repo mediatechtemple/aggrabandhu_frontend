@@ -62,7 +62,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             { text: 'Dashboard', icon: <DashboardIcon />, route: '/Dashboard' },
             { text: 'Profile', icon: <PersonIcon />, route: '/Profile' },
             { text: 'User Management', icon: <GroupIcon />, route: '/User-Management' },
-            { text: 'Members Management', icon: <PeopleIcon />, route: '/Members' },
+            { text: 'Donars Management', icon: <PeopleIcon />, route: '/Members' },
             { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers' },
             { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations' },
             { text: 'Notification Management', icon: <NotificationsIcon />, route: '/Notification-Management' },
