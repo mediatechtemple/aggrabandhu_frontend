@@ -1,6 +1,6 @@
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-const GotraTable = ({HeaderData, gotras, onEdit, onDelete }) => {
+const ProfesstionTable = ({HeaderData, gotras, onEdit, onDelete }) => {
 
 
   return (
@@ -54,4 +54,4 @@ const GotraTable = ({HeaderData, gotras, onEdit, onDelete }) => {
   );
 };
 
-export default GotraTable;
+export default ProfesstionTable;

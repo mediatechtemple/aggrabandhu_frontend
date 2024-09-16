@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { Button, TextField, Box, Typography, Dialog } from '@mui/material';
 
-const GotraForm = ({ onSubmit, initialValue = '', formTitle = 'Add Gotra',label,setIsFormOpen }) => {
+const GotraForm = ({ onSubmit, initialValue = '', formTitle,label,setIsFormOpen }) => {
+  console.log(initialValue);
   const [gotra, setGotra] = useState(initialValue);
 
   //as we enter on submit from here data woll go to parent componentn and in onSubmit gotra will add
@@ -12,7 +13,7 @@ const GotraForm = ({ onSubmit, initialValue = '', formTitle = 'Add Gotra',label,
    
     if (gotra) {
       onSubmit(gotra);
-      setIsFormOpen(false)
+      setIsFormOpen(false);
       setGotra('');
     }
   };

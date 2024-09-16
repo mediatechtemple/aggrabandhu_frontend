@@ -7,6 +7,8 @@ const PopupForm = ({ open, onClose }) => {
   const [name, setName] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [miniumumAmount,setMinimumAmount]=useState('');
+  const [deathDate,setDeathDate]=useState();
   const [receivingMethod, setReceivingMethod] = useState('');
   const [searchDialogOpen, setSearchDialogOpen] = useState(false);
 

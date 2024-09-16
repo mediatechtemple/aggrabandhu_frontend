@@ -1,118 +1,167 @@
 'use client'
-import { Box, Button, Dialog, Paper, Stack, TextField } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import GotraForm from '../Gotra/GotraForm'
-import GotraTable from '../Gotra/GotraTable'
+import { Box, Button, Dialog, Paper, Stack, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+// import GotraForm from '../Gotra/GotraForm';
+import ProfesstionTable from './ProfesstionTable';
+import GotraForm from './GotraForm';
 
 const Profession = () => {
-    /////////////////////////////////////////////////////////////
-    const[professions,setProfessions]=useState([]);
+    const [professions, setProfessions] = useState([]);
     const [editIndex, setEditIndex] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const[search,setSearch]=useState('');
+    const [search, setSearch] = useState('');
+    const [isFormOpen, setIsFormOpen] = useState(false);
 
-    const[isFormOpen,setIsFormOpen]=useState(false);
+    const HeaderData = ['Professions'];
 
-    const HeaderData=['Professions'];
+    useEffect(() => {
+        async function fetchProfession() {
+            try {
+                const response = await fetch('https://internal.aggrabandhuss.org/api/profession');
+                if (!response.ok) {
+                    throw new Error('Error fetching professions');
+                }
+                const data = await response.json();
+                setProfessions(data);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        }
 
-/////////////////////////////////////////////////////////////////////
+        fetchProfession();
+    }, []);
 
-useEffect(() => {
-    const storedProfessions = JSON.parse(localStorage.getItem('professions')) || [];
-    setProfessions(storedProfessions);
-  }, []);
+    const handleAddProfession = async (profession) => {
+        if (editIndex !== null) {
+            try {
+                const professionToEdit = professions.find(p => p.id === editIndex);
+                const response = await fetch(`https://internal.aggrabandhuss.org/api/profession/${editIndex}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name: profession }),
+                });
 
+                if (!response.ok) {
+                    throw new Error('Error updating profession');
+                }
 
+                const updatedData = await response.json();
+                const updatedProfessions = professions.map((p) =>
+                    p.id === editIndex ? { ...p, name: profession } : p
+                );
 
+                setProfessions(updatedProfessions);
+                setEditIndex(null);
+                setIsFormOpen(false);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        } else {
+            try {
+                const response = await fetch('https://internal.aggrabandhuss.org/api/profession', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ name: profession }),
+                });
 
+                if (!response.ok) {
+                    throw new Error('Error adding profession');
+                }
 
+                const data = await response.json();
+                setProfessions([...professions, { id: data.id, name: data.name }]);
+                setIsFormOpen(false);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        }
+    };
 
-
-//////////////////////////////////////////////////////////////////
-
-const handleAddProfession = (profession) => {
-    let updatedProfession;
-
-    if (editIndex !== null) {
-      // Update the existing gotra at the editIndex
-      updatedProfession = [...professions];
-      updatedProfession[editIndex] = profession;
-    } else {
-      // Add new gotra
-      updatedProfession = [...professions, profession];
-    }
-
-    // Update local storage and state
-    localStorage.setItem('professions', JSON.stringify(updatedProfession));
-    setProfessions(updatedProfession);
-
-    // Reset editIndex and close the form
-    setEditIndex(null);
-    setIsFormOpen(false);
-  };
-
-
-
-
-
-    const handleEditProfession = (index) => {
-        setEditIndex(index);
+    const handleEditProfession = (id) => {
+        setEditIndex(id);
         setIsFormOpen(true);
-      };
-      
-    //so here main function are avalable brohter
+    };
 
-      const handleDeleteProfession = (index) => {
-        const updatedProfessions = professions.filter((_, i) => i !== index);
-    
-        // Update local storage and state
-        localStorage.setItem('professions', JSON.stringify(updatedProfessions));
-        setProfessions(updatedProfessions);
-      };
-    
-      const filteredProfession = professions.filter((profession) =>
-        profession.toLowerCase().includes(search.toLowerCase())
-      );
+    const handleDeleteProfession = async (id) => {
+        try {
+            const response = await fetch(`https://internal.aggrabandhuss.org/api/profession/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
-  return (
-   <Stack spacing={2} padding={2}>
-      <Box display='flex' justifyContent="flex-end">
-      <Button
-          variant="contained"
-          color="primary"
-          onClick={() => setIsFormOpen(true)}
-        >
-          Add Profession
-        </Button>
-      </Box>
+            if (!response.ok) {
+                throw new Error('Error deleting profession');
+            }
 
-      <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)}>
-        <Paper elevation={3} padding={2}>
-          <GotraForm
-            onSubmit={handleAddProfession}
-            initialValue={editIndex !== null ? professions[editIndex] : ''}
-            formTitle={editIndex !== null ? 'Edit Profession' : 'Add Profession'}
-            label={'profession'} 
-          />
-        </Paper>
-      </Dialog>
-{/* this one here is search fleld which we will work together  if you do't get according to mee.... */}
-      <TextField
-        label="Search Profession"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        fullWidth
-      />
-      <GotraTable
-        HeaderData={HeaderData}
-        gotras={filteredProfession}
-        onEdit={handleEditProfession}
-        onDelete={handleDeleteProfession}
-      />
+            setProfessions(professions.filter(p => p.id !== id));
+        } catch (error) {
+            setError(error);
+        }
+    };
 
+    const filteredProfession = professions.filter((profession) =>
+        profession?.name?.toLowerCase().includes(search.toLowerCase())
+    );
 
-   </Stack>
-  )
-}
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
 
-export default Profession
+    return (
+        <Stack spacing={2} padding={2}>
+            <Box display='flex' justifyContent="flex-end">
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setIsFormOpen(true)}
+                >
+                    Add Profession
+                </Button>
+            </Box>
+
+            <Dialog open={isFormOpen} onClose={() => {
+                setIsFormOpen(false);
+                setEditIndex(null);
+            }}>
+                <Paper elevation={3} padding={2}>
+                    <GotraForm
+                        onSubmit={handleAddProfession}
+                        initialValue={editIndex !== null ? professions.find(item => item.id === editIndex).name : ''}
+                        formTitle={editIndex !== null ? 'Edit Profession' : 'Add Profession'}
+                        label={'profession'}
+                        setIsFormOpen={setIsFormOpen}
+                    />
+                </Paper>
+            </Dialog>
+
+            <TextField
+                label="Search Profession"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                fullWidth
+            />
+
+            <ProfesstionTable
+                HeaderData={HeaderData}
+                gotras={filteredProfession}
+                onEdit={handleEditProfession}
+                onDelete={handleDeleteProfession}
+            />
+        </Stack>
+    );
+};
+
+export default Profession;

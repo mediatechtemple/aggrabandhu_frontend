@@ -67,16 +67,22 @@ const UserManagement = () => {
     setFilteredUsers(results);
   }, [searchQuery]);
 
+
+
   const addUser = (user) => {
     if (!selectedUsers.some(selected => selected.id === user.id)) {
       setSelectedUsers([...selectedUsers, user]);
     }
   };
 
+
+
   const handleDialogOpen = (currentId) => {
     setDialogOpen(true);
     setCurrentId(currentId);
   };
+
+
 
   const handleDialogClose = () => {
     setDialogOpen(false);
@@ -90,6 +96,7 @@ const UserManagement = () => {
     setSearchDialogOpen(false);
   };
 
+
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setCheckboxes(prevState => ({
@@ -98,12 +105,14 @@ const UserManagement = () => {
     }));
   };
 
+
   const handleUpdate = (section) => {
     console.log(`${section} management`);
     console.log(checkboxes);
     console.log({ ...checkboxes, Id: currentId });
   };
 
+  
   return (
     <Container>
       <Typography 
@@ -140,6 +149,10 @@ const UserManagement = () => {
       >
         Selected Users
       </Typography>
+
+
+
+
       <StyledTable>
         <TableHead>
           <HeaderRow>
@@ -166,6 +179,11 @@ const UserManagement = () => {
         </TableBody>
       </StyledTable>
 
+
+
+
+
+
       <PermissionsDialog
         open={dialogOpen}
         onClose={handleDialogClose}
@@ -174,6 +192,30 @@ const UserManagement = () => {
         handleUpdate={handleUpdate}
         currentId={currentId}
       />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       <Dialog open={searchDialogOpen} onClose={handleSearchDialogClose} fullWidth maxWidth="md">
         <DialogTitle>Search Registered Users</DialogTitle>

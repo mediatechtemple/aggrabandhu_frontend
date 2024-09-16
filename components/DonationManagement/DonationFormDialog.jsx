@@ -65,6 +65,27 @@ const DonationFormDialog = ({
             onChange={(e) => setName(e.target.value)}
           />
           <TextField
+              margin="dense"
+              label="Death Date"
+              type="date"
+              fullWidth
+              variant="outlined"
+              InputLabelProps={{ shrink: true }}
+              // value={deathDate}
+              // onChange={(e) => setDeathDate(e.target.value)}
+            />
+            
+           <TextField
+              margin="dense"
+              label="Minimum Amount"
+              type="number"
+              fullWidth
+              variant="outlined"
+              // value={minimumAmount}
+              // onChange={(e) => setMinimumAmount(e.target.value)}
+            />
+            
+          <TextField
             margin="dense"
             label="Start Date"
             type="date"

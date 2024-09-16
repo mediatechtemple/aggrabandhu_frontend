@@ -5,23 +5,61 @@ const BasicInformation = ({
   formData,
   handleChange,
   handleFileChange,
-  
 }) => {
   
   const [gotraOptions, setGotraOptions] = useState([]);
   const [professionsOptions, setProfessionsOptions] = useState([]);
+  const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+  
   // Fetch the array from localStorage when the component mounts
   
+  // useEffect(() => {
+  //   // Replace 'gotraOptions' with the key used to store your array in localStorage
+  //   const storedProfessionOptions = JSON.parse(localStorage.getItem('professions')) || [];
+
+  
+  //   setProfessionsOptions(storedProfessionOptions);
+
+  // }, []);
+
   useEffect(() => {
-    // Replace 'gotraOptions' with the key used to store your array in localStorage
-    const storedGotraOptions = JSON.parse(localStorage.getItem('inputs')) || [];
-    const storedProfessionOptions = JSON.parse(localStorage.getItem('professions')) || [];
-
-    setGotraOptions(storedGotraOptions);
-    setProfessionsOptions(storedProfessionOptions);
-
+    const fetchGotras = async () => {
+      try {
+        const response = await fetch('https://internal.aggrabandhuss.org/api/gotra');
+        const data = await response.json();
+        setGotraOptions(data);
+        
+      } catch (error) {
+        console.error('Error fetching gotras:', error);
+      }
+    };
+  
+    fetchGotras();
   }, []);
+
+  useEffect(() => {
+    async function fetchProfession() {
+        try {
+            const response = await fetch('https://internal.aggrabandhuss.org/api/profession');
+            if (!response.ok) {
+                throw new Error('Error fetching professions');
+            }
+            const data = await response.json();
+            setProfessionsOptions(data);
+        } catch (error) {
+            setError(error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    fetchProfession();
+}, []);
+
+
  return <>
+
     <TextField
       label="Reference ID"
       name="referenceId"
@@ -42,8 +80,8 @@ const BasicInformation = ({
         label="Gotra"
       >
         {gotraOptions.map((gotra, index) => (
-          <MenuItem key={index} value={gotra}>
-            {gotra}
+          <MenuItem key={index} value={gotra.name}>
+            {gotra.name}
           </MenuItem>
         ))}
       </Select>
@@ -61,7 +99,7 @@ const BasicInformation = ({
           hidden
           onChange={handleFileChange}
         />
-      </Button>
+  </Button>
 
       {/* Show selected file name */}
       {formData.photo && (
@@ -92,6 +130,8 @@ const BasicInformation = ({
       margin="normal"
       required
     />
+
+
     <TextField
       label="Father's Name"
       name="fatherName"
@@ -101,6 +141,8 @@ const BasicInformation = ({
       margin="normal"
       required
     />
+
+
     <TextField
       label="Mother's Name"
       name="motherName"
@@ -110,6 +152,7 @@ const BasicInformation = ({
       margin="normal"
       required
     />
+
     <TextField
       type="date"
       label="Date of Birth"
@@ -160,8 +203,8 @@ const BasicInformation = ({
         label="profession"
       >
         {professionsOptions.map((profession, index) => (
-          <MenuItem key={index} value={profession}>
-            {profession}
+          <MenuItem key={index} value={profession.name}>
+            {profession.name}
           </MenuItem>
         ))}
         

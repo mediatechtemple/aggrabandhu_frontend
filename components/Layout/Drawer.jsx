@@ -31,6 +31,9 @@ const drawerWidth = 250;
 export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
   const [openWebsiteManagement, setOpenWebsiteManagement] = React.useState(false);
   const [openInputManagement, setOpenInputManagement] = React.useState(false);
+  const [openMakeDonation, setOpenMakeDonation] = React.useState(false);
+  const [userManagement ,setUserManagement] = React.useState(false);
+
 
   const handleClickWebsiteManagement = () => {
     setOpenWebsiteManagement(!openWebsiteManagement);
@@ -41,6 +44,15 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
     setOpenInputManagement(!openInputManagement);
   }
 
+  const handleClickMakeDonation=()=>{
+    setOpenMakeDonation(!openMakeDonation);
+  }
+
+  const handleClickUserManagement=()=>{
+    setUserManagement(!userManagement);
+  }
+
+  
   return (
     <Drawer
       variant="persistent"
@@ -66,7 +78,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers' },
             { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations' },
             { text: 'Notification Management', icon: <NotificationsIcon />, route: '/Notification-Management' },
-            {text:'Make Donation',icon:<VolunteerActivismIcon/>,route:'/make-donation'}
+            // {text:'Make Donation',icon:<VolunteerActivismIcon/>,route:'/make-donation'}
           ].map((item) => (
             <Link href={item.route} passHref key={item.text}>
               <ListItem >
@@ -75,6 +87,59 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
               </ListItem>
             </Link>
           ))}
+
+
+{/* here make donation list will come */}
+          <ListItem button onClick={handleClickUserManagement}>
+            <ListItemIcon><VolunteerActivismIcon/></ListItemIcon>
+            <ListItemText primary="User Management" />
+            {userManagement ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+
+          <Collapse in={userManagement} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <Link href="/User-Management" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><People /></ListItemIcon>
+                  <ListItemText primary="Members Management" />
+                </ListItem>
+              </Link>
+              <Link href="/Refral-Report" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><LocationOn /></ListItemIcon>
+                  <ListItemText primary="Refral Report" />
+                </ListItem>
+              </Link>
+            </List>
+          </Collapse>
+
+
+
+          <ListItem button onClick={handleClickMakeDonation}>
+            <ListItemIcon><VolunteerActivismIcon/></ListItemIcon>
+            <ListItemText primary="Make Donation" />
+            {openMakeDonation ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+
+
+          <Collapse in={openMakeDonation} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <Link href="/make-donation" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><People /></ListItemIcon>
+                  <ListItemText primary="new_donation" />
+                </ListItem>
+              </Link>
+              <Link href="/donation-list" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><LocationOn /></ListItemIcon>
+                  <ListItemText primary="donation-list" />
+                </ListItem>
+              </Link>
+            </List>
+          </Collapse>
+
+
 
           <ListItem button onClick={handleClickInputManagement}>
             <ListItemIcon><InputIcon/></ListItemIcon>
@@ -106,11 +171,17 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
           </Collapse>
           
 
+
+
           <ListItem button onClick={handleClickWebsiteManagement}>
             <ListItemIcon><ManageAccountsIcon/></ListItemIcon>
             <ListItemText primary="Website Management" />
             {openWebsiteManagement ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
+
+
+
+
 
 
           <Collapse in={openWebsiteManagement} timeout="auto" unmountOnExit>
@@ -129,6 +200,15 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
               </Link>
             </List>
           </Collapse>
+
+
+
+
+
+
+
+
+
         </List>
       </Box>
     </Drawer>
