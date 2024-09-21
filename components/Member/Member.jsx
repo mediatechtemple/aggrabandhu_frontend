@@ -114,6 +114,7 @@ const Member = () => {
     console.log("this is in MembershipModal1");
     console.log(formData);
   
+    
     // Prepare form data for sending to the API
     const formToSubmit = new FormData();
     Object.keys(formData).forEach((key) => {

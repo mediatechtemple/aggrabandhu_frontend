@@ -126,6 +126,16 @@ const BasicInformation = ({
     />
 
 
+      <TextField
+      label="Ajeet"
+      name="Ajeet jha"
+      value="Ajeet jha"
+      onChange={handleChange}
+      fullWidth
+      margin="normal"
+      required
+      />
+
     <TextField
       label="Father's Name"
       name="father_name"
