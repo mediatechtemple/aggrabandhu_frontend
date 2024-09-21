@@ -107,28 +107,13 @@ const Member = () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // Member addition, edit, delete handlers
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-console.log("this is in MembershipModal1")
+  
+    console.log("this is in MembershipModal1");
     console.log(formData);
-    
+  
     // Prepare form data for sending to the API
     const formToSubmit = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -152,14 +137,26 @@ console.log("this is in MembershipModal1")
   
       if (response.status === 406) {
         alert('Reference ID not valid');
+        return; // Stop further execution if ID is invalid
       }
   
       if (!response.ok) {
         throw new Error('Failed to submit the form');
       }
-      
+  
       const result = await response.json();
-       editData ? setMembers([]) :setMembers([...members,{...result}])
+  
+      if (editData) {
+        // Update the existing member in the list after successful edit
+        const updatedMembers = members.map((member) =>
+          member.id === editData.id ? { ...member, ...result } : member
+        );
+        setMembers(updatedMembers);
+      } else {
+        // Add the new member to the list after successful creation
+        setMembers([...members, { ...result }]);
+      }
+  
       console.log('Form submitted successfully:', result);
       handleClose(); // Close the modal on successful submission
     } catch (error) {
@@ -168,7 +165,7 @@ console.log("this is in MembershipModal1")
       setErrorMessage('Failed to submit the form. Please try again.');
     }
   };
-
+  
 
 
 
