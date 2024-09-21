@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, FormControlLabel, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material';
 
 const DiseaseAndRules = ({
   formData,
   handleDiseaseChange,
   handleDiseaseFileChange,
   handleRulesChange,
+  handleDiseasefile
 }) => {
   const [open, setOpen] = useState(false);  // Popup state
 
@@ -33,6 +34,7 @@ const DiseaseAndRules = ({
 
   return (
     <>
+
     <FormControlLabel
         control={<Checkbox checked={formData.disease} onChange={handleDiseaseChange} />}
         label="Suffering from any disease"
@@ -40,11 +42,22 @@ const DiseaseAndRules = ({
       {formData.disease && (
         <Button variant="contained" component="label" fullWidth>
           Attach Doctor’s Certificate
-          <input type="file" hidden onChange={handleDiseaseFileChange} />
+          <input type="file" hidden onChange={handleDiseasefile} />
         </Button>
       )}
 
+     
+          {/* Show the file name after file selection */}
+          {formData.diseaseFile && (
+            <Typography variant="body2" style={{ marginTop: '10px' }}>
+              Selected File: {formData.diseaseFileName}
+            </Typography>
+          )}
       
+
+
+
+
       <FormControlLabel
         control={
           <Checkbox

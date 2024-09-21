@@ -11,7 +11,7 @@ const Filter = ({ filters, onFilterChange }) => {
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px'  }}>
+    <div style={{ display: 'flex'  }}>
       <FormControl variant="outlined" style={{ minWidth: '120px' }}>
         <InputLabel>Role</InputLabel>
         <Select 
@@ -22,6 +22,7 @@ const Filter = ({ filters, onFilterChange }) => {
           <MenuItem value="member">Member</MenuItem>
         </Select>
       </FormControl>
+      
       <FormControlLabel
         control={
           <Checkbox
@@ -29,8 +30,7 @@ const Filter = ({ filters, onFilterChange }) => {
             onChange={handleActiveChange}
           />
         }
-        label="Active Members Only"
-        // style={{ height: '30px' }}
+        label="Active_Donars"
       />
     </div>
   );

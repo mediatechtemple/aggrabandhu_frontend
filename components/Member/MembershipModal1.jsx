@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Box, Dialog, DialogTitle, DialogContent, TextField, Typography } from '@mui/material';
-import MembershipForm from './MembershipModal1';
+import { Modal, Button, Box, Typography } from '@mui/material';
 import BasicInformation from './MemberComponent/BasicInformation';
 import EmailVerification from './MemberComponent/EmailVerification';
 import MobileVerification from './MemberComponent/MobileVerification';
@@ -9,78 +8,31 @@ import IdentificationDocuments from './MemberComponent/IdentificationDocuments';
 import NomineeDetails from './MemberComponent/NomineeDetails';
 import DiseaseAndRules from './MemberComponent/DiseaseAndRules';
 
-const MembershipModal1 = ({open,handleClose,initialData}) => {
-  const [formData, setFormData] = useState({
-    referenceId: '',
-    gotra: '',
-    photo: '',
-    name: '',
-    fatherName: '',
-    motherName: '',
-    dob: '',
-    maritalStatus: '',
-    spouseName: '',
-    mobile: '',
-    otp: '',
-    password: '',
-    confirmPassword: '',
-    email: '',
-    address: '',
-    district: '',
-    state: '',
-    pincode: '',
-    profession: '',
-    adharCard: '',
-    adharCardFile:null,
-    voterId: '',
-    voterIdFile:null,
-    nominee1: { name: '', relationship: '' },
-    nominee2: { name: '', relationship: '' },
-    disease: false,
-    diseaseFile: null,
-    rulesAccepted: false,
-  });
-
-
+const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData ,editData,handleSubmit}) => {
+  
   const [errorMessage, setErrorMessage] = useState('');
 
-
-  const [otp, setOtp] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
-  const [otpVerified, setOtpVerified] = useState(null); // Changed to null
-  const [openn, setOpenn] = useState(false);
-
-
-//   const handleOpen = () => setOpen(true);
-//   const handleClose = () => setOpen(false);
-
-//////////////////////////////////////
-
-if(initialData){
-    formData.name='Ashoka'
-}
-
-/////////////////////
-
+  // Handle input change
   const handleChange = (e) => {
+    
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Handle pincode change and fetch postal data
   const handlePincodeChange = async (e) => {
     const pincode = e.target.value;
-    setFormData((prevState) => ({ ...prevState, pincode })); // Preserve old state
+    setFormData((prevState) => ({ ...prevState, pincode }));
 
     if (pincode.length === 6) {
       try {
-        // Fetch data from the Postal API based on the pincode
         const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
         const data = await response.json();
 
         if (data[0].Status === 'Success') {
           const postOffice = data[0].PostOffice[0];
           setFormData((prevState) => ({
-            ...prevState, // Preserve existing pincode
+            ...prevState,
             state: postOffice.State,
             district: postOffice.District,
           }));
@@ -92,161 +44,153 @@ if(initialData){
         setErrorMessage('Error fetching data. Please try again later.');
       }
     }
-
-
-    
   };
 
-  const handleNomineeChange = (index, field, value) => {
-    setFormData((prevData) => {
-      const nominee1 = { ...prevData.nominee1 };
-      const nominee2 = { ...prevData.nominee2 };
-
-      if (index === 0) {
-        nominee1[field] = value;
-      } else if (index === 1) {
-        nominee2[field] = value;
-      }
-
-      return {
-        ...prevData,
-        nominee1,
-        nominee2,
-      };
-    });
-  };
-
-  const handleDiseaseFileChange = (e) => {
-    setFormData({ ...formData, diseaseFile: e.target.files[0] });
-  };
-
+  // Handle file change for profile image
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Create a URL for the selected image and update the formData
       const imageUrl = URL.createObjectURL(file);
-      setFormData({ ...formData, photo: file.name, photoUrl: imageUrl });
+      setFormData({ ...formData, photo: file.name, photoUrl: imageUrl, profile: file });
     }
   };
 
+
+
   const handleDiseaseChange = (e) => {
     setFormData({ ...formData, disease: e.target.checked });
+  };
+
+  const handleDiseasefile = (e) => {
+    const file = e.target.files[0];
+    setFormData({ ...formData, diseaseFile: file,diseaseFileName:file.name });
   };
 
   const handleRulesChange = (e) => {
     setFormData({ ...formData, rulesAccepted: e.target.checked });
   };
 
-  const handleAadharFileChange = (e) => {
-    setFormData({ ...formData, adharCardFile: e.target.files[0].name });
-  };
+  useEffect(()=>{
+    console.log(formData)
+  },[formData])
 
-  const handleVoterIdFileChange = (e) => {
-    setFormData({ ...formData, voterIdFile: e.target.files[0].name });
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setErrorMessage("Passwords do not match!");
-      alert("hello here one password does not match");
-      return;
-    }
-    console.log('Applying for membership with:', formData);
-    handleClose();
-  };
 
-  // here all concept of otp will be played bro
 
-  const handleVerifyOtp = (e)=>{
-    if (otp === '1234') {
-      setOtpVerified(true);
-      handleCloseDialog();
-    } else {
-      setOtpVerified(false);
-    }
-  }
-  const handleOpenDialog = () => {
-    setOpenn(true);
-    handleSendOtp();
-  };
-  const handleSendOtp = () => {
-    console.log('Sending OTP to:', formData.phone);
-    setOtpSent(true);
-  };
 
-  const handleCloseDialog = () => {
-    setOpenn(false);
-  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+  
+
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   // Prepare form data for sending to the API
+  //   const formToSubmit = new FormData();
+  //   Object.keys(formData).forEach((key) => {
+  //     formToSubmit.append(key, formData[key]);
+  //   });
+
+
+  //   if(editData){
+
+
+
+  //   }else{
+  //     try {
+  //       const response = await fetch('https://agerbandhu-production.up.railway.app/api/member', {
+  //         method: 'POST',
+  //         body: formToSubmit,
+  //       });
+  
+  //       if(response.status===406){
+  //         alert('reference id not valid');
+  //       }
+  
+  //       if (!response.ok) {
+  //         throw new Error('Failed to submit the form');
+  //       }
+  //       const result = await response.json();
+  //       console.log('Form submitted successfully:', result);
+  //       handleClose(); // Close the modal on successful submission
+  //     } catch (error) {
+  //       alert(error);
+  //       console.error('Error submitting the form:', error);
+  //       setErrorMessage('Failed to submit the form. Please try again.');
+  //     }
+  //   }
+  
+   
+   
+
+
+
+    
+  // };
+
+
+
+
 
   return (
-          <Modal component="form" onSubmit={handleSubmit} open={open} onClose={handleClose}>
-            <Box
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                width: 900,
-                bgcolor: 'background.paper',
-                p: 4,
-                boxShadow: 24,
-                maxHeight: '80vh',
-                overflowY: 'auto',
-              }}
-            >
-              
-        <Typography variant="h6" component="h2" sx={{ backgroundColor: "#1976d2", color: 'white', textAlign: 'center' }}>
-          {initialData ? 'Apply for New Membership': 'Edit Data of Member'}
+    <Modal component="form" onSubmit={handleSubmit} open={open} onClose={handleClose}>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 900,
+          bgcolor: 'background.paper',
+          p: 4,
+          boxShadow: 24,
+          maxHeight: '80vh',
+          overflowY: 'auto',
+        }}
+      >
+        <Typography variant="h6" component="h2" sx={{ backgroundColor: '#1976d2', color: 'white', textAlign: 'center' }}>
+          {initialData ? 'Edit Data of Member' : 'Apply for New Membership'}
         </Typography>
-        <BasicInformation
-          formData={formData}
-          handleChange={handleChange}
-          handleFileChange={handleFileChange}
-          handleAadharFileChange={handleAadharFileChange}
-          handleVoterIdFileChange={handleVoterIdFileChange}
-          
-        />
-
-        {/* here Email verification code will come */}
-
-        <EmailVerification formData={formData}  handleChange={handleChange}  />
-
-        {/* here Mobile verification will come */}
-
-        <MobileVerification formData={formData}  handleChange={handleChange}  />
-
-
-
-        <AddressInformation
-          formData={formData}
-          handleChange={handleChange}
-          handlePincodeChange={handlePincodeChange}
-        />
-        <IdentificationDocuments
-          formData={formData}
-          handleChange={handleChange}
-          handleAadharFileChange={handleAadharFileChange}
-          handleVoterIdFileChange={handleVoterIdFileChange}
-        />
-        <NomineeDetails
-          formData={formData}
-          handleNomineeChange={handleNomineeChange}
-        />
-
-
+        <BasicInformation formData={formData} handleChange={handleChange} handleFileChange={handleFileChange} editData={editData} />
+        <EmailVerification formData={formData} handleChange={handleChange} />
+        <MobileVerification formData={formData} handleChange={handleChange} />
+        <AddressInformation formData={formData} 
+        handleChange={handleChange} 
+        handlePincodeChange={handlePincodeChange}
+        editData={editData}
+         />
+        <IdentificationDocuments formData={formData} handleChange={handleChange}
+         setFormData={setFormData} 
+         editData={editData}
+         />
+        <NomineeDetails formData={formData} handleChange={handleChange} />
         <DiseaseAndRules
           formData={formData}
           handleDiseaseChange={handleDiseaseChange}
-          handleDiseaseFileChange={handleDiseaseFileChange}
           handleRulesChange={handleRulesChange}
+          setFormData={setFormData}
+          handleDiseasefile={handleDiseasefile}
         />
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
           Submit
         </Button>
-      
-            </Box>
-          </Modal>
+      </Box>
+    </Modal>
   );
 };
 

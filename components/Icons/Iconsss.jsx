@@ -84,30 +84,34 @@ const Iconsss = ({ tableId, columnsToExclude = [] }) => {
       
       
   return (
-    <Box>
+    <Box >
       <IconButton onClick={downloadCsv} aria-label="Download CSV" sx={{ border: '1px solid #969999', 
       borderRadius: '0', 
       padding: '8px',}}>
         <GetAppIcon />
       </IconButton>
+
       <IconButton onClick={generatePdf} aria-label="Download PDF" sx={{ border: '1px solid #969999', 
       borderRadius: '0', 
       marginLeft:'1px',
       padding: '8px',}}>
         <PictureAsPdfIcon />
       </IconButton>
+
       <IconButton onClick={printTable} aria-label="Print" sx={{ border: '1px solid #969999', 
       borderRadius: '0', 
       marginLeft:'1px',
       padding: '8px',}}>
         <PrintIcon />
       </IconButton>
+
       <IconButton onClick={copyToClipboard} aria-label="Copy" sx={{ border: '1px solid #969999', 
       borderRadius: '0', 
       marginLeft:'1px',
       padding: '8px',}}>
         <FileCopyIcon />
       </IconButton>
+
     </Box>
   );
 };

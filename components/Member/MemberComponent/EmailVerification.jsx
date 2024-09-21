@@ -6,31 +6,61 @@ const EmailVerification = ({ formData, handleChange }) => {
   const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(null); // null, true, or false
   const [openDialog, setOpenDialog] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSendOtp = () => {
+  // Send OTP API call
+  const handleSendOtp = async () => {
+    try {
+      const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/otp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ via: formData.email }), // Pass email in the request body
+      });
 
-    alert(formData.email);
+      if (!response.ok) {
+        throw new Error('Failed to send OTP');
+      }
 
+      const data = await response.json();
+      console.log('OTP sent response:', data);
 
-    console.log('Sending OTP to:', formData.email);
-    setOtpSent(true);
-    setOpenDialog(true);
+      setOtpSent(true);
+      setOpenDialog(true);
+    } catch (error) {
+      console.error('Error sending OTP:', error);
+      setError('Failed to send OTP. Please try again.');
+    }
   };
 
-  const handleVerifyOtp = () => {
+  // Verify OTP API call
+  const handleVerifyOtp = async () => {
+    try {
+      const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/verifyotp', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ via: "yashoka5111718258@gmail.com", otp: otp }), // Pass email and OTP in the request body
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to verify OTP');
+      }
 
-    alert(formData.email);
-    alert(otp);
+      const data = await response.json();
+      console.log('OTP verification response:', data);
 
-    
-
-
-    if (otp === '1234') {
-      setOtpVerified(true);
-      setOpenDialog(false);
-    } else {
-      setOtpVerified(false);
+      if (data.message=='verified') {
+        setOtpVerified(true);
+        setOpenDialog(false);
+      } else {
+        setOtpVerified(false);
+      }
+    } catch (error) {
+      console.error('Error verifying OTP:', error);
+      setError('Failed to verify OTP. Please try again.');
     }
   };
 
@@ -44,18 +74,25 @@ const EmailVerification = ({ formData, handleChange }) => {
         fullWidth
         margin="normal"
       />
-      <Button variant="contained" onClick={handleSendOtp} fullWidth>
+
+
+      <Button variant="contained" onClick={handleSendOtp} fullWidth disabled={!formData.email}>
         Send OTP
       </Button>
+
       {otpVerified !== null && (
         <Typography
           variant="body1"
           color={otpVerified ? 'success.main' : 'error.main'}
           sx={{ mt: 2 }}
         >
-          {otpVerified ? 'OTP Verified Successfully':null }
+          {otpVerified ? 'OTP Verified Successfully' : 'Invalid OTP'}
         </Typography>
       )}
+
+      {error && <Typography color="error">{error}</Typography>}
+
+
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogContent>
           <TextField
@@ -65,16 +102,15 @@ const EmailVerification = ({ formData, handleChange }) => {
             fullWidth
             margin="normal"
           />
-
-{otpVerified !== null && (
-        <Typography
-          variant="body1"
-          color={otpVerified ? 'success.main' : 'error.main'}
-          sx={{ mt: 2 }}
-        >
-          {otpVerified ? 'OTP Verified Successfully' : 'Invalid OTP'}
-        </Typography>
-      )}
+          {otpVerified !== null && (
+            <Typography
+              variant="body1"
+              color={otpVerified ? 'success.main' : 'error.main'}
+              sx={{ mt: 2 }}
+            >
+              {otpVerified ? 'OTP Verified Successfully' : 'Invalid OTP'}
+            </Typography>
+          )}
           <Button variant="contained" onClick={handleVerifyOtp} fullWidth>
             Verify OTP
           </Button>

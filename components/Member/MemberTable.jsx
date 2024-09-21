@@ -15,10 +15,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DonationModal from '../Icons/DonationModal';
 import MembershipModal1 from './MembershipModal1';
+import Image from 'next/image';
+
+const TableContainer = styled('div')({
+  overflowX: 'auto',  // Enable horizontal scrolling
+  width: '100%',
+});
 
 const StyledTable = styled(Table)({
   border: '1px solid #ddd',
-  minWidth: 600,
+  minWidth: 900, // Set a minimum width to ensure horizontal scrolling
 });
 
 const StyledTableCell = styled(TableCell)({
@@ -37,8 +43,10 @@ const StyledHeaderCell = styled('div')({
   alignItems: 'center',
 });
 
-const MemberTable = ({ members, removeMember, editMember, id, open, handleClose, handleOpen }) => {
 
+const MemberTable = ({ members, removeMember, handleEditClick, id, open, handleClose, handleOpen }) => {
+
+  
 
   const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -98,14 +106,14 @@ const MemberTable = ({ members, removeMember, editMember, id, open, handleClose,
   };
 
   const columns = [
-    { key: 'code', label: 'Code', sortable: false },
-    { key: 'joiningDate', label: 'Joining Date' },
-    { key: 'photo', label: 'Photo', sortable: false },
+    { key: 'id', label: 'Reference_id', sortable: false },
+    { key: 'createdAt', label: 'Joining Date' },
+    { key: 'profileUrl', label: 'Photo', sortable: false },
     { key: 'name', label: 'Name' },
     { key: 'district', label: 'District' },
     { key: 'state', label: 'State' },
-    { key: 'timesDonationMade', label: 'No of Times Donation Made' },
-    { key: 'totalAmountDonated', label: 'Total Amount Donated' },
+    { key: 'pincode', label: 'No of Times Donation Made' },
+    { key: 'mobile_no', label: 'Total Amount Donated' },
   ];
 
   return (
@@ -125,33 +133,55 @@ const MemberTable = ({ members, removeMember, editMember, id, open, handleClose,
         </TableHead>
         <TableBody>
           {sortedMembers.map((member) => (
+
             <TableRow key={member.id}>
               {columns.map(({ key }) => (
+
+
                 <StyledTableCell key={key}>
-                  {key === 'timesDonationMade' || key === 'totalAmountDonated' ? (
+                  {
+
+                  key === 'pincode' || key === 'mobile_no' ? (
                     <span
                       style={{ cursor: 'pointer', color: '#007bff', fontWeight: 'bold' }}
                       onClick={() => openModal(member)}
                     >
-                      {member[key].length || member[key]}
+                      {member[key]?.length || member[key]}
                     </span>
-                  ) : (
+                  ) :key==='profileUrl'? (
+                    <Image
+                    src={'https://picsum.photos/id/237/200/300'}
+                    alt="Profile"
+                    width={50}  // Set width
+                    height={50} // Set height
+                    style={{ borderRadius: '50%' }} // Circular image
+                  />
+                  ):(
                     member[key]
-                  )}
+                  )
+
+                  }
                 </StyledTableCell>
+
+
+
               ))}
+
+
               <StyledTableCell>
                 <Tooltip title="Edit">
-                  <IconButton onClick={() => handleOpen(member)} aria-label="edit">
+                  <IconButton onClick={() => handleEditClick(member)} aria-label="edit">
                     <EditIcon />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                  <IconButton onClick={() => handleDelete(member.code)} aria-label="delete">
+                  <IconButton onClick={() => handleDelete(member.id)} aria-label="delete">
                     <DeleteIcon />
                   </IconButton>
                 </Tooltip>
               </StyledTableCell>
+
+
             </TableRow>
           ))}
         </TableBody>
