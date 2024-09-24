@@ -241,7 +241,7 @@ console.log(members);
     member['profile']=member.profileUrl;
     member['photo']=member.profileUrl.substring(member.profileUrl.lastIndexOf('/') + 1);
     member['photoUrl']=`https://agerbandhu-production.up.railway.app${member.profileUrl}`;
-    member['diseaseFileName']=member.diseaseFile.substring(member.diseaseFile.lastIndexOf('/') + 1)
+    member['diseaseFileName']=member.diseaseFile ? member.diseaseFile.substring(member.diseaseFile.lastIndexOf('/') + 1) :'';
     console.log("Ashoka maaa");
     console.log(member)
     
