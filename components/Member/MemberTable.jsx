@@ -28,7 +28,7 @@ const StyledTable = styled(Table)({
   border: '1px solid #ddd',
   minWidth: 1200, // Increase minWidth to allow horizontal scrolling
 });
-
+// here one ehre
 const StyledTableCell = styled(TableCell)({
   border: '1px solid #ddd',
   padding: '8px',
