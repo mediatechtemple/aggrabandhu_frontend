@@ -55,7 +55,7 @@ const Member = () => {
     searchQuery: '', role: '', isActive: false, startDate: null, endDate: null, state: '', district: '', referenceId: ''
   });
 
-console.log(members)
+console.log(members);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [totalPages, setTotalPages] = useState(1);
@@ -306,7 +306,7 @@ console.log(members)
 
       <Box display="flex"  justifyContent='space-between' >
         <Box>
-         <Iconsss tableId="my-tablee"/>
+         <Iconsss dataObject={filteredMembers}  tableId="my-tablee"/>
         </Box>
         <Box display="flex"> 
         <StateFilter states={['XYZ', 'PQR', 'STU']} selectedState={filters.state} onSelectState={state => handleFilterChange('state', state)} />
@@ -327,6 +327,7 @@ console.log(members)
       removeMember={removeMember} 
       handleEditClick={handleEditClick} 
       id="my-tablee"
+      setMembers={setMembers}
       />
 
       <Pagination page={page} pageSize={pageSize} totalPages={totalPages} onPageChange={setPage} onPageSizeChange={newSize => setPageSize(newSize === 'all' ? members.length : newSize)} />

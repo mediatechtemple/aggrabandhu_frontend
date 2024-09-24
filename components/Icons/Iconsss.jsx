@@ -4,7 +4,7 @@ import { IconButton, Box } from '@mui/material';
 import { GetApp as GetAppIcon, PictureAsPdf as PictureAsPdfIcon, Print as PrintIcon, FileCopy as FileCopyIcon } from '@mui/icons-material';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-const Iconsss = ({ tableId, columnsToExclude = [] }) => {
+const Iconsss = ({ dataObject,tableId, columnsToExclude = [] }) => {
 
     const copyToClipboard = () => {
         const table = document.getElementById(tableId);
@@ -59,6 +59,41 @@ const Iconsss = ({ tableId, columnsToExclude = [] }) => {
       };
       
 
+      const downloadCsvFromArray = (dataArray) => {
+        // Check if dataArray is empty
+        if (!dataArray.length) {
+            console.error('No data available to download.');
+            return;
+        }
+    
+        // Get headers from the first object
+        const headers = Object.keys(dataArray[0]);
+    
+        // Map through the array to create rows
+        const csvContent = [
+            headers.join(','), // Join headers with commas
+            ...dataArray.map(dataObject => {
+                // Create a copy of the object and delete the 'nominees' field if it exists
+                const objectCopy = { ...dataObject };
+                delete objectCopy.nominees;
+                // Get the values and join with commas
+                return headers.map(header => `"${objectCopy[header] || ''}"`).join(',');
+            })
+        ].join('\n');
+    
+        // Create a Blob from the CSV content
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'data_array.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+
+
 
 
       const downloadCsv = () => {
@@ -85,7 +120,7 @@ const Iconsss = ({ tableId, columnsToExclude = [] }) => {
       
   return (
     <Box >
-      <IconButton onClick={downloadCsv} aria-label="Download CSV" sx={{ border: '1px solid #969999', 
+      <IconButton onClick={()=>downloadCsvFromArray(dataObject)} aria-label="Download CSV" sx={{ border: '1px solid #969999', 
       borderRadius: '0', 
       padding: '8px',}}>
         <GetAppIcon />
