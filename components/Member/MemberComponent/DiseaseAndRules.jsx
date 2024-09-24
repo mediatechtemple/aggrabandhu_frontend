@@ -96,24 +96,23 @@ const DiseaseAndRules = ({
 
       {/* Popup for Rules & Regulations */}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Rules & Regulations</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {/* You can put your rules and regulations text here */}
-            1. Rule 1: Be respectful to others. <br />
-            2. Rule 2: Follow the instructions carefully. <br />
-            3. Rule 3: All participants must adhere to the schedule.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="secondary" variant="contained">
-            Close
-          </Button>
-          <Button onClick={handleAcceptRules} color="primary" variant="contained">
-            Accept Rules
-          </Button>
-        </DialogActions>
-      </Dialog>
+  <DialogTitle>Rules & Regulations</DialogTitle>
+  <DialogContent>
+    <DialogContentText>
+      अग्रबंधु सेवार्थ संस्थान (ABSS) - आज का सहयोग, कल की सुरक्षा।
+      आइये जानते हैं, ABSS के बारे में क्या है?
+    </DialogContentText>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleClose} color="secondary" variant="contained">
+      Close
+    </Button>
+    <Button onClick={handleAcceptRules} color="primary" variant="contained">
+      Accept Rules
+    </Button>
+  </DialogActions>
+</Dialog>
+
 
 
 
