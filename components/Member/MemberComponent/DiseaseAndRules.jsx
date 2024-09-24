@@ -100,7 +100,7 @@ const DiseaseAndRules = ({
         <DialogContent>
           <DialogContentText>
             {/* You can put your rules and regulations text here */}
-            <div>
+            {/* <div>
             <h1>अग्रबंधु सेवार्थ संस्थान (ABSS) - आज का सहयोग, कल की सुरक्षा</h1>
             <h2>आइये जानते हैं, ABSS के बारे में क्या है ?</h2>
             <p>
@@ -250,7 +250,7 @@ const DiseaseAndRules = ({
 
       <h3>Tagline</h3>
       <p><strong>Today's Support, Tomorrow's Assurance:</strong> ABSS believes in providing immediate assistance to families facing unexpected crises, ensuring they do not succumb to despair. The long-term impact of this support fosters stability and hope, equipping families to rebuild and face future challenges confidently.</p>
-    </div>
+    </div> */}
 
           </DialogContentText>
         </DialogContent>
