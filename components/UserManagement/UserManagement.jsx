@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Checkbox, TextField, Button, Table, TableHead, TableRow, TableCell, TableBody, Box, Container, Paper, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import PermissionsDialog from './PermissionsDialog';
@@ -39,7 +39,7 @@ const UserManagement = () => {
   });
   const [currentId, setCurrentId] = useState(null);
 
-  const allUsers = [
+  const allUsers = useMemo(() => [
     { id: '01', name: 'Alice' },
     { id: '02', name: 'Bob' },
     { id: '03', name: 'Charlie' },
@@ -52,7 +52,7 @@ const UserManagement = () => {
     { id: '10', name: 'Alice' },
     { id: '11', name: 'Bob' },
     { id: '12', name: 'Charlie' },
-  ];
+  ], []);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredUsers, setFilteredUsers] = useState(allUsers);
