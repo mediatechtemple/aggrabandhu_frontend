@@ -126,15 +126,6 @@ const BasicInformation = ({
     />
 
 
-      <TextField
-      label="Ajeet"
-      name="Ajeet jha"
-      value="Ajeet jha"
-      onChange={handleChange}
-      fullWidth
-      margin="normal"
-      required
-      />
 
     <TextField
       label="Father's Name"
@@ -187,7 +178,7 @@ const BasicInformation = ({
       </Select>
     </FormControl>
 
-    {formData.marital_status === 'married' && (
+    {formData.marital_status === 'Married' && (
       <TextField
         label="Spouse Name"
         name="spouse_name"
@@ -229,8 +220,10 @@ const BasicInformation = ({
       required
     />}
 
-     {!editData && <TextField
-      label="Confirt_Password"
+{!editData && (
+  <>
+    <TextField
+      label="Confirm Password"
       name="confirmPassword"
       type="password"
       value={formData.confirmPassword}
@@ -238,7 +231,14 @@ const BasicInformation = ({
       fullWidth
       margin="normal"
       required
-    />}
+    />
+    {formData.confirmPassword && formData.confirmPassword !== formData.password && (
+      <Typography variant="body2" color="error" margin="normal">
+        Incorrect password.
+      </Typography>
+    )}
+  </>
+)}
 
 
 

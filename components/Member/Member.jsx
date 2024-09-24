@@ -32,6 +32,7 @@ const Member = () => {
     district: '',
     state: '',
     pincode: '',
+    tehsil:'',
     profession: '',
     aadhar_no: '',
     file: null,
@@ -44,7 +45,8 @@ const Member = () => {
     disease: false,
     diseaseFile: '',
     rulesAccepted: false,
-    id_type:''
+    id_type:'',
+    declaration:false
   });
 
   const [members, setMembers] = useState([]);
@@ -53,12 +55,13 @@ const Member = () => {
     searchQuery: '', role: '', isActive: false, startDate: null, endDate: null, state: '', district: '', referenceId: ''
   });
 
-
+console.log(members)
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [totalPages, setTotalPages] = useState(1);
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   // Handle filter changes
   const handleFilterChange = (key, value) => setFilters(prev => ({ ...prev, [key]: value }));
@@ -114,7 +117,7 @@ const Member = () => {
     console.log("this is in MembershipModal1");
     console.log(formData);
   
-    
+
     // Prepare form data for sending to the API
     const formToSubmit = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -146,6 +149,7 @@ const Member = () => {
       }
   
       const result = await response.json();
+      
   
       if (editData) {
         // Update the existing member in the list after successful edit
@@ -155,7 +159,7 @@ const Member = () => {
         setMembers(updatedMembers);
       } else {
         // Add the new member to the list after successful creation
-        setMembers([...members, { ...result }]);
+        setMembers([...members, { ...result.memberAdd }]);
       }
   
       console.log('Form submitted successfully:', result);
@@ -167,27 +171,6 @@ const Member = () => {
     }
   };
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -233,6 +216,7 @@ const Member = () => {
   };
 
 
+
   const handleEditClick = (member) => {
      
     delete member.reference_id;
@@ -267,10 +251,6 @@ const Member = () => {
   };
 
 
-
-
-
-
   const removeMember = async (id) => {
     const confirmDelete = window.confirm(id);
     
@@ -300,8 +280,8 @@ const Member = () => {
   return (
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h4" gutterBottom color='#007bff'>Doners Management</Typography>
-        <Button variant="contained" onClick={() => setOpen(true)} sx={{ backgroundColor: '#1976d2' }}>Apply for New Donership</Button>
+        <Typography variant="h4" gutterBottom color='#007bff'>Members Management</Typography>
+        <Button variant="contained" onClick={() => setOpen(true)} sx={{ backgroundColor: '#1976d2' }}>Application for New Membership</Button>
       </Box>
 
       <MembershipModal1 
@@ -320,7 +300,7 @@ const Member = () => {
       <Box style={{ border: '1px solid #bcd1c2' }}>
 
          <Box borderBottom="1px solid #bcd1c2" padding="5px" marginBottom='5px' bgcolor="#007bff" color="white">
-          <Typography>Donar List</Typography>
+          <Typography>Member List</Typography>
          </Box>
       </Box>
 
@@ -346,6 +326,7 @@ const Member = () => {
       members={filteredMembers} 
       removeMember={removeMember} 
       handleEditClick={handleEditClick} 
+      id="my-tablee"
       />
 
       <Pagination page={page} pageSize={pageSize} totalPages={totalPages} onPageChange={setPage} onPageSizeChange={newSize => setPageSize(newSize === 'all' ? members.length : newSize)} />

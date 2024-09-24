@@ -11,6 +11,7 @@ import DiseaseAndRules from './MemberComponent/DiseaseAndRules';
 const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData ,editData,handleSubmit}) => {
   
   const [errorMessage, setErrorMessage] = useState('');
+  const[block,setBehsil]=useState([]);
 
   // Handle input change
   const handleChange = (e) => {
@@ -18,6 +19,9 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+
+
 
   // Handle pincode change and fetch postal data
   const handlePincodeChange = async (e) => {
@@ -28,7 +32,7 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
       try {
         const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
         const data = await response.json();
-
+        console.log(data[0].PostOffice);
         if (data[0].Status === 'Success') {
           const postOffice = data[0].PostOffice[0];
           setFormData((prevState) => ({
@@ -70,6 +74,10 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
     setFormData({ ...formData, rulesAccepted: e.target.checked });
   };
 
+  const handleDeclaration = (e) => {
+    setFormData({ ...formData, declaration: e.target.checked });
+  };
+
   useEffect(()=>{
     console.log(formData)
   },[formData])
@@ -95,53 +103,6 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
 
 
  
-  
-
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   // Prepare form data for sending to the API
-  //   const formToSubmit = new FormData();
-  //   Object.keys(formData).forEach((key) => {
-  //     formToSubmit.append(key, formData[key]);
-  //   });
-
-
-  //   if(editData){
-
-
-
-  //   }else{
-  //     try {
-  //       const response = await fetch('https://agerbandhu-production.up.railway.app/api/member', {
-  //         method: 'POST',
-  //         body: formToSubmit,
-  //       });
-  
-  //       if(response.status===406){
-  //         alert('reference id not valid');
-  //       }
-  
-  //       if (!response.ok) {
-  //         throw new Error('Failed to submit the form');
-  //       }
-  //       const result = await response.json();
-  //       console.log('Form submitted successfully:', result);
-  //       handleClose(); // Close the modal on successful submission
-  //     } catch (error) {
-  //       alert(error);
-  //       console.error('Error submitting the form:', error);
-  //       setErrorMessage('Failed to submit the form. Please try again.');
-  //     }
-  //   }
-  
-   
-   
-
-
-
-    
-  // };
 
 
 
@@ -185,6 +146,7 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
           handleRulesChange={handleRulesChange}
           setFormData={setFormData}
           handleDiseasefile={handleDiseasefile}
+          handleDeclaration={handleDeclaration}
         />
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
           Submit

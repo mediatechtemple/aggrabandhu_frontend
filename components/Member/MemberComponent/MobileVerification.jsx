@@ -8,7 +8,14 @@ const MobileVerification = ({ formData, handleChange }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const[mobileError,setMobileError]=useState(true);
+
   const handleSendOtp = async () => {
+    if(formData.mobile_no.length!==10){
+      setMobileError(false);
+      return;
+    }
+    setMobileError(true);
     try {
       setLoading(true);
       const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/otp', {
@@ -67,21 +74,37 @@ const MobileVerification = ({ formData, handleChange }) => {
   return (
     <>
       <TextField
-        label="Mobile Number"
+        label="Mobile 10 digit Number"
         name="mobile_no"
         value={formData.mobile_no}
         onChange={handleChange}
         fullWidth
         margin="normal"
       />
-      <Button variant="contained" onClick={handleSendOtp} fullWidth disabled={loading}>
-        {loading ? 'Sending OTP...' : 'Send OTP'}
-      </Button>
+       {!mobileError && (
+        <Typography
+          variant="body1"
+          color={'error.main'}
+          sx={{ fontSize:18 }}
+        >
+          {mobileError ? 'OTP Verified Successfully' : 'Invalid OTP'}
+        </Typography>
+      )}
+      <Button
+  variant="contained"
+  onClick={handleSendOtp}
+  disabled={formData.mobile_no.length!==10 ? true : false } // Combine the conditions
+  fullWidth
+>
+  
+  {loading ? 'Sending OTP...' : 'Send OTP On Mobile'}
+</Button>
+
       {otpVerified !== null && (
         <Typography
           variant="body1"
           color={otpVerified ? 'success.main' : 'error.main'}
-          sx={{ mt: 2 }}
+          sx={{ fontSize:18 }}
         >
           {otpVerified ? 'OTP Verified Successfully' : 'Invalid OTP'}
         </Typography>

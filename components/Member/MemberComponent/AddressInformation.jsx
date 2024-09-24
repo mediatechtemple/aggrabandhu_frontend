@@ -2,18 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
 const AddressInformation = ({ formData, handleChange ,handlePincodeChange}) => {
-  const[states,setStates]=useState([]);
-  const[districts,setDistricts]=useState([]);
-  useEffect(()=>{
-    // const storedStates = localStorage.getItem('states');
-    const storedStates = JSON.parse(localStorage.getItem('states')) || [];
-    const storedDistrict = JSON.parse(localStorage.getItem('district')) || [];
-
-    console.log(storedStates);
-    setStates(storedStates);
-    setDistricts(storedDistrict);
-
-  },[])
+  
  return <>
     <TextField
       label="Address"
@@ -64,6 +53,22 @@ const AddressInformation = ({ formData, handleChange ,handlePincodeChange}) => {
         // disabled
         sx={{ mb: 2 }}
       />
+
+    <FormControl fullWidth margin="normal">
+      <InputLabel>Tehsil</InputLabel>
+      <Select
+        value={formData.tehsil}
+        onChange={handleChange}
+        name="tehsil"
+        label="Tehsil"
+      >
+        {
+          ['one','tow'].map((item,index)=>
+            <MenuItem key={index} value={item}>{item}</MenuItem>
+          )
+        }
+      </Select>
+    </FormControl>
 
 
     {/* <FormControl fullWidth margin="normal">

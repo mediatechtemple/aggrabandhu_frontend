@@ -5,16 +5,19 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
 
   const [aadharVerificationMessage, setAadharVerificationMessage] = useState('');
   const [voterIdVerificationMessage, setVoterIdVerificationMessage] = useState('');
- 
+  
+  const[adharError,setAdharError]=useState(true);
 
   // References for the file inputs
   const aadharFileInputRef = useRef(null);
   const voterIdFileInputRef = useRef(null);
 
-
+ 
 
   // Aadhar file upload and verification
   const handleAadharFileChange = async (e) => {
+
+    setAdharError(true)
     
     const file = e.target.files[0];
     setFormData({ ...formData, file: e.target.files[0] });
@@ -95,25 +98,34 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
 
   return (
     <>
+
+
+
       <TextField
-        label="Aadhar Card No"
+        label="Enter 12 digit Aadhar Card no"
         name="aadhar_no"
         value={formData.aadhar_no}
         onChange={handleChange}
         fullWidth
         margin="normal"
       />
+      
 
-      <Button variant="contained" component="label" fullWidth>
-        Attach Aadhar Card
-        <input
-          type="file"
-          accept=".pdf,.jpg,.jpeg,.png"
-          hidden
-          ref={aadharFileInputRef} // Reference for Aadhar file input
-          onChange={handleAadharFileChange}
-        />
-      </Button>
+  <Button variant="contained" component="label" fullWidth
+  disabled={formData.aadhar_no.length !== 12}
+  >
+    Attach Aadhar Card
+    <input
+      type="file"
+      accept=".pdf,.jpg,.jpeg,.png"
+      hidden
+      ref={aadharFileInputRef} // Reference for Aadhar file input
+      onChange={handleAadharFileChange}
+    />
+  </Button>
+
+
+
       {aadharVerificationMessage && (
         <Typography color="primary" variant="body2" margin="normal">
           {aadharVerificationMessage}
@@ -138,7 +150,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         label="Identification Document"
       >
         <MenuItem value="">Select Identification Document</MenuItem>
-        <MenuItem value="PAN Card">Pan Card</MenuItem>
+        <MenuItem value="Pan card">Pan Card</MenuItem>
         <MenuItem value="Voter ID">Voter ID</MenuItem>
         <MenuItem value="Driving License">Driving License</MenuItem>
       </Select>
@@ -151,7 +163,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
 
 
       <TextField
-        label="Voter ID / Driving License / Pan Card No"
+        label={formData.id_type == "Driving License"?"Enter 16 digit driving Licence no":formData.id_type=="Pan card" ? "enter 10 digit pan card no" : formData.id_type=="Voter ID" ? "enter 10 digit VoterId": "Voter ID / Driving License / Pan Card No"}
         name="id_no"
         value={formData.id_no}
         onChange={handleChange}
@@ -159,7 +171,9 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         margin="normal"
       />
 
-      <Button variant="contained" component="label" fullWidth>
+      <Button variant="contained" component="label" fullWidth
+        disabled={ formData.id_type=='Driving License' ? formData.id_no.length !== 16 : formData.id_no.length !== 10 }
+      >
         Attach Voter ID / Driving License / Pan Card
         <input
           type="file"

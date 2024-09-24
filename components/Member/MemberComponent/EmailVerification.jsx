@@ -64,6 +64,12 @@ const EmailVerification = ({ formData, handleChange }) => {
     }
   };
 
+
+  function validateEmail(email) {
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return regex.test(email);
+  }
+
   return (
     <>
       <TextField
@@ -76,21 +82,22 @@ const EmailVerification = ({ formData, handleChange }) => {
       />
 
 
-      <Button variant="contained" onClick={handleSendOtp} fullWidth disabled={!formData.email}>
-        Send OTP
+      <Button variant="contained" onClick={handleSendOtp} fullWidth disabled={!validateEmail(formData.email)}>
+        Send Email OTP (optional)
       </Button>
 
       {otpVerified !== null && (
         <Typography
-          variant="body1"
+          // variant="body1"
           color={otpVerified ? 'success.main' : 'error.main'}
-          sx={{ mt: 2 }}
+          sx={{fontSize:18}}
         >
           {otpVerified ? 'OTP Verified Successfully' : 'Invalid OTP'}
         </Typography>
       )}
+      
 
-      {error && <Typography color="error">{error}</Typography>}
+      {error && <Typography sx={{ fontSize:18}} color="error">{error}</Typography>}
 
 
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
