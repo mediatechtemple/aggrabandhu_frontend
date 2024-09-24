@@ -65,7 +65,7 @@ const UserManagement = () => {
       user.id.includes(searchQuery) || user.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
     setFilteredUsers(results);
-  }, [searchQuery]);
+  }, [searchQuery,allUsers]);
 
 
 

@@ -148,7 +148,7 @@ const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers }) 
                     <th>RefrenceId</th><td>${member.reference_id}</td>
                   </tr>
                   <tr>
-                    <th>DateOfJoining</th><td>${new Date(member.createdAt).toLocaleDateString()}</td>
+                    <th>Date of joining</th><td>${new Date(member.createdAt).toLocaleDateString()}</td>
                   </tr>
                 </table>
               </td>
