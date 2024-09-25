@@ -34,7 +34,7 @@ const MainContent = styled('main')(({ theme, isSidebarOpen }) => ({
   marginTop: 0,
   marginBottom: 40,
 }));
-
+// cheking we on 9/25/2024
 export default function Layout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -64,7 +64,7 @@ export default function Layout({ children }) {
     setProfileOpen(true);
     handleClose();
   };
-// yaha kya karu bhai
+
   const openChangePassword = () => {
     setChangePasswordOpen(true);
     handleClose();
