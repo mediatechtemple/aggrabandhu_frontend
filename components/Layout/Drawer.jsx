@@ -65,7 +65,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
     '& .MuiDrawer-paper': {
       width: drawerWidth,
       boxSizing: 'border-box',
-      zIndex: 1300,  // Custom z-index for drawer paper
+      zIndex: 1,  // Custom z-index for drawer paper
     },
   }}
 >

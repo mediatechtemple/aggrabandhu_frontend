@@ -23,7 +23,8 @@ const Header = ({
   rediretLogin
 }) => {
   return (
-    <AppBar position="fixed" sx={{ zIndex: 1400 }}>
+    
+    <AppBar position="fixed" >
       <Toolbar sx={{ display: 'flex', alignItems: 'center' }}>
         
         {/* Left side: Menu Button and Logo */}

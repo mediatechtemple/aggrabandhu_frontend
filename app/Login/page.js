@@ -83,7 +83,8 @@ const LoginPage = () => {
         console.log('Login successful:', data);
         localStorage.setItem('user', JSON.stringify(data));
         // You can redirect or show success message here
-        router.push('/') 
+        // router.push('/') 
+        window.location.href="/";
       } else {
         // Handle error if login failed
         setError(data.message || 'Login failed. Please try again.');
