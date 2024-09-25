@@ -3,7 +3,7 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-      <h1>Here dashboard will shown</h1>
+      <h1>dhaborad will come and also as aKASH SAID</h1>
     </div>
   )
 }
