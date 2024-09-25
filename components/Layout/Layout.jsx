@@ -120,3 +120,160 @@ export default function Layout({ children }) {
     </>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "use client"
+// import { Inter } from "next/font/google";
+// import React, { useState } from 'react';
+// import { useRouter } from 'next/navigation';
+// import Header from './Header';
+// import DrawerComponent from './Drawer';
+// import CustomDialog from '../Dialog/CustomDialog';
+// import UserProfile from "../Profile/UserProfile";
+// import ChangePassword from "../Auth/ChangePassword/ChangePassword";
+
+// const inter = Inter({ subsets: ["latin"] });
+// const drawerWidth = "w-[250px]"; // Sidebar width
+
+// export default function Layout({ children }) {
+//   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+//   const [profileOpen, setProfileOpen] = useState(false);
+//   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
+//   const router = useRouter();
+
+//   const [isLoggin, setIsLoggin] = useState(localStorage.getItem('user'));
+
+//   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+
+//   return (
+//     <div className={`${inter.className} h-screen flex flex-col overflow-hidden`}>
+//       {/* Header Section */}
+//       {true && (
+//         <Header
+//           toggleSidebar={toggleSidebar}
+//           openProfile={() => setProfileOpen(true)}
+//           openChangePassword={() => setChangePasswordOpen(true)}
+//           redirectLogin={() => router.push('/login')}
+//         />
+//       )}
+
+//       <div className="flex flex-grow overflow-hidden">
+//         {/* Sidebar */}
+//         {true && isSidebarOpen && (
+//           <div className={`bg-gray-800 ${drawerWidth} transition-all duration-300`}>
+//            <DrawerComponent
+//           isSidebarOpen={isSidebarOpen}
+//           toggleSidebar={toggleSidebar}
+//         />
+//           </div>
+//         )}
+
+//         {/* Main Content */}
+//         <main
+//           className={`flex-grow p-4 overflow-auto transition-all duration-300 ${
+//             isLoggin && isSidebarOpen ? 'ml-[250px]' : 'ml-0'
+//           }`}
+//         >
+//           {children}
+//         </main>
+//       </div>
+
+//       {/* Dialogs */}
+//       <CustomDialog open={profileOpen} handleClose={() => setProfileOpen(false)} title="User Profile">
+//         <UserProfile />
+//       </CustomDialog>
+
+//       <CustomDialog open={changePasswordOpen} handleClose={() => setChangePasswordOpen(false)} title="Change Password">
+//         <ChangePassword />
+//       </CustomDialog>
+//     </div>
+//   );
+// }

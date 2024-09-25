@@ -3,7 +3,7 @@ import React from 'react'
 const page = () => {
   return (
     <div>
-      <h1>dhaborad will come and also as krishna said</h1>
+      <h1>dashboard will come as gulshan said</h1>
     </div>
   )
 }
