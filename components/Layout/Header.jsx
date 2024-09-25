@@ -23,7 +23,7 @@ const Header = ({
   rediretLogin
 }) => {
   return (
-    <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+    <AppBar position="fixed" sx={{ zIndex: 1400 }}>
       <Toolbar sx={{ display: 'flex', alignItems: 'center' }}>
         
         {/* Left side: Menu Button and Logo */}
@@ -117,8 +117,13 @@ const Header = ({
             <MenuItem onClick={rediretLogin}>Logout</MenuItem>
           </Menu>
         </Box>
+
+
       </Toolbar>
     </AppBar>
+
+
+
   );
 };
 

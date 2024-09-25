@@ -42,7 +42,7 @@ const EmailVerification = ({ formData, handleChange }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ via: "yashoka5111718258@gmail.com", otp: otp }), // Pass email and OTP in the request body
+        body: JSON.stringify({ via: formData.email, otp: parseInt(otp)}), // Pass email and OTP in the request body
       });
 
       if (!response.ok) {

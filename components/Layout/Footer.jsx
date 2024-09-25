@@ -15,7 +15,7 @@ const Footer = () => {
         textAlign: 'center',
         padding: 2,
         boxShadow: 3,
-        zIndex: (theme) => theme.zIndex.drawer + 1, // Ensure it is above the sidebar
+        zIndex: 1400, // Ensure it is above the sidebar
       }}
     >
       <Typography variant="body2">

@@ -1,4 +1,6 @@
 'use client'
+import MembershipModal1 from '@/components/Member/MembershipModal1';
+import { Button } from '@mui/material';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -8,6 +10,51 @@ const LoginPage = () => {
   const [mobileNo, setMobileNo] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  const [open,setOpen]=useState(false);
+  const [formData, setFormData] = useState({
+    reference_id: '',
+    gotra: '',
+    profile: null,
+    name: '',
+    father_name: '',
+    mother_name: '',
+    dob: '',
+    marital_status: '',
+    spouse_name: '',
+    mobile_no: '',
+    otp: '',
+    password: '',
+    confirmPassword: '',
+    email: '',
+    address: '',
+    district: '',
+    state: '',
+    pincode: '',
+    tehsil:'',
+    profession: '',
+    aadhar_no: '',
+    file: null,
+    id_no: '',
+    file2: null,
+    nominee: '',
+    relationship: '',
+    nominee2: '',
+    relationship2: '',
+    disease: false,
+    diseaseFile: '',
+    rulesAccepted: false,
+    id_type:'',
+    declaration:false
+  });
+
+  function handleOpen(){
+    setOpen(true);
+  }
+
+  function handleClose(){
+    setOpen(false);
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,12 +94,86 @@ const LoginPage = () => {
     }
   };
 
+
+  const handleSubmittt = async (e) => {
+    e.preventDefault();
+  
+    console.log("this is in MembershipModal1");
+    console.log(formData);
+  
+
+    // Prepare form data for sending to the API
+    const formToSubmit = new FormData();
+    Object.keys(formData).forEach((key) => {
+      formToSubmit.append(key, formData[key]);
+    });
+  
+    try {
+      let response;
+      if (editData) {
+        // Use editData.id for the PUT request
+        response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/${editData.id}`, {
+          method: 'PUT', // Use PUT for updating data
+          body: formToSubmit,
+        });
+      } else {
+        response = await fetch('https://agerbandhu-production.up.railway.app/api/member', {
+          method: 'POST', // Use POST for creating a new member
+          body: formToSubmit,
+        });
+      }
+  
+      if (response.status === 406) {
+        alert('Reference ID not valid');
+        return; // Stop further execution if ID is invalid
+      }
+  
+      if (!response.ok) {
+        throw new Error('Failed to submit the form');
+      }
+  
+      const result = await response.json();
+      
+  
+      if (editData) {
+        // Update the existing member in the list after successful edit
+        const updatedMembers = members.map((member) =>
+          member.id === editData.id ? { ...member, ...result } : member
+        );
+        setMembers(updatedMembers);
+      } else {
+        // Add the new member to the list after successful creation
+        setMembers([...members, { ...result.memberAdd }]);
+      }
+  
+      console.log('Form submitted successfully:', result);
+      handleClose(); // Close the modal on successful submission
+    } catch (error) {
+      alert(error);
+      console.error('Error submitting the form:', error);
+      setErrorMessage('Failed to submit the form. Please try again.');
+    }
+  };
+
+
+
+
+
   const handleRedirect = () => {
     // Programmatically navigate to the "Forgot Password" page
     router.push('/forgot-password');
   };
+  
 
   return (
+    <>
+    <MembershipModal1
+      formData={formData} 
+      setFormData={setFormData} 
+      open={open}
+      handleClose={handleClose} 
+      handleSubmit={handleSubmittt}
+        />
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <header className="text-3xl font-bold mb-8">AGGRABANDHU SEVARTH SANSTHAN</header>
 
@@ -108,13 +229,14 @@ const LoginPage = () => {
               Forget Id?
             </Link>
             <span className="text-gray-600">||</span>
-            <Link href='/apply-new-membership' className="text-blue-500 hover:text-blue-700 font-semibold transition duration-300">
+            <Button onClick={handleOpen} className="text-blue-500 hover:text-blue-700 font-semibold transition duration-300">
               Apply for New Membership
-            </Link>
+            </Button>
           </p>
         </form>
       </div>
     </div>
+    </>
   );
 };
 
