@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
-  const pathname = window.location.pathname;
+  const pathname = usePathname();
 
   const isLoginRelatedPage = ['/Login', '/forget-password', '/forget-id'].includes(pathname);
 

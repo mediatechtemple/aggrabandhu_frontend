@@ -32,7 +32,15 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
       try {
         const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
         const data = await response.json();
+
+        console.log(data);
         console.log(data[0].PostOffice);
+         
+       console.log(data[0].PostOffice.map((item)=>{
+          item.Block
+        }))
+
+
         if (data[0].Status === 'Success') {
           const postOffice = data[0].PostOffice[0];
           setFormData((prevState) => ({
