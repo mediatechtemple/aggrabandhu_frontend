@@ -7,12 +7,23 @@ const Profile = () => {
   const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [memberId,setMemberId]=useState(0);
+//   const [memberId,setMemberId]=useState(JSON.parse(window.localStorage.getItem('user').userid));
 
-  useEffect(()=>{
-    const a=JSON.parse(window.localStorage.getItem('user')).userid;
-    setMemberId(a);
-  },[])
+  const [memberId, setMemberId] = useState(143);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(window.localStorage.getItem('user'));
+    console.log(storedUser.userid);
+
+    setMemberId(storedUser.userid)
+  }, []);
+
+
+
+//   useEffect(()=>{
+//     const a=JSON.parse(window.localStorage.getItem('user')).userid;
+//     setMemberId(a);
+//   },[])
     
   const [formData, setFormData] = useState({
     reference_id: '',
