@@ -79,7 +79,8 @@ export default function Layout({ children }) {
   };
 
   const rediretLogin=()=>{
-    router.push('/login');
+    window.localStorage.clear();
+    router.push('/Login');
   }
 
   return (

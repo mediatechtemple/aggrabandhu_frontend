@@ -84,7 +84,7 @@ const Profile = ({ memberId }) => {
         </div>
       </div>
 
-      <div className="mt-10 space-y-4">
+      {/* <div className="mt-10 space-y-4">
         <h2 className="text-xl font-semibold text-gray-600">Additional Details</h2>
         <table className="w-full text-left table-auto">
           <tbody>
@@ -171,7 +171,7 @@ const Profile = ({ memberId }) => {
             />
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
