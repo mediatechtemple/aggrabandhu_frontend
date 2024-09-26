@@ -58,11 +58,11 @@ const Profile = ({ memberId }) => {
                 <td>{member.name}</td>
               </tr>
               <tr>
-                <th className="pr-4 py-2 text-gray-500">Father's Name:</th>
+                <th className="pr-4 py-2 text-gray-500">Father&apos;s Name:</th>
                 <td>{member.father_name}</td>
               </tr>
               <tr>
-                <th className="pr-4 py-2 text-gray-500">Mother's Name:</th>
+                <th className="pr-4 py-2 text-gray-500">Mother&apos;s Name:</th>
                 <td>{member.mother_name}</td>
               </tr>
               <tr>
