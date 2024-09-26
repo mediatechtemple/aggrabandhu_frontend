@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 
-const AddressInformation = ({ formData, handleChange ,handlePincodeChange}) => {
+const AddressInformation = ({ formData, handleChange ,handlePincodeChange,block}) => {
   
  return <>
     <TextField
@@ -54,19 +54,28 @@ const AddressInformation = ({ formData, handleChange ,handlePincodeChange}) => {
         sx={{ mb: 2 }}
       />
 
-    <FormControl fullWidth margin="normal">
+    <FormControl fullWidth margin="normal" >
       <InputLabel>Tehsil</InputLabel>
       <Select
-        value={formData.tehsil}
-        onChange={handleChange}
-        name="tehsil"
-        label="Tehsil"
-      >
-        {
-          ['one','tow'].map((item,index)=>
-            <MenuItem key={index} value={item}>{item}</MenuItem>
-          )
-        }
+          labelId="tehsil-label"
+          value={formData.tahsil}
+          onChange={handleChange}
+          name="tahsil"
+          label="Tahsil"
+          MenuProps={{
+            PaperProps: {
+              style: {
+                maxHeight: 294,
+                width: 250,
+              },
+            },
+          }}
+        >
+        {block.map((item, index) => (
+          <MenuItem key={index} value={item.Name}>
+            {item.Name}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
 

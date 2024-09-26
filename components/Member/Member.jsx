@@ -32,7 +32,7 @@ const Member = () => {
     district: '',
     state: '',
     pincode: '',
-    tehsil:'',
+    tahsil:'',
     profession: '',
     aadhar_no: '',
     file: null,
@@ -50,12 +50,15 @@ const Member = () => {
   });
 
   const [members, setMembers] = useState([]);
+  const [stateData,setStateData]=useState([]);
+  const [districtData,setDistrictData]=useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
   const [filters, setFilters] = useState({
     searchQuery: '', role: '', isActive: false, startDate: null, endDate: null, state: '', district: '', referenceId: ''
   });
 
 console.log(members);
+
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [totalPages, setTotalPages] = useState(1);
@@ -76,6 +79,14 @@ console.log(members);
         const data = await response.json();
         console.log(data.data); // Log the fetched data
         setMembers([...data.data]);
+        const uniqueStates = [...new Set(data.data.map(member => member.state))].filter(Boolean);
+        setStateData(uniqueStates);
+
+   
+
+        const uniqueDistrict = [...new Set(data.data.map(member => member.district))].filter(Boolean);
+        setDistrictData(uniqueDistrict);
+
       } catch (error) {
         console.error('Error fetching members:', error);
       }
@@ -309,8 +320,8 @@ console.log(members);
          <Iconsss dataObject={filteredMembers}  tableId="my-tablee"/>
         </Box>
         <Box display="flex"> 
-        <StateFilter states={['XYZ', 'PQR', 'STU']} selectedState={filters.state} onSelectState={state => handleFilterChange('state', state)} />
-        <DistrictFilter districts={['ABC', 'DEF', 'GHI']} selectedDistrict={filters.district} onSelectDistrict={district => handleFilterChange('district', district)} />
+        <StateFilter states={stateData} selectedState={filters.state} onSelectState={state => handleFilterChange('state', state)} />
+        <DistrictFilter districts={districtData} selectedDistrict={filters.district} onSelectDistrict={district => handleFilterChange('district', district)} />
         <Filter filters={filters} onFilterChange={newFilters => setFilters(prev => ({ ...prev, ...newFilters }))} />
         <Search onSearch={query => handleFilterChange('searchQuery', query)} />
   

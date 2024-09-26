@@ -32,14 +32,17 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
       try {
         const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
         const data = await response.json();
-
-        console.log(data);
-        console.log(data[0].PostOffice);
-         
-       console.log(data[0].PostOffice.map((item)=>{
-          item.Block
-        }))
-
+        const blockmap=data[0].PostOffice;
+        const bl=[];
+    
+        blockmap.forEach((office, index) => {
+          bl.push(office);
+          // console.log(`Post Office ${index}:`, office); // Log each object to find correct field
+        });
+        // console.log("bl",bl);
+        setBehsil([...bl]);
+        
+  
 
         if (data[0].Status === 'Success') {
           const postOffice = data[0].PostOffice[0];
@@ -56,6 +59,8 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
         setErrorMessage('Error fetching data. Please try again later.');
       }
     }
+
+    
   };
 
   // Handle file change for profile image
@@ -142,6 +147,7 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
         handleChange={handleChange} 
         handlePincodeChange={handlePincodeChange}
         editData={editData}
+        block={block}
          />
         <IdentificationDocuments formData={formData} handleChange={handleChange}
          setFormData={setFormData} 

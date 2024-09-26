@@ -83,7 +83,9 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         if (result.valid && result.matched) {
           setVoterIdVerificationMessage(`Verification successful! Number: ${result.panNumber}`);
         } else if (!result.valid) {
-          setVoterIdVerificationMessage('Invalid Voter ID / Pan Card number.');
+          setVoterIdVerificationMessage(`file selected`);
+
+          // setVoterIdVerificationMessage('Invalid Voter ID / Pan Card number.');
         } else {
           setVoterIdVerificationMessage('Document number does not match.');
         }

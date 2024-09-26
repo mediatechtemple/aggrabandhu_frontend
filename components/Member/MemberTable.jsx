@@ -325,7 +325,10 @@ const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers }) 
               onChange={(e) => handleStatusChange(e, member)}
               inputProps={{ 'aria-label': 'status checkbox' }}
             />
-          ) : (
+          ) : key === 'createdAt' ? (
+            // Format createdAt to dd/mm/yyyy
+            new Date(member[key]).toLocaleDateString('en-GB')
+          ): (
             member[key]
           )}
         </StyledTableCell>
