@@ -96,6 +96,8 @@ const LoginPage = () => {
   };
 
 
+
+
   const handleSubmittt = async (e) => {
     e.preventDefault();
   
@@ -111,18 +113,11 @@ const LoginPage = () => {
   
     try {
       let response;
-      if (editData) {
-        // Use editData.id for the PUT request
-        response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/${editData.id}`, {
-          method: 'PUT', // Use PUT for updating data
-          body: formToSubmit,
-        });
-      } else {
         response = await fetch('https://agerbandhu-production.up.railway.app/api/member', {
           method: 'POST', // Use POST for creating a new member
           body: formToSubmit,
         });
-      }
+      
   
       if (response.status === 406) {
         alert('Reference ID not valid');
@@ -134,20 +129,10 @@ const LoginPage = () => {
       }
   
       const result = await response.json();
-      
-  
-      if (editData) {
-        // Update the existing member in the list after successful edit
-        const updatedMembers = members.map((member) =>
-          member.id === editData.id ? { ...member, ...result } : member
-        );
-        setMembers(updatedMembers);
-      } else {
+     
         // Add the new member to the list after successful creation
-        setMembers([...members, { ...result.memberAdd }]);
-      }
-  
-      console.log('Form submitted successfully:', result);
+   
+      console.log('Form submitted successfully:');
       handleClose(); // Close the modal on successful submission
     } catch (error) {
       alert(error);

@@ -48,6 +48,7 @@ const ForgetId = () => {
   };
 
   return (
+    <>
     <div className="flex flex-col items-center justify-center min-h-screen">
       <h1 className="text-2xl font-bold mb-4">Forgot ID</h1>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md">
@@ -90,6 +91,10 @@ const ForgetId = () => {
         </div>
       )}
     </div>
+    <div className="">
+      
+    </div>
+    </>
   );
 };
 

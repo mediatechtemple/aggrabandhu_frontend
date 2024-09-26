@@ -4,6 +4,9 @@ import { TextField, Button, Typography, FormControl, InputLabel, Select, MenuIte
 const IdentificationDocuments = ({ formData,handleChange,setFormData, editData}) => {
 
   const [aadharVerificationMessage, setAadharVerificationMessage] = useState('');
+  const [setEr,setErr]=useState(false);
+
+
   const [voterIdVerificationMessage, setVoterIdVerificationMessage] = useState('');
   
   const[adharError,setAdharError]=useState(true);
@@ -32,13 +35,16 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
           method: 'POST',
           body: data,
         });
-        const result = await response.json();
+       const  result = await response.json();
 
         if (result.valid && result.matched) {
+          setErr(false);
           setAadharVerificationMessage(`Aadhaar verification successful! Number: ${result.aadhaarNumber}`);
         } else if (!result.valid) {
+          setErr(true)
           setAadharVerificationMessage('Invalid Aadhaar number.');
         } else {
+          setErr(true);
           setAadharVerificationMessage('Aadhaar number does not match the document.');
         }
       } catch (error) {
@@ -129,7 +135,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
 
 
       {aadharVerificationMessage && (
-        <Typography color="primary" variant="body2" margin="normal">
+        <Typography color={setEr ?'red':'primary'} variant="body2" margin="normal">
           {aadharVerificationMessage}
         </Typography>
       )}
@@ -138,6 +144,27 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
           Verification successful!
         </Typography>
       )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

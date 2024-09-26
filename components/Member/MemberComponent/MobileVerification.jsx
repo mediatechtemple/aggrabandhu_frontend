@@ -74,7 +74,7 @@ const MobileVerification = ({ formData, handleChange }) => {
   return (
     <>
       <TextField
-        label="Mobile 10 digit Number"
+        label="Mobile 10 digit Number *"
         name="mobile_no"
         value={formData.mobile_no}
         onChange={handleChange}
