@@ -34,7 +34,7 @@ const LoginPage = () => {
       if (response.ok) {
         // Handle successful login, maybe store the user in localStorage
         console.log('Login successful:', data);
-        localStorage.setItem('user', JSON.stringify(data));
+        window.localStorage.setItem('user', JSON.stringify(data));
         // You can redirect or show success message here
         router.push('/') 
       } else {

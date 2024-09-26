@@ -6,8 +6,8 @@ const AddressInformation = ({ formData, handleChange }) => {
   const[districts,setDistricts]=useState([]);
   useEffect(()=>{
     // const storedStates = localStorage.getItem('states');
-    const storedStates = JSON.parse(localStorage.getItem('states')) || [];
-    const storedDistrict = JSON.parse(localStorage.getItem('district')) || [];
+    const storedStates = JSON.parse(window.localStorage.getItem('states')) || [];
+    const storedDistrict = JSON.parse(window.localStorage.getItem('district')) || [];
 
     console.log(storedStates);
     setStates(storedStates);

@@ -14,8 +14,8 @@ const BasicInformation = ({
   
   useEffect(() => {
     // Replace 'gotraOptions' with the key used to store your array in localStorage
-    const storedGotraOptions = JSON.parse(localStorage.getItem('inputs')) || [];
-    const storedProfessionOptions = JSON.parse(localStorage.getItem('professions')) || [];
+    const storedGotraOptions = JSON.parse(window.localStorage.getItem('inputs')) || [];
+    const storedProfessionOptions = JSON.parse(window.localStorage.getItem('professions')) || [];
 
     setGotraOptions(storedGotraOptions);
     setProfessionsOptions(storedProfessionOptions);

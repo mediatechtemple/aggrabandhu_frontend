@@ -13,7 +13,7 @@ const useStates = () => {
 
   const addState = (stateName, stateCode) => {
     const updatedStates = [...states, { name: stateName, state_code: stateCode }];
-    localStorage.setItem('states', JSON.stringify(updatedStates));
+    window.localStorage.setItem('states', JSON.stringify(updatedStates));
     setStates(updatedStates);
   };
 

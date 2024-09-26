@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 const Home = () => {
   const [isLogin,setIsLogin]=useState(false);
   useEffect(()=>{
-    const user=localStorage.getItem('user');
+    const user=window.localStorage.getItem('user');
     if(!user){
       window.location.href="/Login"
     }

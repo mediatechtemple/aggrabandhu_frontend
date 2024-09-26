@@ -13,7 +13,7 @@ const useDistricts = () => {
 
   const addDistrict = (districtName, stateName) => {
     const updatedDistricts = [...districts, { name: districtName, state: stateName }];
-    localStorage.setItem('district', JSON.stringify(updatedDistricts));
+    window.localStorage.setItem('district', JSON.stringify(updatedDistricts));
     setDistricts(updatedDistricts);
   };
 

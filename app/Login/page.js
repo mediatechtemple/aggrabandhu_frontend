@@ -10,6 +10,7 @@ const LoginPage = () => {
   const [mobileNo, setMobileNo] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [errorMessage,setErrorMessage]=useState('');
 
   const [open,setOpen]=useState(false);
   const [formData, setFormData] = useState({
@@ -81,10 +82,10 @@ const LoginPage = () => {
       if (response.ok) {
         // Handle successful login, maybe store the user in localStorage
         console.log('Login successful:', data);
-        localStorage.setItem('user', JSON.stringify(data));
+        window.localStorage.setItem('user', JSON.stringify(data));
         // You can redirect or show success message here
         // router.push('/') 
-        window.location.href="/";
+        window.location.href="/Profile";
       } else {
         // Handle error if login failed
         setError(data.message || 'Login failed. Please try again.');

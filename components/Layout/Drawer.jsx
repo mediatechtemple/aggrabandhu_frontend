@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Drawer,
   List,
@@ -33,6 +33,8 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
   const [openInputManagement, setOpenInputManagement] = React.useState(false);
   const [openMakeDonation, setOpenMakeDonation] = React.useState(false);
   const [userManagement ,setUserManagement] = React.useState(false);
+
+  // const [memberId,setMemberId]=useState(JSON.parse(window.localStorage.getItem('user')).role);
 
 
   const handleClickWebsiteManagement = () => {
@@ -72,11 +74,12 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
       <Toolbar />
       <Box sx={{ overflow: 'auto',paddingBottom:'40px' }}>
         <List>
-          {[
+          {
+          [
             { text: 'Dashboard', icon: <DashboardIcon />, route: '/Dashboard' },
             { text: 'Profile', icon: <PersonIcon />, route: '/Profile' },
             { text: 'User Management', icon: <GroupIcon />, route: '/User-Management' },
-            { text: 'Donars Management', icon: <PeopleIcon />, route: '/Members' },
+            { text: 'Members Management', icon: <PeopleIcon />, route: '/Members' },
             { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers' },
             { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations' },
             { text: 'Notification Management', icon: <NotificationsIcon />, route: '/Notification-Management' },
@@ -88,7 +91,9 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
                 <ListItemText primary={item.text} />
               </ListItem>
             </Link>
-          ))}
+          ))
+          
+          }
 
 
 {/* here make donation list will come */}
