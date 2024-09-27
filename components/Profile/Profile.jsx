@@ -9,14 +9,14 @@ const Profile = () => {
   const [error, setError] = useState(null);
 //   const [memberId,setMemberId]=useState(JSON.parse(window.localStorage.getItem('user').userid));
 
-  const [memberId, setMemberId] = useState(143);
+  const [memberId, setMemberId] = useState();
 
-  useEffect(() => {
-    const storedUser = JSON.parse(window.localStorage.getItem('user'));
-    console.log(storedUser.userid);
+//   useEffect(() => {
+//     const storedUser = JSON.parse(window.localStorage.getItem('user'));
+//     alert(+storedUser.userid);
 
-    setMemberId(storedUser.userid)
-  }, []);
+//     setMemberId(143)
+//   }, []);
 
 
 
@@ -63,7 +63,45 @@ const Profile = () => {
 
   const [open,setOpen]=useState(false);
 
-  
+  useEffect(() => {
+
+    const fetchMemberDetails = async () => {
+      try {
+        
+        const jsonString = localStorage.getItem("user");
+
+        // Check if there is data in local storage
+        if (jsonString) {
+        // Parse the JSON string back into a JavaScript object
+        const parsedObject = JSON.parse(jsonString);
+
+       
+        console.log(typeof parsedObject.userid);          
+        } else {
+        console.log("No data found in local storage");
+        }
+
+
+
+
+        const response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/detail?key=id&&value=${JSON.parse(jsonString).userid}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch member details");
+        }
+        const data = await response.json();
+        console.log(data);
+        setMember(data[0]);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMemberDetails();
+  }, []);
+
+
 
 // console.log(JSON.parse(localStorage.getItem('user')).userid)
 
@@ -161,25 +199,7 @@ const handleSubmittt = async (e) => {
 
 
 
-  useEffect(() => {
-    const fetchMemberDetails = async () => {
-      try {
-        const response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/detail?key=id&&value=${memberId}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch member details");
-        }
-        const data = await response.json();
-        console.log(data);
-        setMember(data[0]);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMemberDetails();
-  }, []);
+ 
 
   if (loading) return <p className="text-center text-gray-500">Loading...</p>;
   if (error) return <p className="text-center text-red-500">{error}</p>;
