@@ -27,12 +27,21 @@ import InputIcon from '@mui/icons-material/Input';
 import { LocationOn, People } from '@mui/icons-material';
 import WorkIcon from '@mui/icons-material/Work';
 const drawerWidth = 250;
+import GavelIcon from '@mui/icons-material/Gavel';
+
+
+import SupportIcon from '@mui/icons-material/Support';
+import FollowTheSignsIcon from '@mui/icons-material/FollowTheSigns';
+import DonationIcon from '@mui/icons-material/MonetizationOn'; // for 'My Donation'
+
 
 export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
   const [openWebsiteManagement, setOpenWebsiteManagement] = React.useState(false);
   const [openInputManagement, setOpenInputManagement] = React.useState(false);
   const [openMakeDonation, setOpenMakeDonation] = React.useState(false);
   const [userManagement ,setUserManagement] = React.useState(false);
+  const [role,setRole]=useState('user');
+  
 
   // const [memberId,setMemberId]=useState(JSON.parse(window.localStorage.getItem('user')).role);
 
@@ -76,15 +85,25 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
         <List>
           {
           [
-            { text: 'Dashboard', icon: <DashboardIcon />, route: '/Dashboard' },
-            { text: 'Profile', icon: <PersonIcon />, route: '/Profile' },
-            { text: 'User Management', icon: <GroupIcon />, route: '/User-Management' },
-            { text: 'Members Management', icon: <PeopleIcon />, route: '/Members' },
-            { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers' },
-            { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations' },
-            { text: 'Notification Management', icon: <NotificationsIcon />, route: '/Notification-Management' },
+            { text: 'Dashboard', icon: <DashboardIcon />, route: '/Dashboard' ,roles:['admin']},
+            { text: 'Profile', icon: <PersonIcon />, route: '/Profile',roles:['admin','user'] },
+            { text: 'Live Donation', icon: <VolunteerActivismIcon />, route: '/Live-Donation',roles:['user'] },
+            { text: 'My Donation', icon: <DonationIcon />, route: '/My-Donation',roles:['user'] },
+            { text: 'Member List', icon: <PeopleIcon />, route: '/Member-List',roles:['user'] },
+            { text: 'Donation List', icon: <VolunteerActivismIcon />, route: '/Donation-List',roles:['user'] },
+            { text: 'Referral Members', icon: <GroupIcon />, route: '/Referral-Members',roles:['user'] },
+            { text: 'Support', icon: <SupportIcon />, route: '/Support',roles:['user'] },
+            { text: 'Follow Us', icon: <FollowTheSignsIcon />, route: '/Follow-Us',roles:['user'] },
+            { text: 'Legal For Web', icon: <GavelIcon />, route: '/Legal-For-Web',roles:['user'] },
+            { text: 'User Management', icon: <GroupIcon />, route: '/User-Management',roles:['admin'] },
+            { text: 'Members Management', icon: <PeopleIcon />, route: '/Members',roles:['admin'] },
+            { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers',roles:['admin'] },
+            { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations',roles:['admin'] },
+            { text: 'Notification Management', icon: <NotificationsIcon />, route: '/Notification-Management',roles:['admin'] },
             // {text:'Make Donation',icon:<VolunteerActivismIcon/>,route:'/make-donation'}
-          ].map((item) => (
+          ]
+          .filter(item => item.roles.includes(role))
+          .map((item) => (
             <Link href={item.route} passHref key={item.text}>
               <ListItem >
                 <ListItemIcon>{item.icon}</ListItemIcon>
@@ -97,6 +116,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
 
 
 {/* here make donation list will come */}
+         {role =='admin' && <>
           <ListItem button onClick={handleClickUserManagement}>
             <ListItemIcon><VolunteerActivismIcon/></ListItemIcon>
             <ListItemText primary="User Management" />
@@ -119,10 +139,12 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
               </Link>
             </List>
           </Collapse>
+         </>
+          }
 
 
 
-          <ListItem button onClick={handleClickMakeDonation}>
+          {role=="admin" && <><ListItem button onClick={handleClickMakeDonation}>
             <ListItemIcon><VolunteerActivismIcon/></ListItemIcon>
             <ListItemText primary="Make Donation" />
             {openMakeDonation ? <ExpandLess /> : <ExpandMore />}
@@ -145,10 +167,14 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
               </Link>
             </List>
           </Collapse>
+          </>
+          }
 
 
 
-          <ListItem button onClick={handleClickInputManagement}>
+          {
+            role=='admin' && <>
+            <ListItem button onClick={handleClickInputManagement}>
             <ListItemIcon><InputIcon/></ListItemIcon>
             <ListItemText primary="Input" />
             {openInputManagement ? <ExpandLess /> : <ExpandMore />}
@@ -176,19 +202,19 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
               </Link>
             </List>
           </Collapse>
+            </>
+          }
           
 
 
 
-          <ListItem button onClick={handleClickWebsiteManagement}>
+          {
+            role=='admin' && <>
+            <ListItem button onClick={handleClickWebsiteManagement}>
             <ListItemIcon><ManageAccountsIcon/></ListItemIcon>
             <ListItemText primary="Website Management" />
             {openWebsiteManagement ? <ExpandLess /> : <ExpandMore />}
           </ListItem>
-
-
-
-
 
 
           <Collapse in={openWebsiteManagement} timeout="auto" unmountOnExit>
@@ -207,6 +233,8 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
               </Link>
             </List>
           </Collapse>
+            </>
+          }
 
 
 

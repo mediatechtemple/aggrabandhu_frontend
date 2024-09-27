@@ -7,23 +7,8 @@ const Profile = () => {
   const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-//   const [memberId,setMemberId]=useState(JSON.parse(window.localStorage.getItem('user').userid));
+    const [editData,setEditData]=useState(true);
 
-  const [memberId, setMemberId] = useState();
-
-//   useEffect(() => {
-//     const storedUser = JSON.parse(window.localStorage.getItem('user'));
-//     alert(+storedUser.userid);
-
-//     setMemberId(143)
-//   }, []);
-
-
-
-//   useEffect(()=>{
-//     const a=JSON.parse(window.localStorage.getItem('user')).userid;
-//     setMemberId(a);
-//   },[])
     
   const [formData, setFormData] = useState({
     reference_id: '',
@@ -62,6 +47,13 @@ const Profile = () => {
   });
 
   const [open,setOpen]=useState(false);
+  const[block,setBehsil]=useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+  const[memberId,setMemberId]=useState(null);
+
+
+
+
 
   useEffect(() => {
 
@@ -90,7 +82,7 @@ const Profile = () => {
         }
         const data = await response.json();
         console.log(data);
-        setMember(data[0]);
+        setMember(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -105,12 +97,13 @@ const Profile = () => {
 
 // console.log(JSON.parse(localStorage.getItem('user')).userid)
 
-const handleEditClick = (member) => {
+const handleEditClick = (edit) => {
+    const member={...edit};
+    handlePincodeChange(member.pincode);
 
-    console.log(member);
-    
-     
-    delete member.reference_id;
+    setMemberId(member.id);
+
+
     if (Array.isArray(member.nominees) && member.nominees.length > 0) {
       const detailsObj = member.nominees[0]; // Get the first object from the array
       
@@ -118,13 +111,13 @@ const handleEditClick = (member) => {
       Object.assign(member, detailsObj);
       
       // Remove the `details` field from the object
-      delete member.nominees;
+    //   delete member.nominees;
      
     }else{
-      Object.assign(member, {nominee:'khauf1',relationship:'khauf2',nominee2:'khauf3',relationship2:'khauf4'});
+      Object.assign(member, {nominee:'',relationship:'',nominee2:'',relationship2:''});
       
       // Remove the `details` field from the object
-      delete member.nominees;
+    //   delete member.nominees;
 
     }
     member['file']=member.aadharUrl;
@@ -133,15 +126,102 @@ const handleEditClick = (member) => {
     member['photo']=member.profileUrl.substring(member.profileUrl.lastIndexOf('/') + 1);
     member['photoUrl']=`https://agerbandhu-production.up.railway.app${member.profileUrl}`;
     member['diseaseFileName']=member.diseaseFile ? member.diseaseFile.substring(member.diseaseFile.lastIndexOf('/') + 1) :'';
+    if(member['id_type']=='PAN Card'){
+      member['id_type']='Pan card';
+    }
+    delete member.aadharUrl;
+    delete member.profileUrl;
+    delete member.password;
+    delete member.reference_id;
+    delete member.id_file;
+    delete member.id;
     console.log("Ashoka maaa");
     console.log(member)
     
-    // setEditData(member); // Set the data of the member you want to edit
+    setEditData(member); // Set the data of the member you want to edit
     setFormData(member)
     setOpen(true); // Open the modal
   };
 
 
+
+
+  const handlePincodeChange = async (e) => {
+    // const pincode = e.target.value;
+    const pincode = typeof e === 'object' ? e.target.value : e;
+  
+    setFormData((prevState) => ({ ...prevState, pincode }));
+
+    if (pincode.length === 6) {
+      try {
+        const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+        const data = await response.json();
+        const blockmap=data[0].PostOffice;
+        const bl=[];
+    
+        blockmap.forEach((office, index) => {
+          bl.push(office);
+          // console.log(`Post Office ${index}:`, office); // Log each object to find correct field
+        });
+        // console.log("bl",bl);
+        console.log(bl);
+        setBehsil([...bl]);
+        
+  
+
+        if (data[0].Status === 'Success') {
+          const postOffice = data[0].PostOffice[0];
+          setFormData((prevState) => ({
+            ...prevState,
+            state: postOffice.State,
+            district: postOffice.District,
+          }));
+          setErrorMessage('');
+        } else {
+          setErrorMessage('Invalid Pincode. Please enter a valid 6-digit pincode.');
+        }
+      } catch (error) {
+        setErrorMessage('Error fetching data. Please try again later.');
+      }
+    }
+
+    
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   const handleClose=()=>{
     setOpen(false);
   }
@@ -156,7 +236,6 @@ const handleSubmittt = async (e) => {
   
     console.log("this is in MembershipModal1");
     console.log(formData);
-  
 
     // Prepare form data for sending to the API
     const formToSubmit = new FormData();
@@ -166,8 +245,8 @@ const handleSubmittt = async (e) => {
   
     try {
       let response;
-        response = await fetch('https://agerbandhu-production.up.railway.app/api/member', {
-          method: 'POST', // Use POST for creating a new member
+        response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/${memberId}`, {
+          method: 'PUT', // Use POST for creating a new member
           body: formToSubmit,
         });
       
@@ -186,6 +265,7 @@ const handleSubmittt = async (e) => {
         // Add the new member to the list after successful creation
    
       console.log('Form submitted successfully:');
+      setMember({...result})
       handleClose(); // Close the modal on successful submission
     } catch (error) {
       alert(error);
@@ -213,8 +293,14 @@ const handleSubmittt = async (e) => {
       setFormData={setFormData} 
       open={open}
       handleClose={handleClose} 
+      initialData={editData}
+      editData={editData}
       handleSubmit={handleSubmittt}
+      handlePincodeChange={handlePincodeChange}
+      block={block}
         />
+
+        
     <div className="max-w-full mx-auto p-0 bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl  font-bold text-center bg-customBlue text-white mb-6">Member Profile</h1>
 
@@ -299,6 +385,10 @@ const handleSubmittt = async (e) => {
               <td>{member.state}</td>
             </tr>
             <tr>
+              <th className="pr-4 py-2 text-gray-500">Tahsil:</th>
+              <td>{member.tahsil}</td>
+            </tr>
+            <tr>
               <th className="pr-4 py-2 text-gray-500">Mobile No:</th>
               <td>{member.mobile_no}</td>
             </tr>
@@ -329,6 +419,26 @@ const handleSubmittt = async (e) => {
             <tr>
               <th className="pr-4 py-2 text-gray-500">Status:</th>
               <td>{member.status}</td>
+            </tr>
+
+            <tr>
+              <th className="pr-4 py-2 text-gray-500">Nominee:</th>
+              <td>{member.nominees[0].nominee}</td>
+            </tr>
+
+            <tr>
+              <th className="pr-4 py-2 text-gray-500">Relationship:</th>
+              <td>{member.nominees[0].relationship}</td>
+            </tr>
+
+            <tr>
+              <th className="pr-4 py-2 text-gray-500">Nominee2:</th>
+              <td>{member.nominees[0].nominee2}</td>
+            </tr>
+
+            <tr>
+              <th className="pr-4 py-2 text-gray-500">Relationship2:</th>
+              <td>{member.nominees[0].relationship2}</td>
             </tr>
           </tbody>
         </table>

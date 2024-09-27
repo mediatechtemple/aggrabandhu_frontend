@@ -8,10 +8,10 @@ import IdentificationDocuments from './MemberComponent/IdentificationDocuments';
 import NomineeDetails from './MemberComponent/NomineeDetails';
 import DiseaseAndRules from './MemberComponent/DiseaseAndRules';
 
-const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData ,editData,handleSubmit}) => {
+const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData ,editData,handleSubmit,handlePincodeChange,block}) => {
   
   const [errorMessage, setErrorMessage] = useState('');
-  const[block,setBehsil]=useState([]);
+  
 
   // Handle input change
   const handleChange = (e) => {
@@ -24,44 +24,47 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
 
 
   // Handle pincode change and fetch postal data
-  const handlePincodeChange = async (e) => {
-    const pincode = e.target.value;
-    setFormData((prevState) => ({ ...prevState, pincode }));
+  // const handlePincodeChange = async (e) => {
+  //   const pincode = e.target.value;
+  //   setFormData((prevState) => ({ ...prevState, pincode }));
 
-    if (pincode.length === 6) {
-      try {
-        const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
-        const data = await response.json();
-        const blockmap=data[0].PostOffice;
-        const bl=[];
+  //   if (pincode.length === 6) {
+  //     try {
+  //       const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+  //       const data = await response.json();
+  //       const blockmap=data[0].PostOffice;
+  //       const bl=[];
     
-        blockmap.forEach((office, index) => {
-          bl.push(office);
-          // console.log(`Post Office ${index}:`, office); // Log each object to find correct field
-        });
-        // console.log("bl",bl);
-        setBehsil([...bl]);
+  //       blockmap.forEach((office, index) => {
+  //         bl.push(office);
+  //         // console.log(`Post Office ${index}:`, office); // Log each object to find correct field
+  //       });
+  //       // console.log("bl",bl);
+  //       setBehsil([...bl]);
         
   
 
-        if (data[0].Status === 'Success') {
-          const postOffice = data[0].PostOffice[0];
-          setFormData((prevState) => ({
-            ...prevState,
-            state: postOffice.State,
-            district: postOffice.District,
-          }));
-          setErrorMessage('');
-        } else {
-          setErrorMessage('Invalid Pincode. Please enter a valid 6-digit pincode.');
-        }
-      } catch (error) {
-        setErrorMessage('Error fetching data. Please try again later.');
-      }
-    }
+  //       if (data[0].Status === 'Success') {
+  //         const postOffice = data[0].PostOffice[0];
+  //         setFormData((prevState) => ({
+  //           ...prevState,
+  //           state: postOffice.State,
+  //           district: postOffice.District,
+  //         }));
+  //         setErrorMessage('');
+  //       } else {
+  //         setErrorMessage('Invalid Pincode. Please enter a valid 6-digit pincode.');
+  //       }
+  //     } catch (error) {
+  //       setErrorMessage('Error fetching data. Please try again later.');
+  //     }
+  //   }
 
     
-  };
+  // };
+
+
+  
 
   // Handle file change for profile image
   const handleFileChange = (e) => {

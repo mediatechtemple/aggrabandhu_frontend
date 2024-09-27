@@ -49,6 +49,8 @@ const LoginPage = () => {
     declaration:false
   });
 
+  const[block,setBehsil]=useState([]);
+
   function handleOpen(){
     setOpen(true);
   }
@@ -142,6 +144,47 @@ const LoginPage = () => {
     }
   };
 
+  const handlePincodeChange = async (e) => {
+    // const pincode = e.target.value;
+    const pincode = typeof e === 'object' ? e.target.value : e;
+  
+    setFormData((prevState) => ({ ...prevState, pincode }));
+
+    if (pincode.length === 6) {
+      try {
+        const response = await fetch(`https://api.postalpincode.in/pincode/${pincode}`);
+        const data = await response.json();
+        const blockmap=data[0].PostOffice;
+        const bl=[];
+    
+        blockmap.forEach((office, index) => {
+          bl.push(office);
+          // console.log(`Post Office ${index}:`, office); // Log each object to find correct field
+        });
+        // console.log("bl",bl);
+        console.log(bl);
+        setBehsil([...bl]);
+        
+  
+
+        if (data[0].Status === 'Success') {
+          const postOffice = data[0].PostOffice[0];
+          setFormData((prevState) => ({
+            ...prevState,
+            state: postOffice.State,
+            district: postOffice.District,
+          }));
+          setErrorMessage('');
+        } else {
+          setErrorMessage('Invalid Pincode. Please enter a valid 6-digit pincode.');
+        }
+      } catch (error) {
+        setErrorMessage('Error fetching data. Please try again later.');
+      }
+    }
+
+    
+  };
 
 
 
@@ -160,6 +203,8 @@ const LoginPage = () => {
       open={open}
       handleClose={handleClose} 
       handleSubmit={handleSubmittt}
+      handlePincodeChange={handlePincodeChange}
+      block={block}
         />
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <header className="text-3xl font-bold mb-8">AGGRABANDHU SEVARTH SANSTHAN</header>
