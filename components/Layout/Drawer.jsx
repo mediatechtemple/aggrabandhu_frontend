@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Drawer,
   List,
@@ -40,8 +40,15 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
   const [openInputManagement, setOpenInputManagement] = React.useState(false);
   const [openMakeDonation, setOpenMakeDonation] = React.useState(false);
   const [userManagement ,setUserManagement] = React.useState(false);
-  const [role,setRole]=useState('user');
+  const [role,setRole]=useState(null);
+
+
+
+  useEffect(()=>{
+    setRole(JSON.parse(localStorage.getItem('role')));
+  },[])
   
+  // console.log((localStorage.getItem('role')));
 
   // const [memberId,setMemberId]=useState(JSON.parse(window.localStorage.getItem('user')).role);
 

@@ -8,6 +8,7 @@ const Home = () => {
     if(!user){
       window.location.href="/Login"
     }
+
   },[])
   return (
     <div>
