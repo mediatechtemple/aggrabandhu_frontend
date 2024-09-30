@@ -11,6 +11,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [errorMessage,setErrorMessage]=useState('');
+  const [loading,setLoading]=useState(false);
 
   const [open,setOpen]=useState(false);
   const [formData, setFormData] = useState({
@@ -55,8 +56,49 @@ const LoginPage = () => {
     setOpen(true);
   }
 
+ 
+
   function handleClose(){
     setOpen(false);
+  }
+  function Cross_handleClose(){
+    setOpen(false);
+    setFormData({
+      reference_id: '',
+    gotra: '',
+    profile: null,
+    name: '',
+    father_name: '',
+    mother_name: '',
+    dob: '',
+    marital_status: '',
+    spouse_name: '',
+    mobile_no: '',
+    otp: '',
+    password: '',
+    confirmPassword: '',
+    email: '',
+    address: '',
+    district: '',
+    state: '',
+    pincode: '',
+    tehsil:'',
+    profession: '',
+    aadhar_no: '',
+    file: null,
+    id_no: '',
+    file2: null,
+    nominee: '',
+    relationship: '',
+    nominee2: '',
+    relationship2: '',
+    disease: false,
+    diseaseFile: '',
+    rulesAccepted: false,
+    id_type:'',
+    declaration:false
+    })
+    
   }
 
   const handleSubmit = async (e) => {
@@ -116,6 +158,7 @@ const LoginPage = () => {
     });
   
     try {
+      setLoading(true);
       let response;
         response = await fetch('https://agerbandhu-production.up.railway.app/api/member', {
           method: 'POST', // Use POST for creating a new member
@@ -124,11 +167,13 @@ const LoginPage = () => {
       
   
       if (response.status === 406) {
+        setLoading(false);
         alert('Reference ID not valid');
         return; // Stop further execution if ID is invalid
       }
   
       if (!response.ok) {
+        setLoading(false);
         throw new Error('Failed to submit the form');
       }
   
@@ -137,8 +182,10 @@ const LoginPage = () => {
         // Add the new member to the list after successful creation
    
       console.log('Form submitted successfully:');
+      setLoading(false);
       handleClose(); // Close the modal on successful submission
     } catch (error) {
+      setLoading(false);
       alert(error);
       console.error('Error submitting the form:', error);
       setErrorMessage('Failed to submit the form. Please try again.');
@@ -206,6 +253,8 @@ const LoginPage = () => {
       handleSubmit={handleSubmittt}
       handlePincodeChange={handlePincodeChange}
       block={block}
+      loading={loading}
+      Cross_handleClose={Cross_handleClose}
         />
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <header className="text-3xl font-bold mb-8">AGGRABANDHU SEVARTH SANSTHAN</header>

@@ -37,6 +37,11 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         });
        const  result = await response.json();
 
+       if(result.status===406){
+        alert('member Aleready Exists! Enter Unique Number');
+        return;
+      }
+
         if (result.valid && result.matched) {
           setErr(false);
           setAadharVerificationMessage(`Aadhaar verification successful! Number: ${result.aadhaarNumber}`);
@@ -84,6 +89,11 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         });
 
         const result = await response.json();
+        
+        if(result.status===406){
+          alert('member Aleready Exists! Enter Unique Number');
+          return;
+        }
 
         // Check for validation and matching
         if (result.valid && result.matched) {
@@ -104,6 +114,8 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
     }
   };
 
+
+
   return (
     <>
 
@@ -118,7 +130,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         margin="normal"
       />
       
-
+      <p className='text-lg text-blue-950'>Upload high quality Image in jpg</p>
   <Button variant="contained" component="label" fullWidth
   disabled={formData.aadhar_no.length !== 12}
   >
@@ -190,14 +202,14 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
 
 
 
-
+    <p className='text-lg text-blue-950'>Upload high quality Image in jpg</p>
       <TextField
         label={formData.id_type == "Driving License"?"Enter 16 digit driving Licence no":formData.id_type=="Pan card" ? "enter 10 digit pan card no" : formData.id_type=="Voter ID" ? "enter 10 digit VoterId": "Voter ID / Driving License / Pan Card No"}
         name="id_no"
         value={formData.id_no}
         onChange={handleChange}
         fullWidth
-        margin="normal"
+        
       />
 
       <Button variant="contained" component="label" fullWidth

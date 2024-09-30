@@ -83,7 +83,7 @@ const BasicInformation = ({
 
 
 
-
+<span className='text-lg'>Upload high quality Image in jpg</span>
    <Button variant="contained" component="label" fullWidth>
         Upload Photo
         <input

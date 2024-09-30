@@ -64,6 +64,7 @@ console.log(members);
   const [totalPages, setTotalPages] = useState(1);
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState(null);
+  const [loading,setLoading]=useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const[block,setBehsil]=useState([]);
@@ -139,6 +140,7 @@ console.log(members);
   
     try {
       let response;
+      setLoading(true);
       if (editData) {
         // Use editData.id for the PUT request
         response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/${editData.id}`, {
@@ -153,11 +155,13 @@ console.log(members);
       }
   
       if (response.status === 406) {
+        setLoading(false);
         alert('Reference ID not valid');
         return; // Stop further execution if ID is invalid
       }
   
       if (!response.ok) {
+        setLoading(false);
         throw new Error('Failed to submit the form');
       }
   
@@ -174,10 +178,11 @@ console.log(members);
         // Add the new member to the list after successful creation
         setMembers([...members, { ...result.memberAdd }]);
       }
-  
+      setLoading(false);
       console.log('Form submitted successfully:', result);
       handleClose(); // Close the modal on successful submission
     } catch (error) {
+      setLoading(false);
       alert(error);
       console.error('Error submitting the form:', error);
       setErrorMessage('Failed to submit the form. Please try again.');
