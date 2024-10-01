@@ -8,6 +8,7 @@ import IdentificationDocuments from './MemberComponent/IdentificationDocuments';
 import NomineeDetails from './MemberComponent/NomineeDetails';
 import DiseaseAndRules from './MemberComponent/DiseaseAndRules';
 import { AiOutlineClose } from 'react-icons/ai';
+import { FaTimes } from 'react-icons/fa';
 const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData ,editData,handleSubmit,handlePincodeChange,block,loading=false,Cross_handleClose}) => {
   
   const [errorMessage, setErrorMessage] = useState('');
@@ -209,8 +210,11 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
 
 
 
-        <p className='p-2'> <AiOutlineClose className="absolute top-2 right-2 text-4xl cursor-pointer" onClick={Cross_handleClose} />
-        </p>
+        {/* <p className='p-2'> <AiOutlineClose className="absolute top-2 right-2 text-4xl cursor-pointer" onClick={Cross_handleClose} />
+        </p> */}
+        <p className='p-2'>
+  <FaTimes className="absolute top-2 right-2 text-4xl cursor-pointer" onClick={Cross_handleClose} />
+</p>
         <Typography variant="h6" component="h2" sx={{ backgroundColor: '#1976d2', color: 'white', textAlign: 'center' }}>
           {initialData ? 'Edit Data of Member' : 'Apply for New Membership'}
         </Typography>
