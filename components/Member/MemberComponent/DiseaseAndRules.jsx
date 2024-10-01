@@ -70,7 +70,7 @@ const DiseaseAndRules = ({
         <p className='text-lg text-blue-950'>Upload high quality Image in jpg</p>
         <Button variant="contained" component="label" fullWidth>
           Attach Doctor’s Certificate
-          <input type="file" hidden onChange={handleDiseasefile} />
+          <input type="file" accept=".jpg" hidden onChange={handleDiseasefile} />
         </Button>
         </>
       )}

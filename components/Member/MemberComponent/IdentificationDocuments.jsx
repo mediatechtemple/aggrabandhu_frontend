@@ -137,7 +137,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
     Attach Aadhar Card
     <input
       type="file"
-      accept=".pdf,.jpg,.jpeg,.png"
+      accept=".jpg"
       hidden
       ref={aadharFileInputRef} // Reference for Aadhar file input
       onChange={handleAadharFileChange}
@@ -218,7 +218,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         Attach Voter ID / Driving License / Pan Card
         <input
           type="file"
-          accept=".pdf,.jpg,.jpeg,.png"
+          accept=".jpg"
           hidden
           ref={voterIdFileInputRef} // Reference for Voter ID file input
           onChange={handleVoterIdFileChange}
