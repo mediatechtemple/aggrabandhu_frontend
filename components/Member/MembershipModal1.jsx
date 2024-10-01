@@ -149,9 +149,9 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
     <>
 
 
-<div className="relative  p-4 border-4 border-gray-500 " style={{ zIndex: 1400 }}  >
+{loading && <div className="relative  p-4 border-4 border-gray-500 " style={{ zIndex: 1400 }}  >
       {/* Loader (spinner) */}
-      {loading && (
+      {/* {loading && ( */}
         <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 ">
           <div className="relative max-w-sm p-6 bg-white border border-gray-100 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-800">
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white opacity-20">
@@ -181,8 +181,8 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
             </div>
           </div>
         </div>
-      )}
-    </div>
+      {/* )} */}
+    </div>}
    
 
 
