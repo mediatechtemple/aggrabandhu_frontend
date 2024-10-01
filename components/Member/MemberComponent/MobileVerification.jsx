@@ -25,7 +25,16 @@ const MobileVerification = ({ formData, handleChange }) => {
         },
         body: JSON.stringify({ via: formData.mobile_no }), // Using mobile number from formData
       });
-
+      // const response1=await response.json();
+      // console.log(response1)
+      // if(response1.message){
+      //   alert('enter unique  mobile number');
+      //   return;
+      // }
+      console.log(response)
+      if(response.status==406){
+        alert('Number already exists!')
+      }
       if (response.ok) {
         setOtpSent(true);
         setOpenDialog(true);

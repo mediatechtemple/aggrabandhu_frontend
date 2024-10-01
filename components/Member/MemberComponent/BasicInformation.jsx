@@ -6,7 +6,8 @@ const BasicInformation = ({
   formData,
   handleChange,
   handleFileChange,
-  editData
+  editData,
+  checkImageType
 }) => {
   
   const [gotraOptions, setGotraOptions] = useState([]);
@@ -95,6 +96,7 @@ const BasicInformation = ({
   </Button>
 
       {/* Show selected file name */}
+      {checkImageType && <p>{checkImageType}</p>}
       {formData.profile && (
         <>
           <Typography variant="body1" sx={{ mt: 2 }}>

@@ -9,66 +9,66 @@ const EmailVerification = ({ formData, handleChange }) => {
   const [error, setError] = useState(null);
 
   // Send OTP API call
-  const handleSendOtp = async () => {
-    try {
-      const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/otp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ via: formData.email }), // Pass email in the request body
-      });
+  // const handleSendOtp = async () => {
+  //   try {
+  //     const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/otp', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ via: formData.email }), // Pass email in the request body
+  //     });
 
-      if (!response.ok) {
-        throw new Error('Failed to send OTP');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Failed to send OTP');
+  //     }
 
-      const data = await response.json();
-      console.log('OTP sent response:', data);
+  //     const data = await response.json();
+  //     console.log('OTP sent response:', data);
 
-      setOtpSent(true);
-      setOpenDialog(true);
-    } catch (error) {
-      console.error('Error sending OTP:', error);
-      setError('Failed to send OTP. Please try again.');
-    }
-  };
+  //     setOtpSent(true);
+  //     setOpenDialog(true);
+  //   } catch (error) {
+  //     console.error('Error sending OTP:', error);
+  //     setError('Failed to send OTP. Please try again.');
+  //   }
+  // };
 
   // Verify OTP API call
-  const handleVerifyOtp = async () => {
-    try {
-      const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/verifyotp', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ via: formData.email, otp: parseInt(otp)}), // Pass email and OTP in the request body
-      });
+  // const handleVerifyOtp = async () => {
+  //   try {
+  //     const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/verifyotp', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ via: formData.email, otp: parseInt(otp)}), // Pass email and OTP in the request body
+  //     });
 
-      if (!response.ok) {
-        throw new Error('Failed to verify OTP');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Failed to verify OTP');
+  //     }
 
-      const data = await response.json();
-      console.log('OTP verification response:', data);
+  //     const data = await response.json();
+  //     console.log('OTP verification response:', data);
 
-      if (data.message=='verified') {
-        setOtpVerified(true);
-        setOpenDialog(false);
-      } else {
-        setOtpVerified(false);
-      }
-    } catch (error) {
-      console.error('Error verifying OTP:', error);
-      setError('Failed to verify OTP. Please try again.');
-    }
-  };
+  //     if (data.message=='verified') {
+  //       setOtpVerified(true);
+  //       setOpenDialog(false);
+  //     } else {
+  //       setOtpVerified(false);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error verifying OTP:', error);
+  //     setError('Failed to verify OTP. Please try again.');
+  //   }
+  // };
 
 
-  function validateEmail(email) {
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return regex.test(email);
-  }
+  // function validateEmail(email) {
+  //   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  //   return regex.test(email);
+  // }
 
   return (
     <>

@@ -11,7 +11,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData ,editData,handleSubmit,handlePincodeChange,block,loading=false,Cross_handleClose}) => {
   
   const [errorMessage, setErrorMessage] = useState('');
-  
+  const [checkImageType,setCheckImageType]=useState('');
 
   // Handle input change
   const handleChange = (e) => {
@@ -70,8 +70,29 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
+      const fileType = file.type; // Get the file type
+
+
+
+
+
+      if (!fileType.startsWith('image/')) {
+        // If it's not an image, show an error message
+        setCheckImageType('Please upload an image file!');
+        e.target.value = ''; // Reset the file input
+    } else {
+        // If it's an image, clear the error message
+        setCheckImageType('');
+        const imageUrl = URL.createObjectURL(file);
       setFormData({ ...formData, photo: file.name, photoUrl: imageUrl, profile: file });
+    }
+
+
+
+
+
+      // const imageUrl = URL.createObjectURL(file);
+      // setFormData({ ...formData, photo: file.name, photoUrl: imageUrl, profile: file });
     }
   };
 
@@ -196,7 +217,7 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
         <Typography variant="h6" component="h2" sx={{ backgroundColor: '#1976d2', color: 'white', textAlign: 'center' }}>
           {initialData ? 'Edit Data of Member' : 'Apply for New Membership'}
         </Typography>
-        <BasicInformation formData={formData} handleChange={handleChange} handleFileChange={handleFileChange} editData={editData} />
+        <BasicInformation formData={formData} handleChange={handleChange} handleFileChange={handleFileChange} editData={editData} checkImageType={checkImageType}/>
         <EmailVerification formData={formData} handleChange={handleChange} />
         <MobileVerification formData={formData} handleChange={handleChange} />
         <AddressInformation formData={formData} 
