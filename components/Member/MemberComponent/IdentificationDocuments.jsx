@@ -58,14 +58,19 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
           method: 'POST',
           body: data,
         });
+
+        if(response.status==406){
+          alert('Entry is duplicate already register.Please enter new number!')
+          return;
+        }
        const  result = await response.json();
 
        console.log(result);
 
-       if(result.status===406){
-        alert('member Aleready Exists! Enter Unique Number');
-        return;
-      }
+      //  if(result){
+      //   alert('member Aleready Exists! Enter Unique Number');
+      //   return;
+      // }
 
         if (result.valid && result.matched) {
           setErr(false);
@@ -142,20 +147,17 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
           body: data,
         });
 
-        const result = await response.json();
-        
-        if(result.status===406){
-          alert('member Aleready Exists! Enter Unique Number');
+        console.log(response);
+        if(response.status===406){
+          alert('Entry is duplicate already register.Please enter new number');
           return;
         }
+        const result = await response.json();
+        
 
         // Check for validation and matching
         if (result.valid && result.matched) {
           setVoterIdVerificationMessage(`Verification successful! Number: ${result.panNumber}`);
-        } else if (!result.valid) {
-          setVoterIdVerificationMessage(`file selected`);
-
-          // setVoterIdVerificationMessage('Invalid Voter ID / Pan Card number.');
         } else {
           setVoterIdVerificationMessage('Document number does not match.');
         }
@@ -301,7 +303,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         Attach Voter ID / Driving License / Pan Card
         <input
           type="file"
-          accept=".jpg"
+          accept=".jpg,.jpeg"
           hidden
           ref={voterIdFileInputRef} // Reference for Voter ID file input
           onChange={handleVoterIdFileChange}

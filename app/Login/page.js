@@ -188,7 +188,11 @@ const LoginPage = () => {
         // Add the new member to the list after successful creation
    
       console.log('Form submitted successfully:');
+      console.log(result);
       setLoading(false);
+      console.log(result.memberAdd.id)
+      alert("You are successfully Registered. Your Member ID is "+result.memberAdd.id);
+      alert("ou are successfully registered. Your Reference ID is "+result.memberAdd.reference_id);
       Cross_handleClose(); // Close the modal on successful submission
     } catch (error) {
       setLoading(false);
