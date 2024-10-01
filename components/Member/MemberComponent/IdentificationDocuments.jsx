@@ -11,21 +11,44 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
   
   const[adharError,setAdharError]=useState(true);
 
+  const [checkImageType,setCheckImageType]=useState('');
+  const [checkImageType1,setCheckImageType1]=useState('');
+
+
   // References for the file inputs
   const aadharFileInputRef = useRef(null);
   const voterIdFileInputRef = useRef(null);
 
  
 
+
+
+
+
+
+
+
   // Aadhar file upload and verification
   const handleAadharFileChange = async (e) => {
 
-    setAdharError(true)
-    
+    setAdharError(true);
     const file = e.target.files[0];
+
+    
     setFormData({ ...formData, file: e.target.files[0] });
+
+
+
     if (file) {
-      const data = new FormData();
+      const fileType = file.type;
+
+      if(!fileType.startsWith('image/')){
+        // If it's not an image, show an error message
+        setCheckImageType('Please upload an image file!');
+        e.target.value = ''; // Reset the file input
+      }else{
+        setCheckImageType('');
+        const data = new FormData();
       data.append('file', file);
       data.append('number', formData.aadhar_no); 
       data.append('type_id', 'aadhar card');
@@ -36,6 +59,8 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
           body: data,
         });
        const  result = await response.json();
+
+       console.log(result);
 
        if(result.status===406){
         alert('member Aleready Exists! Enter Unique Number');
@@ -58,8 +83,23 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
 
       // Reset file input
       aadharFileInputRef.current.value = '';
+      }
+
     }
+
+
+
   };
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -75,8 +115,22 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
   const handleVoterIdFileChange = async (e) => {
     const file = e.target.files[0];
     setFormData({ ...formData, file2: e.target.files[0] });
+
+
+
+
+
+
     if (file) {
-      const data = new FormData();
+      const fileType = file.type;
+
+      if(!fileType.startsWith('image/')){
+        // If it's not an image, show an error message
+        setCheckImageType1('Please upload an image file!');
+        e.target.value = ''; // Reset the file input
+      }else{
+        setCheckImageType1('');
+        const data = new FormData();
       data.append('file', file);
       data.append('number', formData.id_no); 
       data.append('type_id', formData.id_type); // Change the type if needed
@@ -111,8 +165,35 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
 
       // Reset file input
       voterIdFileInputRef.current.value = '';
+      }
     }
+
+
+
+
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -143,6 +224,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
       onChange={handleAadharFileChange}
     />
   </Button>
+  {checkImageType && <p className='text-red-700 text-xl'>Attach Image Of Aadhar Card!</p>}
 
 
 
@@ -224,6 +306,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
           onChange={handleVoterIdFileChange}
         />
       </Button>
+      {checkImageType1 && <p className='text-red-700 text-xl'>Attach Image Of Identity Card!</p>}
       {voterIdVerificationMessage && (
         <Typography color="primary" variant="body2" margin="normal">
           {voterIdVerificationMessage}

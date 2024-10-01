@@ -15,9 +15,11 @@ import Iconsss from '../Icons/Iconsss';
 const Member = () => {
   const [formData, setFormData] = useState({
     reference_id: '',
+    Date_Of_Merriage:'',
     gotra: '',
     profile: null,
     name: '',
+    gender:'',
     father_name: '',
     mother_name: '',
     dob: '',
@@ -199,6 +201,7 @@ console.log(members);
       gotra: '',
       profile: null,
       name: '',
+      gender:'',
       father_name: '',
       mother_name: '',
       dob: '',

@@ -73,9 +73,6 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
       const fileType = file.type; // Get the file type
 
 
-
-
-
       if (!fileType.startsWith('image/')) {
         // If it's not an image, show an error message
         setCheckImageType('Please upload an image file!');
@@ -229,6 +226,7 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
         <IdentificationDocuments formData={formData} handleChange={handleChange}
          setFormData={setFormData} 
          editData={editData}
+         checkImageType={checkImageType}
          />
         <NomineeDetails formData={formData} handleChange={handleChange} />
         <DiseaseAndRules

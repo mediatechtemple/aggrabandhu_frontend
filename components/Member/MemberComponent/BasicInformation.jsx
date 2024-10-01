@@ -96,7 +96,7 @@ const BasicInformation = ({
   </Button>
 
       {/* Show selected file name */}
-      {checkImageType && <p>{checkImageType}</p>}
+      {checkImageType && <p className='text-red-700 text-xl'>{checkImageType}</p>}
       {formData.profile && (
         <>
           <Typography variant="body1" sx={{ mt: 2 }}>
@@ -127,6 +127,20 @@ const BasicInformation = ({
       margin="normal"
       required
     />
+
+<FormControl fullWidth margin="normal">
+      <InputLabel>Gender</InputLabel>
+      <Select
+        value={formData.gender}
+        onChange={handleChange}
+        name="gender"
+        label="Gender"
+      >
+        <MenuItem value="">Select Gender</MenuItem>
+        <MenuItem value="Single">Male</MenuItem>
+        <MenuItem value="Married">Female</MenuItem>
+      </Select>
+    </FormControl>
 
 
 
@@ -190,6 +204,22 @@ const BasicInformation = ({
         fullWidth
         margin="normal"
       />
+
+    )}
+    {formData.marital_status === 'Married' && (
+       <TextField
+       type="date"
+       label="Date_Of_Merriage"
+       name="Date_Of_Merriage"
+       value={formData.Date_Of_Merriage}
+       onChange={handleChange}
+       fullWidth
+       margin="normal"
+       InputLabelProps={{
+         shrink: true,
+       }}
+     />
+
     )}
 
 

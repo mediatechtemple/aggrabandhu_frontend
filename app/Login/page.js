@@ -16,6 +16,7 @@ const LoginPage = () => {
   const [open,setOpen]=useState(false);
   const [formData, setFormData] = useState({
     reference_id: '',
+    Date_Of_Merriage:'',
     gotra: '',
     profile: null,
     name: '',
@@ -68,6 +69,7 @@ const LoginPage = () => {
     gotra: '',
     profile: null,
     name: '',
+    gender:'',
     father_name: '',
     mother_name: '',
     dob: '',
