@@ -82,11 +82,11 @@ const EmailVerification = ({ formData, handleChange }) => {
       />
 
 
-      <Button variant="contained" onClick={handleSendOtp} fullWidth disabled={!validateEmail(formData.email)}>
+      {/* <Button variant="contained" onClick={handleSendOtp} fullWidth disabled={!validateEmail(formData.email)}>
         Send Email OTP (optional)
-      </Button>
+      </Button> */}
 
-      {otpVerified !== null && (
+      {/* {otpVerified !== null && (
         <Typography
           // variant="body1"
           color={otpVerified ? 'success.main' : 'error.main'}
@@ -94,13 +94,13 @@ const EmailVerification = ({ formData, handleChange }) => {
         >
           {otpVerified ? 'OTP Verified Successfully' : 'Invalid OTP'}
         </Typography>
-      )}
+      )} */}
       
 
-      {error && <Typography sx={{ fontSize:18}} color="error">{error}</Typography>}
+      {/* {error && <Typography sx={{ fontSize:18}} color="error">{error}</Typography>} */}
 
 
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+      {/* <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
         <DialogContent>
           <TextField
             label="Enter OTP"
@@ -122,7 +122,7 @@ const EmailVerification = ({ formData, handleChange }) => {
             Verify OTP
           </Button>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 };
