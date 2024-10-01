@@ -84,7 +84,7 @@ const BasicInformation = ({
 
 
 
-<span className='text-lg'>Upload high quality Image in jpg</span>
+<span className='text-lg text-blue-600 font-bold font-serif'>Upload high quality Image in jpg</span>
    <Button variant="contained" component="label" fullWidth>
         Upload Photo
         <input
@@ -96,7 +96,7 @@ const BasicInformation = ({
   </Button>
 
       {/* Show selected file name */}
-      {checkImageType && <p className='text-red-700 text-xl'>{checkImageType}</p>}
+      {checkImageType && <p className='text-red-700 text-3xl font-serif'>{checkImageType}</p>}
       {formData.profile && (
         <>
           <Typography variant="body1" sx={{ mt: 2 }}>
@@ -137,15 +137,15 @@ const BasicInformation = ({
         label="Gender"
       >
         <MenuItem value="">Select Gender</MenuItem>
-        <MenuItem value="Single">Male</MenuItem>
-        <MenuItem value="Married">Female</MenuItem>
+        <MenuItem value="Male">Male</MenuItem>
+        <MenuItem value="Female">Female</MenuItem>
       </Select>
     </FormControl>
 
 
 
     <TextField
-      label="Father's Name"
+      label="Father's Name*/Husband's Name"
       name="father_name"
       value={formData.father_name}
       onChange={handleChange}
@@ -224,7 +224,7 @@ const BasicInformation = ({
 
 
     <FormControl fullWidth margin="normal">
-      <InputLabel>Profession</InputLabel>
+      <InputLabel>Profession of Donner</InputLabel>
       <Select
         value={formData.profession}
         onChange={handleChange}
@@ -266,9 +266,9 @@ const BasicInformation = ({
       required
     />
     {formData.confirmPassword && formData.confirmPassword !== formData.password && (
-      <Typography variant="body2" color="error" margin="normal">
+      <p className='text-red-600 text-xl'>
         Incorrect password.
-      </Typography>
+      </p>
     )}
   </>
 )}

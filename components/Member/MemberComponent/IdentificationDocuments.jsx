@@ -211,7 +211,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         margin="normal"
       />
       
-      <p className='text-lg text-blue-950'>Upload high quality Image in jpg</p>
+      <p className='text-lg text-blue-600 font-bold font-serif'>Upload high quality Image in .jpg</p>
   <Button variant="contained" component="label" fullWidth
   disabled={formData.aadhar_no.length !== 12}
   >
@@ -224,17 +224,18 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
       onChange={handleAadharFileChange}
     />
   </Button>
-  {checkImageType && <p className='text-red-700 text-xl'>Attach Image Of Aadhar Card!</p>}
+  {checkImageType && <p className='text-red-700  text-2xl'>Attach Image Of Aadhar Card!</p>}
 
 
 
       {aadharVerificationMessage && (
-        <Typography color={setEr ?'red':'primary'} variant="body2" margin="normal">
+        <Typography color={setEr ?'red':'primary'} variant="body2" margin="normal" class="text-xl">
           {aadharVerificationMessage}
         </Typography>
       )}
+
        {formData.file && editData && (
-        <Typography color="primary" variant="body2" margin="normal">
+        <Typography color="primary" variant="body2" margin="normal" class="text-xl">
           Verification successful!
         </Typography>
       )}
@@ -284,7 +285,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
 
 
 
-    <p className='text-lg text-blue-950'>Upload high quality Image in jpg</p>
+    <p className='text-lg  text-blue-600 font-bold font-serif'>Upload high quality Image in .jpg</p>
       <TextField
         label={formData.id_type == "Driving License"?"Enter 16 digit driving Licence no":formData.id_type=="Pan card" ? "enter 10 digit pan card no" : formData.id_type=="Voter ID" ? "enter 10 digit VoterId": "Voter ID / Driving License / Pan Card No"}
         name="id_no"
@@ -308,12 +309,12 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
       </Button>
       {checkImageType1 && <p className='text-red-700 text-xl'>Attach Image Of Identity Card!</p>}
       {voterIdVerificationMessage && (
-        <Typography color="primary" variant="body2" margin="normal">
+        <Typography color="primary" variant="body2" margin="normal" class="text-xl">
           {voterIdVerificationMessage}
         </Typography>
       )}
       {formData.file2 && editData && (
-        <Typography color="primary" variant="body2" margin="normal">
+        <Typography color="primary" variant="body2" margin="normal " class="text-xl">
           Verification successful!
         </Typography>
       )}

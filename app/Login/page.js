@@ -20,6 +20,7 @@ const LoginPage = () => {
     gotra: '',
     profile: null,
     name: '',
+    gender:'',
     father_name: '',
     mother_name: '',
     dob: '',
@@ -62,6 +63,9 @@ const LoginPage = () => {
   function handleClose(){
     setOpen(false);
   }
+
+
+
   function Cross_handleClose(){
     setOpen(false);
     setFormData({
@@ -185,7 +189,7 @@ const LoginPage = () => {
    
       console.log('Form submitted successfully:');
       setLoading(false);
-      handleClose(); // Close the modal on successful submission
+      Cross_handleClose(); // Close the modal on successful submission
     } catch (error) {
       setLoading(false);
       alert(error);
@@ -247,6 +251,9 @@ const LoginPage = () => {
 
   return (
     <>
+
+
+
     <MembershipModal1
       formData={formData} 
       setFormData={setFormData} 
@@ -258,6 +265,14 @@ const LoginPage = () => {
       loading={loading}
       Cross_handleClose={Cross_handleClose}
         />
+
+
+
+
+
+
+
+
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <header className="text-3xl font-bold mb-8">AGGRABANDHU SEVARTH SANSTHAN</header>
 
