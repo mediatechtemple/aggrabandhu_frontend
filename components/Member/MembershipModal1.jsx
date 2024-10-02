@@ -219,7 +219,7 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
           {initialData ? 'Edit Data of Member' : 'Apply for New Membership'}
         </Typography>
 
-        {/* <BasicInformation formData={formData} handleChange={handleChange} handleFileChange={handleFileChange} editData={editData} checkImageType={checkImageType}/>
+        <BasicInformation formData={formData} handleChange={handleChange} handleFileChange={handleFileChange} editData={editData} checkImageType={checkImageType}/>
        
        
         <EmailVerification formData={formData} handleChange={handleChange} />
@@ -237,18 +237,18 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
          setFormData={setFormData} 
          editData={editData}
          checkImageType={checkImageType}
-         /> */}
+         />
 
         <NomineeDetails formData={formData} handleChange={handleChange} />
 
-        {/* <DiseaseAndRules
+        <DiseaseAndRules
           formData={formData}
           handleDiseaseChange={handleDiseaseChange}
           handleRulesChange={handleRulesChange}
           setFormData={setFormData}
           handleDiseasefile={handleDiseasefile}
           handleDeclaration={handleDeclaration}
-        /> */}
+        />
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
           Submit
         </Button>
