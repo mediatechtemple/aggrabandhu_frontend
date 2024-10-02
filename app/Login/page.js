@@ -179,7 +179,7 @@ const LoginPage = () => {
     console.log(formData);
   
     let updatedObj = capitalizeObjectFields(sentenceInObj);
-    console.log(updatedObj);
+
     if(!formData.rulesAccepted){
       alert('Rules and regulations are necessary to select');
       return;
@@ -229,10 +229,12 @@ const LoginPage = () => {
     // Prepare form data for sending to the API
     const formToSubmit = new FormData();
     Object.keys(updatedObj).forEach((key) => {
-      formToSubmit.append(key, formData[key]);
+      formToSubmit.append(key, updatedObj[key]);
     });
     console.log('this is formto bubmit formtosubmit');
-    console.log(formToSubmit)
+    console.log(formToSubmit);
+
+  
   
     try {
       setLoading(true);
