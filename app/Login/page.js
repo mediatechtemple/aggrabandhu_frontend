@@ -233,8 +233,6 @@ const LoginPage = () => {
     });
     console.log('this is formto bubmit formtosubmit');
     console.log(formToSubmit)
-
-    return;
   
     try {
       setLoading(true);
