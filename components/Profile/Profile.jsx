@@ -111,6 +111,7 @@ const Profile = () => {
 // console.log(JSON.parse(localStorage.getItem('user')).userid)
 
 const handleEditClick = (edit) => {
+  console.log(edit);
     const member={...edit};
     handlePincodeChange(member.pincode);
 

@@ -20,7 +20,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
   const voterIdFileInputRef = useRef(null);
 
  
-
+const [mached,setMached]=useState(false);
 
 
 
@@ -76,14 +76,17 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
           setErr(false);
           setAadharVerificationMessage(`Aadhaar verification successful! Number: ${result.aadhaarNumber}`);
         } else if (!result.valid) {
-          setErr(true)
+          setErr(true);
+          setMached(false);
           setAadharVerificationMessage('Invalid Aadhaar number.');
         } else {
           setErr(true);
+          setMached(true);
           setAadharVerificationMessage('Aadhaar number does not match the document.');
         }
       } catch (error) {
         setAadharVerificationMessage('Verification failed. Please try again.');
+        setMached(true);
       }
 
       // Reset file input
@@ -159,9 +162,11 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         if (result.valid && result.matched) {
           setVoterIdVerificationMessage(`Verification successful! Number: ${result.panNumber}`);
         } else {
+          setMached(true);
           setVoterIdVerificationMessage('Document number does not match.');
         }
       } catch (error) {
+        setMached(true);
         setVoterIdVerificationMessage('Verification failed. Please try again.');
       }
 
@@ -227,12 +232,12 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
       onChange={handleAadharFileChange}
     />
   </Button>
-  {checkImageType && <p className='text-red-700  text-2xl'>Attach Image Of Aadhar Card!</p>}
+  {checkImageType && <p className='text-red-500  font-serif font-bold text-3xl'>Attach Image Of Aadhar Card!</p>}
 
 
 
       {aadharVerificationMessage && (
-        <Typography color={setEr ?'red':'primary'} variant="body2" margin="normal" class="text-xl">
+        <Typography  variant="body2" margin="normal" className={`font-bold font-serif text-3xl ${!mached ? 'text-blue-500' : 'text-red-500'}`}>
           {aadharVerificationMessage}
         </Typography>
       )}
@@ -313,13 +318,22 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         />
       </Button>
       {checkImageType1 && <p className='text-red-700 text-xl'>Attach Image Of Identity Card!</p>}
+      
       {voterIdVerificationMessage && (
-        <Typography color="primary" variant="body2" margin="normal" class="text-xl">
+
+        <Typography color="primary" variant="body2" margin="normal" class="text-3xl "
+        className={`font-bold font-serif text-3xl ${!mached ? 'text-blue-500' : 'text-red-500'}`} 
+        
+  >
           {voterIdVerificationMessage}
         </Typography>
+
       )}
       {formData.file2 && editData && (
-        <Typography color="primary" variant="body2" margin="normal " class="text-xl">
+        <Typography  className={`font-bold font-serif text-3xl ${mached ? 'text-blue-500' : 'text-red-500'}`}
+        color="primary" variant="body2" margin="normal " class="text-3xl" 
+        
+        >
           Verification successful!
         </Typography>
       )}

@@ -149,15 +149,37 @@ const LoginPage = () => {
   };
 
 
+  // here we will change to make every string in sentence in form
+
+  function capitalizeFirstLetter(str) {
+    return str.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  }
+  
+  function capitalizeObjectFields(object) {
+    for (let key in object) {
+      if (typeof object[key] === 'string') {
+        object[key] = capitalizeFirstLetter(object[key]);
+      }
+    }
+    return object;
+  }
+  
+  // let updatedObj = capitalizeObjectFields(obj);
+  
+  // console.log(updatedObj);
+
 
 
   const handleSubmittt = async (e) => {
     e.preventDefault();
+
+    const sentenceInObj={...formData}
   
     console.log("this is in MembershipModal1");
     console.log(formData);
   
-
+    let updatedObj = capitalizeObjectFields(sentenceInObj);
+    console.log(updatedObj);
     if(!formData.rulesAccepted){
       alert('Rules and regulations are necessary to select');
       return;
@@ -206,9 +228,13 @@ const LoginPage = () => {
 
     // Prepare form data for sending to the API
     const formToSubmit = new FormData();
-    Object.keys(formData).forEach((key) => {
+    Object.keys(updatedObj).forEach((key) => {
       formToSubmit.append(key, formData[key]);
     });
+    console.log('this is formto bubmit formtosubmit');
+    console.log(formToSubmit)
+
+    return;
   
     try {
       setLoading(true);

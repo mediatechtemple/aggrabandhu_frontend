@@ -274,7 +274,7 @@ const BasicInformation = ({
       required
     />
     {formData.confirmPassword && formData.confirmPassword !== formData.password && (
-      <p className='text-red-600 text-xl'>
+      <p className='text-red-600 text-3xl font-bold font-serif'>
         Incorrect password.
       </p>
     )}
