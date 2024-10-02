@@ -211,6 +211,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         onChange={handleChange}
         fullWidth
         margin="normal"
+        required
       />
       
       <p className='text-lg text-blue-600 font-bold font-serif'>Upload high quality Image in .jpg</p>
@@ -274,6 +275,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         value={formData.id_type}
         onChange={handleChange}
         label="Identification Document"
+        required
       >
         <MenuItem value="">Select Identification Document</MenuItem>
         <MenuItem value="Pan card">Pan Card</MenuItem>
@@ -294,6 +296,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
         value={formData.id_no}
         onChange={handleChange}
         fullWidth
+        required
         
       />
 

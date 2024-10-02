@@ -51,6 +51,19 @@ const Profile = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const[memberId,setMemberId]=useState(null);
 
+  const [copied, setCopied] = useState(false);
+
+  // Function to copy reference ID to clipboard
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        setCopied(true);  // Show "Copied!" message
+        setTimeout(() => setCopied(false), 2000);  // Hide after 2 seconds
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+  };
 
 
 
@@ -322,10 +335,25 @@ const handleSubmittt = async (e) => {
                     <th className="pr-4 py-2 text-gray-500">Member ID:</th>
                     <td>{member.id}</td>
                     </tr>
-                    <tr>
+
+
+
+                    <tr 
+                    onDoubleClick={() => copyToClipboard(member.reference_id)}
+                    >
                     <th className="pr-4 py-2 text-gray-500">Reference ID:</th>
-                    <td>{member.reference_id}</td>
+                    <td>{member.reference_id}
+                    {copied && (
+                      <span className="absolute bg-green-100 text-green-700 ml-2  rounded ">
+                        Copied!
+                      </span>
+                    )}
+                    </td>
+                     {/* Show "Copied!" message when copied is true */}
+                    
                     </tr>
+
+
                     <tr>
                     <th className="pr-4 py-2 text-gray-500">Date of Joining:</th>
                     <td>{new Date(member.createdAt).toLocaleDateString()}</td>

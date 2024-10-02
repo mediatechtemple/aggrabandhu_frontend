@@ -11,6 +11,7 @@ const NomineeDetails = ({ formData, handleChange }) => (
       onChange={handleChange}
       fullWidth
       margin="normal"
+      required
     />
     <TextField
       label="Nominee 1 Relationship"
@@ -19,6 +20,7 @@ const NomineeDetails = ({ formData, handleChange }) => (
       onChange={handleChange}
       fullWidth
       margin="normal"
+      required
     />
     <TextField
       label="Nominee 2 Name"
@@ -27,6 +29,7 @@ const NomineeDetails = ({ formData, handleChange }) => (
       onChange={handleChange}
       fullWidth
       margin="normal"
+      required
     />
     <TextField
       label="Nominee 2 Relationship"
@@ -35,6 +38,7 @@ const NomineeDetails = ({ formData, handleChange }) => (
       onChange={handleChange}
       fullWidth
       margin="normal"
+      required
     />
   </>
 );

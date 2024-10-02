@@ -89,6 +89,7 @@ const MobileVerification = ({ formData, handleChange }) => {
         onChange={handleChange}
         fullWidth
         margin="normal"
+        required
       />
        {!mobileError && (
         <Typography

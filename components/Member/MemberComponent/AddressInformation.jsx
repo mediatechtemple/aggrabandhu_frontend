@@ -42,6 +42,7 @@ const AddressInformation = ({ formData, handleChange ,handlePincodeChange,block}
         value={formData.state}
         // disabled
         sx={{ mb: 2 }}
+        required
       />
 
       <TextField
@@ -52,6 +53,7 @@ const AddressInformation = ({ formData, handleChange ,handlePincodeChange,block}
         value={formData.district}
         // disabled
         sx={{ mb: 2 }}
+        required
       />
 
     <FormControl fullWidth margin="normal" >
@@ -62,6 +64,7 @@ const AddressInformation = ({ formData, handleChange ,handlePincodeChange,block}
           onChange={handleChange}
           name="tahsil"
           label="Tahsil"
+          required
           MenuProps={{
             PaperProps: {
               style: {

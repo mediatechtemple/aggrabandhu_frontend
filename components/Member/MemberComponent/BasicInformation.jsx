@@ -60,6 +60,7 @@ const BasicInformation = ({
       onChange={handleChange}
       fullWidth
       margin="normal"
+      required
     />}
 
 
@@ -72,6 +73,7 @@ const BasicInformation = ({
         onChange={handleChange}
         name="gotra"
         label="Gotra"
+        required
       >
         {gotraOptions.map((gotra, index) => (
           <MenuItem key={index} value={gotra.name}>
@@ -135,6 +137,7 @@ const BasicInformation = ({
         onChange={handleChange}
         name="gender"
         label="Gender"
+        required
       >
         <MenuItem value="">Select Gender</MenuItem>
         <MenuItem value="Male">Male</MenuItem>
@@ -176,6 +179,7 @@ const BasicInformation = ({
       InputLabelProps={{
         shrink: true,
       }}
+      required
     />
 
 
@@ -187,6 +191,7 @@ const BasicInformation = ({
         onChange={handleChange}
         name="marital_status"
         label="Marital Status"
+        required
       >
         <MenuItem value="">Select Marital Status</MenuItem>
         <MenuItem value="Single">Single</MenuItem>
@@ -203,21 +208,23 @@ const BasicInformation = ({
         onChange={handleChange}
         fullWidth
         margin="normal"
+        required
       />
 
     )}
     {formData.marital_status === 'Married' && (
        <TextField
        type="date"
-       label="Date_Of_Merriage"
-       name="Date_Of_Merriage"
-       value={formData.Date_Of_Merriage}
+       label="marriage_date"
+       name="marriage_date"
+       value={formData.marriage_date}
        onChange={handleChange}
        fullWidth
        margin="normal"
        InputLabelProps={{
          shrink: true,
        }}
+       required
      />
 
     )}
@@ -230,6 +237,7 @@ const BasicInformation = ({
         onChange={handleChange}
         name="profession"
         label="profession"
+        required
       >
         {professionsOptions.map((profession, index) => (
           <MenuItem key={index} value={profession.name}>

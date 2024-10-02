@@ -16,7 +16,7 @@ const LoginPage = () => {
   const [open,setOpen]=useState(false);
   const [formData, setFormData] = useState({
     reference_id: '',
-    Date_Of_Merriage:'',
+    marriage_date:'',
     gotra: '',
     profile: null,
     name: '',
@@ -72,6 +72,7 @@ const LoginPage = () => {
       reference_id: '',
     gotra: '',
     profile: null,
+    marriage_date:'',
     name: '',
     gender:'',
     father_name: '',
@@ -156,6 +157,52 @@ const LoginPage = () => {
     console.log("this is in MembershipModal1");
     console.log(formData);
   
+
+    if(!formData.rulesAccepted){
+      alert('Rules and regulations are necessary to select');
+      return;
+    }
+
+    if(!formData.declaration){
+      alert('Declarations are necessary to select');
+      return;
+    }
+
+    if(!formData.profile){
+      alert('Please select profile picture');
+      return;
+    }
+    if(!formData.file){
+      alert('Please select Aadhar File');
+      return;
+    }
+    if(!formData.file2){
+      alert('Please select ID File ');
+      return;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Prepare form data for sending to the API
     const formToSubmit = new FormData();
