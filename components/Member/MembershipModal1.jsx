@@ -196,7 +196,12 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: 900,
+          width: {
+            xs: '90%', // for extra small screens
+            sm: '80%', // for small screens
+            md: 700, // for medium screens
+            lg: 900, // for large screens
+          },
           bgcolor: 'background.paper',
           p: 4,
           boxShadow: 24,
