@@ -484,7 +484,7 @@ const handleSubmittt = async (e) => {
         <div className="flex justify-center gap-6 mt-6">
           {member.profileUrl && (
             <Image
-              src={`https://agerbandhu-production.up.railway.app${member.profileUrl}`}
+              src={`https://agerbandhu-production.up.railway.app${member.id_file}`}
               alt="Profile Image"
               width={150}
               height={150}

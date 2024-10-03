@@ -101,7 +101,17 @@ const DiseaseAndRules = ({
 
       {/* Popup for Rules & Regulations */}
       <Dialog open={open} onClose={handleClose}  PaperProps={{
-          sx: { width: '1000px', maxWidth: '100%' }  // Set width here
+          sx: {
+            width: {
+              xs: '90%', // for extra small screens
+              sm: '80%', // for small screens
+              md: '60%', // for medium screens
+              lg: '50%', // for large screens
+            },
+            maxWidth: '100%', // ensures the width doesn't exceed 100%
+            maxHeight: '90vh', // set maximum height to ensure it fits on the screen
+           overflowY: 'auto', // allows scrolling if content overflows
+          } // Set width here
         }}>
   <DialogTitle>Rules & Regulations</DialogTitle>
   <DialogContent>
@@ -124,7 +134,8 @@ const DiseaseAndRules = ({
       Accept Rules
     </Button>
   </DialogActions>
-</Dialog>
+      </Dialog>
+
 
 
 
