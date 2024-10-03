@@ -406,6 +406,10 @@ const handleSubmittt = async (e) => {
               <td>{member.address}</td>
             </tr>
             <tr>
+              <th className="pr-4 py-2 text-gray-500">Gotra:</th>
+              <td>{member.gotra}</td>
+            </tr>
+            <tr>
               <th className="pr-4 py-2 text-gray-500">District:</th>
               <td>{member.district}</td>
             </tr>
