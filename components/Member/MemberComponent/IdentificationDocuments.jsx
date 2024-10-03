@@ -226,7 +226,7 @@ const [mached,setMached]=useState(false);
     Attach Aadhar Card
     <input
       type="file"
-      accept=".jpg"
+       accept=".jpg,.jpeg"
       hidden
       ref={aadharFileInputRef} // Reference for Aadhar file input
       onChange={handleAadharFileChange}
