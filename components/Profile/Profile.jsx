@@ -413,7 +413,7 @@ const handleSubmittt = async (e) => {
 
             <tr>
               <th className="pr-4 py-2 text-gray-500">Marriage Age:</th>
-              <td>{member.marriage_age ? member.marriage_age : 'not define'}</td>
+              <td>{member.marriage_age ? member.marriage_age : 'not define'} Years</td>
             </tr>
 
 
@@ -506,35 +506,51 @@ const handleSubmittt = async (e) => {
 
       <div className="mt-10 text-center p-1">
         <h2 className="text-xl font-semibold bg-customBlue text-white">Documents</h2>
-        <div className="flex justify-center gap-6 mt-6">
-          {member.profileUrl && (
-            <Image
-              src={`https://agerbandhu-production.up.railway.app${member.id_file}`}
-              alt="Profile Image"
-              width={150}
-              height={150}
-              className="rounded-lg shadow-md"
-            />
-          )}
-          {member.aadharUrl && (
+        <div className="flex justify-center gap-6 mt-6 ">
+
+        <div className="border border-gray-300 shadow-md p-6">
+
+        {member.aadharUrl && (
             <Image
               src={`https://agerbandhu-production.up.railway.app${member.aadharUrl}`}
               alt="Aadhar"
-              width={150}
-              height={150}
-              className="rounded-lg shadow-md"
-            />
-          )}
-          {member.diseaseUrl && (
-            <Image
-              src={`https://agerbandhu-production.up.railway.app${member.diseaseUrl}`}
-              alt="Disease"
-              width={150}
-              height={150}
+              width={500}
+              height={450}
               className="rounded-lg shadow-md"
             />
           )}
         </div>
+          
+          <div className="border border-gray-300 shadow-md p-6">
+          {member.profileUrl && (
+            <Image
+              src={`https://agerbandhu-production.up.railway.app${member.id_file}`}
+              alt="Profile Image"
+              width={500}
+              height={450}
+              className="rounded-lg shadow-md"
+            />
+          )}
+          </div>
+
+    
+        </div>
+
+
+        <div className="flex justify-center gap-6 mt-6">
+
+        {member.diseaseUrl && (
+          <Image
+            src={`https://agerbandhu-production.up.railway.app${member.diseaseUrl}`}
+            alt="Disease"
+            width={150}
+            height={150}
+            className="rounded-lg shadow-md"
+          />
+        )}
+        </div>
+
+
       </div>
     </div>
     </>

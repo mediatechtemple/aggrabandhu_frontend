@@ -254,6 +254,7 @@ const BasicInformation = ({
          shrink: true,
        }}
        required
+       readOnly
      />
 
     )}

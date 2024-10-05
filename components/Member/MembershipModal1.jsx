@@ -124,12 +124,22 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
       calculatedAge--;
     }
 
+
     return calculatedAge;
   };
 
   const handleDobChange = (event) => {
     const selectedDate = event.target.value;
     const age = calculateAge(selectedDate);
+    if (age > 70) {
+      alert('Your marriage age is either greater than 70 or less than 18, so you cannot apply.');
+      setFormData({
+        ...formData,
+        marriage_date: '',
+        marriage_age: ''
+      });
+      return;
+    }
     
     // Update formData with marriage_date and calculated marriage_age
     setFormData({

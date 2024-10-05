@@ -100,7 +100,7 @@ const DiseaseAndRules = ({
 
 
       {/* Popup for Rules & Regulations */}
-      <Dialog open={open} onClose={handleClose}  PaperProps={{
+      <Dialog open={open} onClose={handleClose} PaperProps={{
           sx: {
             width: {
               xs: '90%', // for extra small screens
@@ -120,6 +120,7 @@ const DiseaseAndRules = ({
               src="/rules_regulation/Rule & Regulation.pdf"
               width="100%"
               height="400px"
+               
               className="border-2 border-gray-300"
               title="PDF Viewer"
             ></iframe>
