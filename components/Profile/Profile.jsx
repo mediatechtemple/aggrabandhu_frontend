@@ -7,7 +7,7 @@ const Profile = () => {
   const [member, setMember] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-    const [editData,setEditData]=useState(true);
+  const [editData,setEditData]=useState(true);
 
     
   const [formData, setFormData] = useState({
@@ -397,6 +397,31 @@ const handleSubmittt = async (e) => {
         <h2 className="text-xl font-semibold  bg-customBlue text-white">Additional Details</h2>
         <table className="w-full text-left table-auto">
           <tbody>
+            {/* here we will add rest changes. */}
+
+
+           
+            <tr>
+              <th className="pr-4 py-2 text-gray-500">Spouse Name:</th>
+              <td>{member.spouse_name}</td>
+            </tr>
+
+            <tr>
+              <th className="pr-4 py-2 text-gray-500">Marriage Date:</th>
+              <td>{member.marriage_date}</td>
+            </tr>
+
+            <tr>
+              <th className="pr-4 py-2 text-gray-500">Marriage Age:</th>
+              <td>{member.marriage_age ? member.marriage_age : 'not define'}</td>
+            </tr>
+
+
+<tr>
+              <th className="pr-4 py-2 text-gray-500">Gender:</th>
+              <td>{member.gender}</td>
+            </tr>
+
             <tr>
               <th className="pr-4 py-2 text-gray-500">Profession:</th>
               <td>{member.profession}</td>

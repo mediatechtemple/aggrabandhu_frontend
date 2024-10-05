@@ -7,7 +7,8 @@ const BasicInformation = ({
   handleChange,
   handleFileChange,
   editData,
-  checkImageType
+  checkImageType,
+  handleDobChange
 }) => {
   
   const [gotraOptions, setGotraOptions] = useState([]);
@@ -49,6 +50,16 @@ const BasicInformation = ({
 
     fetchProfession();
 }, []);
+
+
+
+
+
+
+
+
+
+
 
 
  return <>
@@ -212,13 +223,14 @@ const BasicInformation = ({
       />
 
     )}
+
     {formData.marital_status === 'Married' && (
        <TextField
        type="date"
        label="marriage_date"
        name="marriage_date"
        value={formData.marriage_date}
-       onChange={handleChange}
+       onChange={handleDobChange}
        fullWidth
        margin="normal"
        InputLabelProps={{
@@ -228,6 +240,26 @@ const BasicInformation = ({
      />
 
     )}
+
+{formData.marital_status === 'Married' && (
+       <TextField
+       type="text"
+       label="years_since_marriage"
+       name="marriage_age"
+       value={formData.marriage_age}
+      //  onChange={handleChange}
+       fullWidth
+       margin="normal"
+       InputLabelProps={{
+         shrink: true,
+       }}
+       required
+     />
+
+    )}
+
+
+
 
 
     <FormControl fullWidth margin="normal">

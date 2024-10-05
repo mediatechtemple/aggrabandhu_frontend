@@ -113,6 +113,32 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
     setFormData({ ...formData, declaration: e.target.checked });
   };
 
+
+  const calculateAge = (dob) => {
+    const dobDate = new Date(dob);
+    const currentDate = new Date();
+    let calculatedAge = currentDate.getFullYear() - dobDate.getFullYear();
+    const monthDiff = currentDate.getMonth() - dobDate.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && currentDate.getDate() < dobDate.getDate())) {
+      calculatedAge--;
+    }
+
+    return calculatedAge;
+  };
+
+  const handleDobChange = (event) => {
+    const selectedDate = event.target.value;
+    const age = calculateAge(selectedDate);
+    
+    // Update formData with marriage_date and calculated marriage_age
+    setFormData({
+      ...formData,
+      marriage_date: selectedDate,
+      marriage_age: age
+    });
+  };
+
   useEffect(()=>{
     console.log(formData)
   },[formData])
@@ -224,7 +250,14 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
           {initialData ? 'Edit Data of Member' : 'Apply for New Membership'}
         </Typography>
 
-        <BasicInformation formData={formData} handleChange={handleChange} handleFileChange={handleFileChange} editData={editData} checkImageType={checkImageType}/>
+        <BasicInformation 
+        formData={formData} 
+        handleChange={handleChange}
+         handleFileChange={handleFileChange} 
+         editData={editData} 
+         checkImageType={checkImageType}
+         handleDobChange={handleDobChange}
+         />
        
        
         <EmailVerification formData={formData} handleChange={handleChange} />

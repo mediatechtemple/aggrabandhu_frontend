@@ -16,7 +16,6 @@ const LoginPage = () => {
   const [open,setOpen]=useState(false);
   const [formData, setFormData] = useState({
     reference_id: '',
-    marriage_date:'',
     gotra: '',
     profile: null,
     name: '',
@@ -26,6 +25,8 @@ const LoginPage = () => {
     dob: '',
     marital_status: '',
     spouse_name: '',
+    marriage_date:'',
+    marriage_age:'',
     mobile_no: '',
     otp: '',
     password: '',
@@ -69,10 +70,9 @@ const LoginPage = () => {
   function Cross_handleClose(){
     setOpen(false);
     setFormData({
-      reference_id: '',
+    reference_id: '',
     gotra: '',
     profile: null,
-    marriage_date:'',
     name: '',
     gender:'',
     father_name: '',
@@ -80,6 +80,8 @@ const LoginPage = () => {
     dob: '',
     marital_status: '',
     spouse_name: '',
+    marriage_date:'',
+    marriage_age:'',
     mobile_no: '',
     otp: '',
     password: '',
