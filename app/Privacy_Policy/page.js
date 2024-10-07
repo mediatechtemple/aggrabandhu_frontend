@@ -1,11 +1,122 @@
-import React from 'react'
+'use client';
+import React, { useState } from 'react';
 
-const page = () => {
+const FileUploadComponent = () => {
+  const [pdfFilePath, setPdfFilePath] = useState(''); // Store the file path for the uploaded PDF
+  const [mountedTime, setMountedTime] = useState(''); // Store the mounted time
+  const [errorMessage, setErrorMessage] = useState(''); // Store error messages
+  const [isUploading, setIsUploading] = useState(false); // Track upload status
+  const [isFetching, setIsFetching] = useState(false); // Track fetching status
+
+  // Function to handle file upload
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0]; // Get the selected file
+    if (!file) return; // If no file is selected, exit
+
+    setIsUploading(true);
+    setErrorMessage(''); // Clear previous error messages
+
+    const formData = new FormData(); // Create form data to hold the file
+    formData.append('file', file);
+
+    try {
+      // Send POST request using fetch API
+      const response = await fetch('https://agerbandhu-production.up.railway.app/api/rule/', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json(); // Parse the response
+
+      if (response.ok) {
+        // Set the PDF file path and mounted time for displaying
+        setPdfFilePath(data.filePath);
+        setMountedTime(data.createdAt); // Assuming `createdAt` is the mounted time
+      } else {
+        // Handle errors (e.g., from the API response)
+        setErrorMessage('Failed to upload the file. Please try again.');
+      }
+    } catch (error) {
+      // Handle network or other errors
+      setErrorMessage('An error occurred while uploading the file.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // Function to fetch the PDF file
+  const fetchPdfFile = async () => {
+    setIsFetching(true);
+    setErrorMessage(''); // Clear previous error messages
+
+    try {
+      // Send GET request to retrieve the PDF file
+      const response = await fetch('https://agerbandhu-production.up.railway.app/api/rule/');
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch PDF file');
+      }
+
+      const data = await response.json(); // Parse the response
+      setPdfFilePath(data[0].file); // Set the file path for displaying
+      setMountedTime(data[0].createdAt); // Set the mounted time from response
+    } catch (error) {
+      setErrorMessage('An error occurred while fetching the PDF file.');
+    } finally {
+      setIsFetching(false);
+    }
+  };
+
   return (
-    <div>
-      <h1>here Privacy policty will come</h1>
-    </div>
-  )
-}
+    <div className="flex flex-col items-center p-4">
+      <h2 className="text-xl mb-4">Upload Rules and Regulations</h2>
 
-export default page
+      {/* Upload Button */}
+      <label className="w-64 flex flex-col items-center px-4 py-6 bg-gray-200 text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-400 hover:text-white">
+        <svg className="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path d="M16.88 10.44a1 1 0 0 0 0-1.42L10.7 2.85a1 1 0 0 0-1.42 0L2.85 9.02a1 1 0 0 0 1.42 1.42L9 5.71v9.58a1 1 0 0 0 2 0V5.71l4.73 4.73a1 1 0 0 0 1.42 0z"/>
+        </svg>
+        <span className="mt-2 text-base leading-normal">Select a file</span>
+        <input 
+          type="file" 
+          className="hidden" 
+          onChange={handleFileUpload} 
+        />
+      </label>
+
+      {/* Loading Indicator */}
+      {isUploading && <p className="mt-2 text-blue-600">Uploading...</p>}
+
+      {/* Error Message */}
+      {errorMessage && <p className="mt-2 text-red-600">{errorMessage}</p>}
+
+      {/* Button to Fetch PDF File */}
+      <button
+        onClick={fetchPdfFile}
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+      >
+        Fetch PDF File
+      </button>
+
+      {/* PDF Iframe */}
+      {pdfFilePath && (
+        <div className="mt-4 w-full">
+          <h3 className="text-lg mb-2">Uploaded PDF:</h3>
+          <iframe
+  src={`${pdfFilePath ? `https://agerbandhu-production.up.railway.app${pdfFilePath}` : `https://agerbandhu-production.up.railway.app${file}`}`} // Replace with your domain
+  width="100%"
+  height="600"
+  className="border border-gray-300"
+  title="Uploaded PDF"
+/>
+          {/* <p className="mt-2">Mounted Time: {new Date(mountedTime).toLocaleString()}</p> Display mounted time */}
+        </div>
+      )}
+
+      {/* Loading Indicator for Fetching PDF */}
+      {isFetching && <p className="mt-2 text-blue-600">Fetching PDF...</p>}
+    </div>
+  );
+};
+
+export default FileUploadComponent;

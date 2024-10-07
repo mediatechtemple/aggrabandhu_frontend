@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 
 const FileUploadComponent = () => {
-  const [uploadedFiles, setUploadedFiles] = useState([]); // Store the list of uploaded files
+  const [pdfFilePath, setPdfFilePath] = useState(''); // Store the file path for the uploaded PDF
   const [errorMessage, setErrorMessage] = useState(''); // Store error messages
   const [isUploading, setIsUploading] = useState(false); // Track upload status
 
@@ -27,8 +27,8 @@ const FileUploadComponent = () => {
       const data = await response.json(); // Parse the response
 
       if (response.ok) {
-        // Update the file list with the new file (assuming API sends back the file name)
-        setUploadedFiles((prevFiles) => [...prevFiles, data.fileName]);
+        // Set the PDF file path for displaying in an iframe
+        setPdfFilePath(data.filePath);
       } else {
         // Handle errors (e.g., from the API response)
         setErrorMessage('Failed to upload the file. Please try again.');
@@ -64,19 +64,19 @@ const FileUploadComponent = () => {
       {/* Error Message */}
       {errorMessage && <p className="mt-2 text-red-600">{errorMessage}</p>}
 
-      {/* Uploaded Files List */}
-      <div className="mt-4 w-full max-h-48 overflow-y-auto bg-gray-100 p-4 rounded-lg shadow-inner">
-        <h3 className="text-lg mb-2">Uploaded Files:</h3>
-        {uploadedFiles.length === 0 ? (
-          <p>No files uploaded yet.</p>
-        ) : (
-          <ul>
-            {uploadedFiles.map((file, index) => (
-              <li key={index} className="text-green-600">{file}</li>
-            ))}
-          </ul>
-        )}
-      </div>
+      {/* PDF Iframe */}
+      {pdfFilePath && (
+        <div className="mt-4 w-full">
+          <h3 className="text-lg mb-2">Uploaded PDF:</h3>
+          <iframe
+            src={`https://agerbandhu-production.up.railway.app${pdfFilePath}`} // Replace with your domain
+            width="100%"
+            height="600"
+            className="border border-gray-300"
+            title="Uploaded PDF"
+          />
+        </div>
+      )}
     </div>
   );
 };
