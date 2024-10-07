@@ -53,17 +53,15 @@ const Profile = () => {
 
   const [copied, setCopied] = useState(false);
 
-  // Function to copy reference ID to clipboard
   const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text)
-      .then(() => {
-        setCopied(true);  // Show "Copied!" message
-        setTimeout(() => setCopied(false), 2000);  // Hide after 2 seconds
-      })
-      .catch(err => {
-        console.error('Failed to copy: ', err);
-      });
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+    }).catch((error) => {
+      console.error("Failed to copy: ", error);
+    });
   };
+
 
 
 
@@ -339,20 +337,23 @@ const handleSubmittt = async (e) => {
 
 
 
-                    <tr 
-                    onDoubleClick={() => copyToClipboard(member.reference_id)}
-                    >
+                    <tr>
+
                     <th className="pr-4 py-2 text-gray-500">Reference ID:</th>
+
                     <td>{member.reference_id}
-                    {copied && (
-                      <span className="absolute bg-green-100 text-green-700 ml-2  rounded ">
-                        Copied!
-                      </span>
-                    )}
                     </td>
                      {/* Show "Copied!" message when copied is true */}
-                    
+                     <button
+                        className={`bg-blue-500 w-[180px]  text-white py-2 px-4 ml-6 rounded-lg shadow-md transform transition-all duration-200 hover:bg-green-600 active:scale-95 ${copied ? 'bg-green-700' : ''}`}
+                        onClick={() => copyToClipboard(member.reference_id)}
+                      >
+                        {copied ? 'Copied!' : 'Copy reference id'}
+                      </button>
                     </tr>
+
+
+
 
 
                     <tr>
@@ -374,6 +375,10 @@ const handleSubmittt = async (e) => {
                     <tr>
                     <th className="pr-4 py-2 text-gray-500">Date of Birth:</th>
                     <td>{new Date(member.dob).toLocaleDateString()}</td>
+                    </tr>
+                    <tr>
+                    <th className="pr-4 py-2 text-gray-500">Age:</th>
+                    <td>{member.total_age} years</td>
                     </tr>
                 </tbody>
                 </table>
@@ -503,56 +508,82 @@ const handleSubmittt = async (e) => {
       </div>
 
 
+<div className="mt-10 text-center p-1">
+  {/* Title Section */}
+  <h2 className="text-xl font-semibold bg-customBlue text-white">Documents</h2>
 
-      <div className="mt-10 text-center p-1">
-        <h2 className="text-xl font-semibold bg-customBlue text-white">Documents</h2>
-        <div className="flex justify-center gap-6 mt-6 ">
+  {/* Aadhar and Pancard Image Section */}
+  <div className="flex flex-nowrap jgap-6 ">
+    {/* Aadhar Image */}
+    <div className="relative  shadow-md p-2 w-1/2 border border-gray-300 m-1">
+      {member.aadharUrl && (
+        <Image
+          src={`https://agerbandhu-production.up.railway.app${member.aadharUrl}`}
+          alt="Aadhar"
+          width={250}
+          height={200}
+          className="rounded-lg object-cover w-full h-full"
+        />
+      )}
+    </div>
 
-        <div className="border border-gray-300 shadow-md p-6">
+    {/* Pancard Image */}
+    <div className="relative  shadow-md p-2 w-1/2 border border-gray-300  m-1">
+      {member.id_file && (
+        <Image
+          src={`https://agerbandhu-production.up.railway.app${member.id_file}`}
+          alt="Pancard Image"
+          className="rounded-lg object-cover w-full h-full"
+          width={250}
+          height={200}
+        />
+      )}
+    </div>
+  </div>
 
-        {member.aadharUrl && (
-            <Image
-              src={`https://agerbandhu-production.up.railway.app${member.aadharUrl}`}
-              alt="Aadhar"
-              width={500}
-              height={450}
-              className="rounded-lg shadow-md"
-            />
-          )}
-        </div>
-          
-          <div className="border border-gray-300 shadow-md p-6">
-          {member.profileUrl && (
-            <Image
-              src={`https://agerbandhu-production.up.railway.app${member.id_file}`}
-              alt="Profile Image"
-              width={500}
-              height={450}
-              className="rounded-lg shadow-md"
-            />
-          )}
-          </div>
+  {/* Disease Image Section */}
+  
+  <div className="flex flex-nowrap justify-center gap-6 ">
+    {/* Aadhar Image */}
+    <div className="relative  shadow-md p-2 w-1/2">
+      {member.diseaseUrl && (
+        <Image
+          src={`https://agerbandhu-production.up.railway.app${member.diseaseUrl}`}
+          alt="Aadhar"
+          width={250}
+          height={200}
+          className="rounded-lg object-cover w-full h-full"
+        />
+      )}
+    </div>
+  </div>
+ 
+    {/* <div className="relative  shadow-md p-2 ">
+      {true && (
+        <Image
+          src={`https://agerbandhu-production.up.railway.app${member.id_file}`}
+          alt="Disease"
+          className="rounded-lg object-cover w-full h-full"
+          width={150}
+          height={150}
+        />
+      )}
+    </div> */}
+  
+</div>
+
+
+
+
+
+      
+    </div>
+
+
+
+
 
     
-        </div>
-
-
-        <div className="flex justify-center gap-6 mt-6">
-
-        {member.diseaseUrl && (
-          <Image
-            src={`https://agerbandhu-production.up.railway.app${member.diseaseUrl}`}
-            alt="Disease"
-            width={150}
-            height={150}
-            className="rounded-lg shadow-md"
-          />
-        )}
-        </div>
-
-
-      </div>
-    </div>
     </>
   );
 };

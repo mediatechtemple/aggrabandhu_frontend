@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Checkbox, FormControlLabel, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material';
 
 const DiseaseAndRules = ({
@@ -11,6 +11,20 @@ const DiseaseAndRules = ({
 }) => {
   const [open, setOpen] = useState(false);  // Popup state
   const [decOpen, setDecOpen] = useState(false);
+
+  // 
+  
+  const iframeRef=useRef(null);
+  
+  const handleContextMenu = (e) => {
+    e.preventDefault(); // Disable right-click
+    alert('hello ashoka')
+  };
+
+
+
+
+  // 
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -100,7 +114,7 @@ const DiseaseAndRules = ({
 
 
       {/* Popup for Rules & Regulations */}
-      <Dialog open={open} onClose={handleClose} PaperProps={{
+      <Dialog  open={open} onClose={handleClose} PaperProps={{
           sx: {
             width: {
               xs: '90%', // for extra small screens
@@ -114,15 +128,22 @@ const DiseaseAndRules = ({
           } // Set width here
         }}>
   <DialogTitle>Rules & Regulations</DialogTitle>
-  <DialogContent>
-    <DialogContentText>
-  <iframe
+  <DialogContent onClick={handleContextMenu} 
+  style={{
+     // Set a high z-index to appear above the iframe
+    pointerEvents: 'none', // Prevents the overlay from blocking interactions with the iframe
+  }}
+  >
+    <DialogContentText >
+          <iframe
+              ref={iframeRef}
               src="/rules_regulation/Rule & Regulation.pdf"
               width="100%"
               height="400px"
                
               className="border-2 border-gray-300"
               title="PDF Viewer"
+              
             ></iframe>
 
     </DialogContentText>

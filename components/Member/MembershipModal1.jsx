@@ -128,19 +128,11 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
     return calculatedAge;
   };
 
-  const handleDobChange = (event) => {
+
+  const handleMerriageChange = (event) => {
     const selectedDate = event.target.value;
     const age = calculateAge(selectedDate);
-    if (age > 70) {
-      alert('Your marriage age is either greater than 70 or less than 18, so you cannot apply.');
-      setFormData({
-        ...formData,
-        marriage_date: '',
-        marriage_age: ''
-      });
-      return;
-    }
-    
+
     // Update formData with marriage_date and calculated marriage_age
     setFormData({
       ...formData,
@@ -148,6 +140,36 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
       marriage_age: age
     });
   };
+
+  const handleDobChange = (event) => {
+    const selectedDate = event.target.value;
+    const age = calculateAge(selectedDate);
+
+    if(age < 18 || age > 70){
+      alert('Sorry you can not apply membership either you age is more than 70 years or less than 18 years.');
+      setFormData({
+        ...formData,
+        dob: '',
+        total_age: ''
+      });
+      return;
+    }
+
+    // Update formData with marriage_date and calculated marriage_age
+    setFormData({
+      ...formData,
+      dob: selectedDate,
+      total_age: age
+    });
+  };
+
+
+
+  
+
+
+
+
 
   useEffect(()=>{
     console.log(formData)
@@ -266,6 +288,7 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
          handleFileChange={handleFileChange} 
          editData={editData} 
          checkImageType={checkImageType}
+         handleMerriageChange={handleMerriageChange}
          handleDobChange={handleDobChange}
          />
        

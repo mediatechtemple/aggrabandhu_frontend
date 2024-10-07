@@ -8,6 +8,7 @@ const BasicInformation = ({
   handleFileChange,
   editData,
   checkImageType,
+  handleMerriageChange,
   handleDobChange
 }) => {
   
@@ -184,7 +185,7 @@ const BasicInformation = ({
       label="Date of Birth"
       name="dob"
       value={formData.dob}
-      onChange={handleChange}
+      onChange={handleDobChange}
       fullWidth
       margin="normal"
       InputLabelProps={{
@@ -192,6 +193,21 @@ const BasicInformation = ({
       }}
       required
     />
+
+    {
+      formData.dob &&
+      <TextField
+      label="Total Age"
+      name="total_age"
+      value={formData.total_age}
+      fullWidth
+      margin="normal"
+      required
+      readOnly
+    />
+
+
+    }
 
 
 
@@ -230,7 +246,7 @@ const BasicInformation = ({
        label="marriage_date"
        name="marriage_date"
        value={formData.marriage_date}
-       onChange={handleDobChange}
+       onChange={handleMerriageChange}
        fullWidth
        margin="normal"
        InputLabelProps={{

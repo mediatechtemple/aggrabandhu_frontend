@@ -23,6 +23,7 @@ const LoginPage = () => {
     father_name: '',
     mother_name: '',
     dob: '',
+    total_age:'',
     marital_status: '',
     spouse_name: '',
     marriage_date:'',
