@@ -93,7 +93,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
           {
           [
             { text: 'Dashboard', icon: <DashboardIcon />, route: '/Dashboard' ,roles:['admin']},
-            { text: 'Profile', icon: <PersonIcon />, route: '/Profile',roles:['admin','user'] },
+            { text: 'Profile', icon: <PersonIcon />, route: '/Profile',roles:['user'] },
             { text: 'Live Donation', icon: <VolunteerActivismIcon />, route: '/Live-Donation',roles:['user'] },
             { text: 'My Donation', icon: <DonationIcon />, route: '/My-Donation',roles:['user'] },
             { text: 'Member List', icon: <PeopleIcon />, route: '/Member-List',roles:['user'] },
@@ -102,7 +102,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             { text: 'Support', icon: <SupportIcon />, route: '/Support',roles:['user'] },
             { text: 'Follow Us', icon: <FollowTheSignsIcon />, route: '/Follow-Us',roles:['user'] },
             { text: 'Legal For Web', icon: <GavelIcon />, route: '/Legal-For-Web',roles:['user'] },
-            { text: 'User Management', icon: <GroupIcon />, route: '/User-Management',roles:['admin'] },
+            { text: 'Admin Management', icon: <GroupIcon />, route: '/User-Management',roles:['admin'] },
             { text: 'Members Management', icon: <PeopleIcon />, route: '/Members',roles:['admin'] },
             { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers',roles:['admin'] },
             { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations',roles:['admin'] },
@@ -207,6 +207,33 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
                   <ListItemText primary="Profession" />
                 </ListItem>
               </Link>
+
+            {/* here we are going to add three more inputs */}
+
+            <Link href="/Rules_Regulations" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><WorkIcon /></ListItemIcon>
+                  <ListItemText primary="Rules_Regulations" />
+                </ListItem>
+              </Link>
+
+              <Link href="/Declarations" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><WorkIcon /></ListItemIcon>
+                  <ListItemText primary="Declarations" />
+                </ListItem>
+              </Link>
+
+              <Link href="/Privacy_Policy" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><WorkIcon /></ListItemIcon>
+                  <ListItemText primary="Privacy Policy" />
+                </ListItem>
+              </Link>
+
+
+
+
             </List>
           </Collapse>
             </>

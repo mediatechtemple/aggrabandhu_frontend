@@ -142,25 +142,39 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
   };
 
   const handleDobChange = (event) => {
+ 
     const selectedDate = event.target.value;
+
+    
+    const dateObj = new Date(selectedDate);
+  
+    // Extract the year from the date object
+    const year = dateObj.getFullYear()+'';
+    
+    
     const age = calculateAge(selectedDate);
 
-    if(age < 18 || age > 70){
-      alert('Sorry you can not apply membership either you age is more than 70 years or less than 18 years.');
-      setFormData({
-        ...formData,
-        dob: '',
-        total_age: ''
-      });
-      return;
-    }
+    
 
     // Update formData with marriage_date and calculated marriage_age
     setFormData({
       ...formData,
       dob: selectedDate,
-      total_age: age
+      total_age: year.length==4 ? age :''
     });
+
+
+    if(year.length==4 && year[0]!=0){
+      if(age < 18 || age > 70){
+        alert('Sorry you can not apply membership either you age is more than 70 years or less than 18 years.');
+        setFormData({
+          ...formData,
+          dob: '',
+          total_age: ''
+        });
+        return;
+      }
+    }
   };
 
 

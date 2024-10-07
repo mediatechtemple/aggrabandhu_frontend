@@ -129,51 +129,51 @@ const [mached,setMached]=useState(false);
 
 
 
-    if (file) {
-      const fileType = file.type;
+    // if (file) {
+    //   const fileType = file.type;
 
-      if(!fileType.startsWith('image/')){
-        // If it's not an image, show an error message
-        setCheckImageType1('Please upload an image file!');
-        e.target.value = ''; // Reset the file input
-      }else{
-        setCheckImageType1('');
-        const data = new FormData();
-      data.append('file', file);
-      data.append('number', formData.id_no); 
-      data.append('type_id', formData.id_type); // Change the type if needed
+    //   if(!fileType.startsWith('image/')){
+    //     // If it's not an image, show an error message
+    //     setCheckImageType1('Please upload an image file!');
+    //     e.target.value = ''; // Reset the file input
+    //   }else{
+    //     setCheckImageType1('');
+    //     const data = new FormData();
+    //   data.append('file', file);
+    //   data.append('number', formData.id_no); 
+    //   data.append('type_id', formData.id_type); // Change the type if needed
 
 
-      try {
-        const response = await fetch('https://agerbandhu-production.up.railway.app/api/validate-image', {
-          method: 'POST',
-          body: data,
-        });
+    //   try {
+    //     const response = await fetch('https://agerbandhu-production.up.railway.app/api/validate-image', {
+    //       method: 'POST',
+    //       body: data,
+    //     });
 
-        console.log(response);
-        if(response.status===406){
-          alert('Entry is duplicate already register.Please enter new number');
-          return;
-        }
-        const result = await response.json();
+    //     console.log(response);
+    //     if(response.status===406){
+    //       alert('Entry is duplicate already register.Please enter new number');
+    //       return;
+    //     }
+    //     const result = await response.json();
         
 
-        // Check for validation and matching
-        if (result.valid && result.matched) {
-          setVoterIdVerificationMessage(`Verification successful! Number: ${result.panNumber}`);
-        } else {
-          setMached(true);
-          setVoterIdVerificationMessage('Document number does not match.');
-        }
-      } catch (error) {
-        setMached(true);
-        setVoterIdVerificationMessage('Verification failed. Please try again.');
-      }
+    //     // Check for validation and matching
+    //     if (result.valid && result.matched) {
+    //       setVoterIdVerificationMessage(`Verification successful! Number: ${result.panNumber}`);
+    //     } else {
+    //       setMached(true);
+    //       setVoterIdVerificationMessage('Document number does not match.');
+    //     }
+    //   } catch (error) {
+    //     setMached(true);
+    //     setVoterIdVerificationMessage('Verification failed. Please try again.');
+    //   }
 
-      // Reset file input
-      voterIdFileInputRef.current.value = '';
-      }
-    }
+    //   // Reset file input
+    //   voterIdFileInputRef.current.value = '';
+    //   }
+    // }
 
 
 
