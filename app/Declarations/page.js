@@ -43,7 +43,7 @@ const FileUploadComponent = () => {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h2 className="text-xl mb-4">Upload Rules and Regulations</h2>
+      <h2 className="text-xl mb-4">Declarations</h2>
 
       {/* Upload Button */}
       <label className="w-64 flex flex-col items-center px-4 py-6 bg-gray-200 text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-400 hover:text-white">

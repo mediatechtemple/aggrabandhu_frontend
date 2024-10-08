@@ -69,7 +69,7 @@ const FileUploadComponent = () => {
 
   return (
     <div className="flex flex-col items-center p-4">
-      <h2 className="text-xl mb-4">Upload Rules and Regulations</h2>
+      <h2 className="text-xl mb-4">Update privacy policy Term & Condition</h2>
 
       {/* Upload Button */}
       <label className="w-64 flex flex-col items-center px-4 py-6 bg-gray-200 text-blue rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue-400 hover:text-white">
@@ -103,12 +103,12 @@ const FileUploadComponent = () => {
         <div className="mt-4 w-full">
           <h3 className="text-lg mb-2">Uploaded PDF:</h3>
           <iframe
-  src={`${pdfFilePath ? `https://agerbandhu-production.up.railway.app${pdfFilePath}` : `https://agerbandhu-production.up.railway.app${file}`}`} // Replace with your domain
-  width="100%"
-  height="600"
-  className="border border-gray-300"
-  title="Uploaded PDF"
-/>
+            src={`${pdfFilePath ? `https://agerbandhu-production.up.railway.app${pdfFilePath}` : `https://agerbandhu-production.up.railway.app${file}`}`} // Replace with your domain
+            width="100%"
+            height="600"
+            className="border border-gray-300"
+            title="Uploaded PDF"
+            />
           {/* <p className="mt-2">Mounted Time: {new Date(mountedTime).toLocaleString()}</p> Display mounted time */}
         </div>
       )}
