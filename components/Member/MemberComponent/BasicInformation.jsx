@@ -224,8 +224,8 @@ const BasicInformation = ({
         <MenuItem value="Single">Single</MenuItem>
         <MenuItem value="Married">Married</MenuItem>
         <MenuItem value="Divorced">Divorced</MenuItem>
-        <MenuItem value="Window">Widow</MenuItem>
-        <MenuItem value="Windower">Widower</MenuItem>
+        <MenuItem value="Widow">Widow</MenuItem>
+        <MenuItem value="Widower">Widower</MenuItem>
       </Select>
     </FormControl>
 
