@@ -185,7 +185,10 @@ const DiseaseAndRules = ({
   >
     <DialogContentText >
             <div className="mt-4 p-4 border border-blue-300 rounded overflow-x-auto">
-            <div dangerouslySetInnerHTML={{ __html: declarations }} />
+            <div 
+             onContextMenu={(e) => e.preventDefault()}
+            dangerouslySetInnerHTML={{ __html: declarations }} 
+            />
             <div className='text-right'>
             <Button onClick={handleClose} color="secondary" variant="contained" className='m-2'>
               Close
@@ -250,7 +253,10 @@ const DiseaseAndRules = ({
       <DialogContent>
         <DialogContentText>
         <div className="mt-4 p-4 border border-blue-300 rounded overflow-x-auto">
-            <div dangerouslySetInnerHTML={{ __html: postedData }} />
+            <div 
+             onContextMenu={(e) => e.preventDefault()}
+            dangerouslySetInnerHTML={{ __html: postedData }} 
+            />
             <div className='text-right'>
             <Button onClick={handleDeclarationClose} color="secondary" variant="contained" className='m-2'>
               Close
