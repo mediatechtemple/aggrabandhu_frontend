@@ -527,7 +527,7 @@ const handleSubmittt = async (e) => {
           alt="Aadhar"
           width={250}
           height={200}
-          className="rounded-lg object-cover w-full h-full"
+          className="rounded-lg object-fit w-full h-full"
         />
       )}
     </div>
@@ -538,7 +538,7 @@ const handleSubmittt = async (e) => {
         <Image
           src={`https://agerbandhu-production.up.railway.app${member.id_file}`}
           alt="Pancard Image"
-          className="rounded-lg object-cover w-full h-full"
+          className="rounded-lg object-fit w-full h-full"
           width={250}
           height={200}
         />
@@ -548,32 +548,21 @@ const handleSubmittt = async (e) => {
 
   {/* Disease Image Section */}
   
-  <div className="flex flex-nowrap justify-center gap-6 ">
+  <div className="flex flex-nowrap gap-6 ">
     {/* Aadhar Image */}
-    <div className="relative  shadow-md p-2 w-1/2">
-      {member.diseaseUrl && (
+    <div className="relative  shadow-md p-2 w-1/2 border border-gray-300 h-auto  m-1">
+      {member.diseaseFile && (
         <Image
-          src={`https://agerbandhu-production.up.railway.app${member.diseaseUrl}`}
-          alt="Aadhar"
+          src={`https://agerbandhu-production.up.railway.app${member.diseaseFile}`}
+          alt="desiese document"
           width={250}
           height={200}
-          className="rounded-lg object-cover w-full h-full"
+          className="rounded-lg object-fit w-full h-full"
         />
       )}
     </div>
+
   </div>
- 
-    {/* <div className="relative  shadow-md p-2 ">
-      {true && (
-        <Image
-          src={`https://agerbandhu-production.up.railway.app${member.id_file}`}
-          alt="Disease"
-          className="rounded-lg object-cover w-full h-full"
-          width={150}
-          height={150}
-        />
-      )}
-    </div> */}
   
 </div>
 
