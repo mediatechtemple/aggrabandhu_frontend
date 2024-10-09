@@ -237,6 +237,10 @@ const handleEditClick = (edit) => {
   const handleClose=()=>{
     setOpen(false);
   }
+
+  const Cross_handleClose=()=>{
+    setOpen(false);
+  }
   
 
 
@@ -310,6 +314,7 @@ const handleSubmittt = async (e) => {
       handleSubmit={handleSubmittt}
       handlePincodeChange={handlePincodeChange}
       block={block}
+      Cross_handleClose={Cross_handleClose}
         />
 
         
