@@ -118,6 +118,19 @@ const DiseaseAndRules = ({
     handleDeclarationClose();  // Closes the dialog
   };
 
+
+
+  const handleCopy = (e) => {
+    e.preventDefault(); // Prevent default copy action
+  };
+
+  const handleKeyDown = (e) => {
+    // Prevent Ctrl+C and Ctrl+X
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'x')) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
 
@@ -187,6 +200,9 @@ const DiseaseAndRules = ({
             <div className="mt-4 p-4 border border-blue-300 rounded overflow-x-auto">
             <div 
              onContextMenu={(e) => e.preventDefault()}
+             onCopy={handleCopy} // Disable copy event
+             onKeyDown={handleKeyDown} // Disable keyboard copy
+             tabIndex={0} // Make the div focusable to capture key events
             dangerouslySetInnerHTML={{ __html: declarations }} 
             />
             <div className='text-right'>
@@ -255,6 +271,9 @@ const DiseaseAndRules = ({
         <div className="mt-4 p-4 border border-blue-300 rounded overflow-x-auto">
             <div 
              onContextMenu={(e) => e.preventDefault()}
+             onCopy={handleCopy} // Disable copy event
+             onKeyDown={handleKeyDown} // Disable keyboard copy
+             tabIndex={0} // Make the div focusable to capture key events
             dangerouslySetInnerHTML={{ __html: postedData }} 
             />
             <div className='text-right'>
