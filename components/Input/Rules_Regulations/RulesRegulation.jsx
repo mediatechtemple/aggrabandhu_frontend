@@ -1,9 +1,10 @@
 'use client'
+// import JoditEditor from 'jodit-react';
 import dynamic from 'next/dynamic'; // Dynamically import the editor
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false });
 import React, { useEffect, useRef, useState } from 'react';
 
-const Page = () => {
+const RulesRegulation = () => {
     const editorRef = useRef(null); // Create a ref for the editor instance
     const[content,setContent]=useState(false);
     const [postedData, setPostedData] = useState(null);
@@ -19,18 +20,18 @@ const Page = () => {
 
         const postContent = async () => {
             try {
-              const response = await fetch('https://agerbandhu-production.up.railway.app/api/declearation/', {
+              const response = await fetch('https://agerbandhu-production.up.railway.app/api/rule/', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ declearation: editorRef.current.value }), // Sending content as JSON
+                body: JSON.stringify({ rule: editorRef.current.value }), // Sending content as JSON
               });
         
               if (response.ok) {
                 const data = await response.json();
                 console.log('Content posted successfully:', data);
-                setPostedData(data.declearation); // Assuming the API returns the posted rule in the response
+                setPostedData(data.rule); // Assuming the API returns the posted rule in the response
                 setContent(''); // Clear the editor content
               } else {
                 console.error('Error posting content:', response.statusText);
@@ -47,12 +48,12 @@ const Page = () => {
     useEffect(()=>{
         const getContent = async () => {
             try {
-              const response = await fetch('https://agerbandhu-production.up.railway.app/api/declearation/');
+              const response = await fetch('https://agerbandhu-production.up.railway.app/api/rule/');
         
               if (response.ok) {
                 const data = await response.json();
                 console.log('Content posted successfully:', data);
-                setPostedData(data[0].declearation); // Assuming the API returns the posted rule in the response
+                setPostedData(data[0].rule); // Assuming the API returns the posted rule in the response
                 setContent(''); // Clear the editor content
               } else {
                 console.error('Error posting content:', response.statusText);
@@ -69,7 +70,7 @@ const Page = () => {
     return (
         <>
         <div>
-            <h2 className='text-center bg-blue-500 text-white p-4 text-2xl'>Declarations</h2>
+            <h2 className='text-center bg-blue-500 text-white p-4 text-2xl'>Rules & Regulations</h2>
             <form onSubmit={handleSubmit}> {/* Wrap editor in a form */}
                 <div>
                     <JoditEditor
@@ -83,7 +84,7 @@ const Page = () => {
 
             {postedData && ( // Conditionally rendering the posted data
             <div className="mt-4 p-4 border border-blue-300 rounded overflow-x-auto">
-            <h3 className="text-lg font-semibold">Posted Declarations:</h3>
+            <h3 className="text-lg font-semibold">Posted Rules and Regulations:</h3>
             <div dangerouslySetInnerHTML={{ __html: postedData }} />
         </div>
             )
@@ -93,4 +94,4 @@ const Page = () => {
     );
 }
 
-export default Page;
+export default RulesRegulation;

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Checkbox, FormControlLabel, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material';
 
 const DiseaseAndRules = ({
@@ -11,6 +11,52 @@ const DiseaseAndRules = ({
 }) => {
   const [open, setOpen] = useState(false);  // Popup state
   const [decOpen, setDecOpen] = useState(false);
+  const [postedData, setPostedData] = useState(null);
+  const [declarations,setDeclarations]=useState(null);
+  
+  useEffect(()=>{
+    const getContent = async () => {
+        try {
+          const response = await fetch('https://agerbandhu-production.up.railway.app/api/declearation/');
+    
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Content posted successfully:', data);
+            setPostedData(data[0].declearation); // Assuming the API returns the posted rule in the response
+            
+          } else {
+            console.error('Error posting content:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+      
+      getContent();
+
+  },[])
+
+  useEffect(()=>{
+    const getContent = async () => {
+        try {
+          const response = await fetch('https://agerbandhu-production.up.railway.app/api/rule/');
+    
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Content posted successfully:', data);
+            setDeclarations(data[0].rule); // Assuming the API returns the posted rule in the response
+            
+          } else {
+            console.error('Error posting content:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+      
+      getContent();
+
+  },[])
 
   // 
   
@@ -127,35 +173,41 @@ const DiseaseAndRules = ({
            overflowY: 'auto', // allows scrolling if content overflows
           } // Set width here
         }}>
-  <DialogTitle>Rules & Regulations</DialogTitle>
-  <DialogContent onClick={handleContextMenu} 
-  style={{
-     // Set a high z-index to appear above the iframe
-    pointerEvents: 'none', // Prevents the overlay from blocking interactions with the iframe
-  }}
+  <DialogTitle
+   sx={{ 
+    textAlign: 'center', // Center align text
+    color: 'white',      // White text color
+    backgroundColor: 'blue', // Blue background color
+    // padding: '16px', // Optional padding
+}}
+  >Rules & Regulations</DialogTitle>
+  <DialogContent
   >
     <DialogContentText >
-          <iframe
-              ref={iframeRef}
-              src="/rules_regulation/Rule & Regulation.pdf"
-              width="100%"
-              height="400px"
-               
-              className="border-2 border-gray-300"
-              title="PDF Viewer"
-              
-            ></iframe>
+            <div className="mt-4 p-4 border border-blue-300 rounded overflow-x-auto">
+            <div dangerouslySetInnerHTML={{ __html: declarations }} />
+            <div className='text-right'>
+            <Button onClick={handleClose} color="secondary" variant="contained" className='m-2'>
+              Close
+            </Button>
+            <Button onClick={handleAcceptRules} color="primary" variant="contained">
+              Accept Rules
+            </Button>
+            </div>
+          </div>
+            
+            
 
     </DialogContentText>
   </DialogContent>
-  <DialogActions>
+  {/* <DialogActions>
     <Button onClick={handleClose} color="secondary" variant="contained">
       Close
     </Button>
     <Button onClick={handleAcceptRules} color="primary" variant="contained">
       Accept Rules
     </Button>
-  </DialogActions>
+  </DialogActions> */}
       </Dialog>
 
 
@@ -187,25 +239,37 @@ const DiseaseAndRules = ({
 
       {/* Popup for Rules & Regulations */}
       <Dialog open={decOpen} onClose={handleDeclarationClose}>
-      <DialogTitle>Declaration</DialogTitle>
+      <DialogTitle
+       sx={{ 
+        textAlign: 'center', // Center align text
+        color: 'white',      // White text color
+        backgroundColor: 'blue', // Blue background color
+        // padding: '16px', // Optional padding
+    }}
+      >Declaration</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          {/* Declaration text in Hindi and English */}
-          अग्रबंधु सेवार्थ संस्थान (ABSS) -आज का सहयोग, कल की सुरक्षास्व-घोषणा
-          मैंने डोनर पंजीकरण से पहले संस्थान की वेबसाइट पर ABSS के सभी नियम और विनियम पढ़ लिए हैं और मैं उन नियमों से सहमत हूँ। मैं भविष्य में ABSS के अद्यतन नवीनतम नियमों से खुद को अपडेट रखूँगा और उनसे सहमत रहूँगा। मैं और मेरा परिवार ABSS पर कभी भी नियमों से परे किसी भी लाभ के लिए दबाव नहीं बनाएंगे। मैं इस बात पर अपनी सहमति देता हूँ कि मुझे या मेरे परिवार को केवल उन्हीं लाभों का हक मिलेगा जो नियमों के अंतर्गत आते हैं। मैं और मेरा परिवार भविष्य में किसी भी प्रकार का न्यायिक या कानूनी विवाद दायर नहीं करेंगे।
-          Self-Declaration
-          I have read and understood all the rules and regulations of ABSS on the institutions website before registering as a donor, and I agree with the rules. I will keep myself updated with the latest rules of ABSS in the future and will agree to them as well. My family and I will never exert any pressure on ABSS for any benefits beyond what is stipulated by the rules. I give my consent that any benefits for me or my family will be granted only if they fall within the rules. My family and I will not pursue any judicial or legal disputes in the future
-
+        <div className="mt-4 p-4 border border-blue-300 rounded overflow-x-auto">
+            <div dangerouslySetInnerHTML={{ __html: postedData }} />
+            <div className='text-right'>
+            <Button onClick={handleDeclarationClose} color="secondary" variant="contained" className='m-2'>
+              Close
+            </Button>
+            <Button onClick={handleDeclarationAcceptRules} color="primary" variant="contained">
+              Accept Rules
+            </Button>
+            </div>
+          </div>
         </DialogContentText>
       </DialogContent>
-      <DialogActions>
+      {/* <DialogActions>
         <Button onClick={handleDeclarationClose} color="secondary" variant="contained">
           Close
         </Button>
         <Button onClick={handleDeclarationAcceptRules} color="primary" variant="contained">
           Accept Declaration
         </Button>
-      </DialogActions>
+      </DialogActions> */}
     </Dialog>
 
     </>

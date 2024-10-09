@@ -231,7 +231,12 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
                 </ListItem>
               </Link>
 
-
+              <Link href="/term_condition" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><WorkIcon /></ListItemIcon>
+                  <ListItemText primary="Term & Condition" />
+                </ListItem>
+              </Link>
 
 
             </List>

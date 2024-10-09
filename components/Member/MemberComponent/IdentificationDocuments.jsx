@@ -153,7 +153,7 @@ const [mached,setMached]=useState(false);
         console.log(response);
         if(response.status===406){
           setVoterIdVerificationMessage(`File Selected!`);
-          // alert('Entry is duplicate already register.Please enter new number');
+          alert('Entry is duplicate already register.Please enter new number');
           return;
         }
         const result = await response.json();
@@ -332,7 +332,9 @@ const [mached,setMached]=useState(false);
         className={`font-bold font-serif text-3xl ${!mached ? 'text-blue-500' : 'text-blue-500'}`} 
         
   >
-          <p className='text-blue-700'>{voterIdVerificationMessage}</p>
+          {/* <p className='text-blue-700'>{voterIdVerificationMessage}</p> */}
+          <p className='text-blue-700'>File Selected</p>
+
         </Typography>
 
       )}
