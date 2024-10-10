@@ -49,7 +49,7 @@ const PrivacyPolicy = () => {
               if (response.ok) {
                 const data = await response.json();
                 console.log('Fetched content:', data);
-                setPostedData(data[0].policy); // Assuming the API returns the policy
+                setPostedData(data[0].rule); // Assuming the API returns the policy
               } else {
                 console.error('Error fetching content:', response.statusText);
               }
