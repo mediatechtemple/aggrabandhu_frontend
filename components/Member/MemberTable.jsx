@@ -95,7 +95,9 @@ const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers }) 
     const ImgUrl = `https://agerbandhu-production.up.railway.app${member.profileUrl ? member.profileUrl : ''}`;
     const IdUrl = `https://agerbandhu-production.up.railway.app${member.id_file ? member.id_file : ''}`;
     const aadharUrl = `https://agerbandhu-production.up.railway.app${member.aadharUrl ? member.aadharUrl : ''}`;
-    const diseaseUrl = member.diseaseFile ? `https://agerbandhu-production.up.railway.app${member.diseaseFile}` : '';
+    const diseaseUrl = `https://agerbandhu-production.up.railway.app${member.diseaseFile ? member.diseaseFile : ''}`;
+
+    // const diseaseUrl = member.diseaseFile ? `https://agerbandhu-production.up.railway.app${member.diseaseFile}` : '';
 
     console.log(ImgUrl);
     const printWindow = window.open('', '', 'width=800,height=600');
@@ -195,7 +197,16 @@ const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers }) 
                 width="100%"
                 height="150"
               />
-              ${diseaseUrl ? `<img src="${diseaseUrl}" alt="Disease" width="100%" height="150" />` : ''}
+             
+            </div>
+            <div class="flex-container">
+               <img
+                src="${diseaseUrl}"
+                alt="Aadhar"
+                width="33%"
+                height="150"
+              />
+             
             </div>
         </body>
       </html>
