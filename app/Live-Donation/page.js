@@ -29,10 +29,10 @@ const Page = () => {
             </td>
             <td className="p-2 text-center border">$500</td>
             <td className="p-2 text-center border">
-                <input type="text" className="border p-1" />
+                <input type="text" placeholder='transaction no' className="border p-1" />
             </td>
             <td className="p-2 text-center border">
-                <input type="text" className="border p-1"/>
+                <input type="text" placeholder='donated amount' className="border p-1"/>
             </td>
             <td className="p-2 text-center border">
                 <input type="file" className="border p-1"/>
