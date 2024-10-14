@@ -53,7 +53,7 @@ const Page = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://backend.aggrabandhuss.org/api/member/referal/17');
+        const response = await fetch('https://backend.aggrabandhuss.org/api/member/referal/' + JSON.parse(localStorage.getItem('user')).userid);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
