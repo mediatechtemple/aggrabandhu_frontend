@@ -92,12 +92,12 @@ const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers }) 
 
 
   const handlePrint = (member) => {
-    const ImgUrl = `https://agerbandhu-production.up.railway.app${member.profileUrl ? member.profileUrl : ''}`;
-    const IdUrl = `https://agerbandhu-production.up.railway.app${member.id_file ? member.id_file : ''}`;
-    const aadharUrl = `https://agerbandhu-production.up.railway.app${member.aadharUrl ? member.aadharUrl : ''}`;
-    const diseaseUrl = `https://agerbandhu-production.up.railway.app${member.diseaseFile ? member.diseaseFile : ''}`;
+    const ImgUrl = `https://backend.aggrabandhuss.org${member.profileUrl ? member.profileUrl : ''}`;
+    const IdUrl = `https://backend.aggrabandhuss.org${member.id_file ? member.id_file : ''}`;
+    const aadharUrl = `https://backend.aggrabandhuss.org${member.aadharUrl ? member.aadharUrl : ''}`;
+    const diseaseUrl = `https://backend.aggrabandhuss.org${member.diseaseFile ? member.diseaseFile : ''}`;
 
-    // const diseaseUrl = member.diseaseFile ? `https://agerbandhu-production.up.railway.app${member.diseaseFile}` : '';
+    // const diseaseUrl = member.diseaseFile ? `https://backend.aggrabandhuss.org${member.diseaseFile}` : '';
 
     console.log(ImgUrl);
     const printWindow = window.open('', '', 'width=800,height=600');
@@ -259,7 +259,7 @@ const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers }) 
       
         // Make the API call to update the status on the server
         try {
-          const response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/${member.id}`, {
+          const response = await fetch(`https://backend.aggrabandhuss.org/api/member/${member.id}`, {
             method: 'PUT', // Assuming it's a PUT request to update data
             headers: {
               'Content-Type': 'application/json',
@@ -324,7 +324,7 @@ const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers }) 
             </span>
           ) : key === 'profileUrl' ? (
             <Image
-              src={`https://agerbandhu-production.up.railway.app${member.profileUrl ? member.profileUrl : ''}`}
+              src={`https://backend.aggrabandhuss.org${member.profileUrl ? member.profileUrl : ''}`}
               alt="Profile"
               width={50}
               height={50}
@@ -672,8 +672,8 @@ export default MemberTable;
 //                     </span>
 //                   ) :key==='profileUrl'? (
 //                     <Image
-//                     // src={`https://agerbandhu-production.up.railway.app${member.profileUrl? member.profileUrl? member.profile}`}
-//                     src={`https://agerbandhu-production.up.railway.app${member.profileUrl ? member.profileUrl : ''}`}
+//                     // src={`https://backend.aggrabandhuss.org${member.profileUrl? member.profileUrl? member.profile}`}
+//                     src={`https://backend.aggrabandhuss.org${member.profileUrl ? member.profileUrl : ''}`}
 
 //                     alt="Profile"
 //                     width={50}  // Set width

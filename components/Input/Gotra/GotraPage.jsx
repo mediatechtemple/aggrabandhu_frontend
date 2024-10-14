@@ -20,7 +20,7 @@ const GotraPage = () => {
     const fetchGotras = async () => {
       
       try {
-        const response = await fetch('https://agerbandhu-production.up.railway.app/api/gotra');
+        const response = await fetch('https://backend.aggrabandhuss.org/api/gotra');
         const data = await response.json();
         setGotras(data);
         
@@ -42,7 +42,7 @@ const handleAddGotra = async (gotra) => {
     
     if (editIndex !== null) {
       // If we are editing, make a PUT request to update the gotra
-      const response = await fetch(`https://agerbandhu-production.up.railway.app/api/gotra/${editIndex}`, {
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/gotra/${editIndex}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const handleAddGotra = async (gotra) => {
 
     } else {
       // If adding a new gotra, make a POST request
-      const response = await fetch('https://agerbandhu-production.up.railway.app/api/gotra', {
+      const response = await fetch('https://backend.aggrabandhuss.org/api/gotra', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ const handleAddGotra = async (gotra) => {
     console.log(id);
     try {
       // Make an API request to delete the gotra by its id
-      const response = await fetch(`https://agerbandhu-production.up.railway.app/api/gotra/${id}`, {
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/gotra/${id}`, {
         method: 'DELETE',
       });
   

@@ -35,32 +35,47 @@ const members = [
 const columns = [
   { key: 'SNo', label: 'S.No' },
   { key: 'memberId', label: 'Member Id' },
+  { key: 'referenceId', label: 'Reference Id' },
   { key: 'memberName', label: 'Member Name' },
   { key: 'phoneNo', label: 'Phone No' },
   { key: 'address', label: 'Address' },
-  { key: 'referenceId', label: 'Reference Id' },
   { key: 'totalReferred', label: 'Total Referred' }
 ];
+
+
 
 const Page = () => {
   const [sortConfig, setSortConfig] = useState(null);
 
   // Function to display sort arrows
   const getSortIcon = (key) => {
+
     if (!sortConfig || sortConfig.key !== key) {
       return '↑↓'; // Show both arrows by default
     }
+
     return sortConfig.direction === 'asc' ? '↑' : '↓';
+
   };
+
+
+
+
 
   const handleSort = (key) => {
     let direction = 'asc';
     if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
       direction = 'desc';
     }
+    //here this will run for the first time which is upper arrow..
     setSortConfig({ key, direction });
   };
 
+
+
+
+
+//Here this code will run based on the arrow functionality brother let's see what happern here
   // Sort the data based on sortConfig
   const sortedMembers = React.useMemo(() => {
     if (sortConfig !== null) {
@@ -68,6 +83,7 @@ const Page = () => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
           return sortConfig.direction === 'asc' ? -1 : 1;
         }
+
         if (a[sortConfig.key] > b[sortConfig.key]) {
           return sortConfig.direction === 'asc' ? 1 : -1;
         }
@@ -77,10 +93,21 @@ const Page = () => {
     return members;
   }, [sortConfig]);
 
+// Here i will make my function myself-----
+
+
+
+
+
   return (
+    <>
+   
     <div className='overflow-x-auto'>
       <table className='w-full table-auto border-collapse border border-gray-300'>
         <thead>
+
+
+
           <tr>
             {columns.map(({ key, label }) => (
               <th
@@ -93,22 +120,28 @@ const Page = () => {
               </th>
             ))}
           </tr>
+
+
+
+
         </thead>
         <tbody>
           {sortedMembers.map((item) => (
             <tr key={item.SNo}>
               <td className='p-2 text-center border'>{item.SNo}</td>
               <td className='p-2 text-center border'>{item.memberId}</td>
+              <td className='p-2 text-center border'>{item.referenceId}</td>
               <td className='p-2 text-center border'>{item.memberName}</td>
               <td className='p-2 text-center border'>{item.phoneNo}</td>
               <td className='p-2 text-center border'>{item.address}</td>
-              <td className='p-2 text-center border'>{item.referenceId}</td>
               <td className='p-2 text-center border'>{item.totalReferred}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
+
+    </>
   );
 };
 

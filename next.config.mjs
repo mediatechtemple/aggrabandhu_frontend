@@ -6,7 +6,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-      domains: ['agerbandhu-production.up.railway.app',"https://agerbandhu-production.up.railway.appundefined"],
+      domains: ['agerbandhu-production.up.railway.app',"https://backend.aggrabandhuss.orgundefined","backend.aggrabandhuss.org"],
       remotePatterns: [
         {
           protocol: 'https',

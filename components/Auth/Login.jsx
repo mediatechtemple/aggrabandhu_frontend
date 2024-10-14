@@ -21,7 +21,7 @@ const LoginPage = () => {
     };
 
     try {
-      const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/login', {
+      const response = await fetch('https://backend.aggrabandhuss.org/api/member/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

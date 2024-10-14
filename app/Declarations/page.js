@@ -16,7 +16,7 @@ const PrivacyPolicy = () => {
         // Post the content
         const postContent = async () => {
             try {
-              const response = await fetch('https://agerbandhu-production.up.railway.app/api/declearation/', {
+              const response = await fetch('https://backend.aggrabandhuss.org/api/declearation/', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const PrivacyPolicy = () => {
     useEffect(() => {
         const getContent = async () => {
             try {
-              const response = await fetch('https://agerbandhu-production.up.railway.app/api/declearation/');
+              const response = await fetch('https://backend.aggrabandhuss.org/api/declearation/');
         
               if (response.ok) {
                 const data = await response.json();

@@ -13,7 +13,7 @@ const ForgetId = () => {
     e.preventDefault();
 
     // API URL for the request
-    const apiUrl = "https://agerbandhu-production.up.railway.app/api/member/forget-id";
+    const apiUrl = "https://backend.aggrabandhuss.org/api/member/forget-id";
 
     try {
       const response = await fetch(apiUrl, {

@@ -17,7 +17,7 @@ export default function ForgotPassword() {
     e.preventDefault();
   
     // Example API URL for sending OTP
-    const apiUrl = `https://agerbandhu-production.up.railway.app/api/member/forget-password/${mobileNo}`;
+    const apiUrl = `https://backend.aggrabandhuss.org/api/member/forget-password/${mobileNo}`;
   
     try {
       // Make an API call to send OTP
@@ -55,7 +55,7 @@ export default function ForgotPassword() {
     e.preventDefault();
   
     // Example API URL for OTP verification and password reset
-    const apiUrl = `https://agerbandhu-production.up.railway.app/api/member/verify/${mobileNo}`;
+    const apiUrl = `https://backend.aggrabandhuss.org/api/member/verify/${mobileNo}`;
   
     try {
       if (password === confirmPassword) {

@@ -21,7 +21,7 @@ const BasicInformation = ({
   useEffect(() => {
     const fetchGotras = async () => {
       try {
-        const response = await fetch('https://agerbandhu-production.up.railway.app/api/gotra');
+        const response = await fetch('https://backend.aggrabandhuss.org/api/gotra');
         const data = await response.json();
         setGotraOptions(data);
         
@@ -36,7 +36,7 @@ const BasicInformation = ({
   useEffect(() => {
     async function fetchProfession() {
         try {
-            const response = await fetch('https://agerbandhu-production.up.railway.app/api/profession');
+            const response = await fetch('https://backend.aggrabandhuss.org/api/profession');
             if (!response.ok) {
                 throw new Error('Error fetching professions');
             }

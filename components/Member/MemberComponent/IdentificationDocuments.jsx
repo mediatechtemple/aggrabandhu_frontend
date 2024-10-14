@@ -54,7 +54,7 @@ const [mached,setMached]=useState(false);
       data.append('type_id', 'aadhar card');
 
       try {
-        const response = await fetch('https://agerbandhu-production.up.railway.app/api/validate-image', {
+        const response = await fetch('https://backend.aggrabandhuss.org/api/validate-image', {
           method: 'POST',
           body: data,
         });
@@ -145,7 +145,7 @@ const [mached,setMached]=useState(false);
 
 
       try {
-        const response = await fetch('https://agerbandhu-production.up.railway.app/api/validate-image', {
+        const response = await fetch('https://backend.aggrabandhuss.org/api/validate-image', {
           method: 'POST',
           body: data,
         });

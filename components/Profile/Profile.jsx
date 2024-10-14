@@ -87,7 +87,7 @@ const Profile = () => {
 
 
 
-        const response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/detail?key=id&&value=${JSON.parse(jsonString).userid}`);
+        const response = await fetch(`https://backend.aggrabandhuss.org/api/member/detail?key=id&&value=${JSON.parse(jsonString).userid}`);
         if (!response.ok) {
           throw new Error("Failed to fetch member details");
         }
@@ -136,7 +136,7 @@ const handleEditClick = (edit) => {
     member['file2']=member.id_file;
     member['profile']=member.profileUrl;
     member['photo']=member.profileUrl.substring(member.profileUrl.lastIndexOf('/') + 1);
-    member['photoUrl']=`https://agerbandhu-production.up.railway.app${member.profileUrl}`;
+    member['photoUrl']=`https://backend.aggrabandhuss.org${member.profileUrl}`;
     member['diseaseFileName']=member.diseaseFile ? member.diseaseFile.substring(member.diseaseFile.lastIndexOf('/') + 1) :'';
     if(member['id_type']=='PAN Card'){
       member['id_type']='Pan card';
@@ -261,7 +261,7 @@ const handleSubmittt = async (e) => {
   
     try {
       let response;
-        response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/${memberId}`, {
+        response = await fetch(`https://backend.aggrabandhuss.org/api/member/${memberId}`, {
           method: 'PUT', // Use POST for creating a new member
           body: formToSubmit,
         });
@@ -392,7 +392,7 @@ const handleSubmittt = async (e) => {
             {/* Profile Image Section */}
             <div className="flex justify-center items-center flex-1">
                 <Image
-                src={`https://agerbandhu-production.up.railway.app${member.profileUrl || ''}`}
+                src={`https://backend.aggrabandhuss.org${member.profileUrl || ''}`}
                 alt="Profile"
                 width="200"
                 height="200"
@@ -523,7 +523,7 @@ const handleSubmittt = async (e) => {
     <div className="relative  shadow-md p-2 w-1/2 border border-gray-300 m-1">
       {member.aadharUrl && (
         <Image
-          src={`https://agerbandhu-production.up.railway.app${member.aadharUrl}`}
+          src={`https://backend.aggrabandhuss.org${member.aadharUrl}`}
           alt="Aadhar"
           width={250}
           height={200}
@@ -536,7 +536,7 @@ const handleSubmittt = async (e) => {
     <div className="relative  shadow-md p-2 w-1/2 border border-gray-300  m-1">
       {member.id_file && (
         <Image
-          src={`https://agerbandhu-production.up.railway.app${member.id_file}`}
+          src={`https://backend.aggrabandhuss.org${member.id_file}`}
           alt="Pancard Image"
           className="rounded-lg object-fit w-full h-full"
           width={250}
@@ -553,7 +553,7 @@ const handleSubmittt = async (e) => {
     <div className="relative  shadow-md p-2 w-1/2 border border-gray-300 h-auto  m-1">
       {member.diseaseFile && (
         <Image
-          src={`https://agerbandhu-production.up.railway.app${member.diseaseFile}`}
+          src={`https://backend.aggrabandhuss.org${member.diseaseFile}`}
           alt="desiese document"
           width={250}
           height={200}

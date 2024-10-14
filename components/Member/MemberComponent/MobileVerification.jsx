@@ -18,7 +18,7 @@ const MobileVerification = ({ formData, handleChange }) => {
     setMobileError(true);
     try {
       setLoading(true);
-      const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/otp', {
+      const response = await fetch('https://backend.aggrabandhuss.org/api/member/otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const MobileVerification = ({ formData, handleChange }) => {
   const handleVerifyOtp = async () => {
     try {
       setLoading(true);
-      const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/verifyotp', {
+      const response = await fetch('https://backend.aggrabandhuss.org/api/member/verifyotp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

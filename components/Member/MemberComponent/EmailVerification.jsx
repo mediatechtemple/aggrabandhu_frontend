@@ -11,7 +11,7 @@ const EmailVerification = ({ formData, handleChange }) => {
   // Send OTP API call
   // const handleSendOtp = async () => {
   //   try {
-  //     const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/otp', {
+  //     const response = await fetch('https://backend.aggrabandhuss.org/api/member/otp', {
   //       method: 'POST',
   //       headers: {
   //         'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const EmailVerification = ({ formData, handleChange }) => {
   // Verify OTP API call
   // const handleVerifyOtp = async () => {
   //   try {
-  //     const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/verifyotp', {
+  //     const response = await fetch('https://backend.aggrabandhuss.org/api/member/verifyotp', {
   //       method: 'POST',
   //       headers: {
   //         'Content-Type': 'application/json',

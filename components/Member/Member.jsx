@@ -77,7 +77,7 @@ console.log(members);
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await fetch('https://agerbandhu-production.up.railway.app/api/member');
+        const response = await fetch('https://backend.aggrabandhuss.org/api/member');
         if(!response.ok){
           throw new Error('Failed to fetch Donars');
         }
@@ -145,12 +145,12 @@ console.log(members);
       setLoading(true);
       if (editData) {
         // Use editData.id for the PUT request
-        response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/${editData.id}`, {
+        response = await fetch(`https://backend.aggrabandhuss.org/api/member/${editData.id}`, {
           method: 'PUT', // Use PUT for updating data
           body: formToSubmit,
         });
       } else {
-        response = await fetch('https://agerbandhu-production.up.railway.app/api/member', {
+        response = await fetch('https://backend.aggrabandhuss.org/api/member', {
           method: 'POST', // Use POST for creating a new member
           body: formToSubmit,
         });
@@ -263,7 +263,7 @@ console.log(members);
     member['file2']=member.id_file;
     member['profile']=member.profileUrl;
     member['photo']=member.profileUrl.substring(member.profileUrl.lastIndexOf('/') + 1);
-    member['photoUrl']=`https://agerbandhu-production.up.railway.app${member.profileUrl}`;
+    member['photoUrl']=`https://backend.aggrabandhuss.org${member.profileUrl}`;
     member['diseaseFileName']=member.diseaseFile ? member.diseaseFile.substring(member.diseaseFile.lastIndexOf('/') + 1) :'';
     if(member['id_type']=='PAN Card'){
       member['id_type']='Pan card';
@@ -282,7 +282,7 @@ console.log(members);
     
     if (confirmDelete) {
       try {
-        const response = await fetch(`https://agerbandhu-production.up.railway.app/api/member/${id}`, {
+        const response = await fetch(`https://backend.aggrabandhuss.org/api/member/${id}`, {
           method: 'DELETE',
         });
   

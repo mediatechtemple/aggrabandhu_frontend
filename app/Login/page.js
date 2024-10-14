@@ -123,7 +123,7 @@ const LoginPage = () => {
     };
 
     try {
-      const response = await fetch('https://agerbandhu-production.up.railway.app/api/member/login', {
+      const response = await fetch('https://backend.aggrabandhuss.org/api/member/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -242,7 +242,7 @@ const LoginPage = () => {
     try {
       setLoading(true);
       let response;
-        response = await fetch('https://agerbandhu-production.up.railway.app/api/member', {
+        response = await fetch('https://backend.aggrabandhuss.org/api/member', {
           method: 'POST', // Use POST for creating a new member
           body: formToSubmit,
         });

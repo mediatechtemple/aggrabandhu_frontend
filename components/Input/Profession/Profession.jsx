@@ -19,7 +19,7 @@ const Profession = () => {
     useEffect(() => {
         async function fetchProfession() {
             try {
-                const response = await fetch('https://agerbandhu-production.up.railway.app/api/profession');
+                const response = await fetch('https://backend.aggrabandhuss.org/api/profession');
                 if (!response.ok) {
                     throw new Error('Error fetching professions');
                 }
@@ -39,7 +39,7 @@ const Profession = () => {
         if (editIndex !== null) {
             try {
                 const professionToEdit = professions.find(p => p.id === editIndex);
-                const response = await fetch(`https://agerbandhu-production.up.railway.app/api/profession/${editIndex}`, {
+                const response = await fetch(`https://backend.aggrabandhuss.org/api/profession/${editIndex}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const Profession = () => {
             }
         } else {
             try {
-                const response = await fetch('https://agerbandhu-production.up.railway.app/api/profession', {
+                const response = await fetch('https://backend.aggrabandhuss.org/api/profession', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const Profession = () => {
 
     const handleDeleteProfession = async (id) => {
         try {
-            const response = await fetch(`https://agerbandhu-production.up.railway.app/api/profession/${id}`, {
+            const response = await fetch(`https://backend.aggrabandhuss.org/api/profession/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
