@@ -19,7 +19,7 @@ const Footer = () => {
       }}
     >
       <Typography variant="body2">
-        &copy; 2024 Media Tech Temple. All rights reserved.{' '}
+        &copy; All Right Reserved to Agrabandhu Sewarth Sansthan (ABSS) - Desing & Developed by.{' '}
         <Link href="https://mediatechtemple.com" target="_blank" rel="noopener noreferrer" color="inherit">
           Media Tech Temple
         </Link>

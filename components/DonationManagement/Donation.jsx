@@ -15,6 +15,11 @@ const StateFilter = React.lazy(() => import('../Member/StateFilter'));
 const DistrictFilter = React.lazy(() => import('../Member/DistrictFilter'));
 const Search = React.lazy(() => import('../Member/Search'));
 const ReferenceSearch = React.lazy(() => import('../Member/ReferenceSearch'));
+
+
+
+
+
 const DonationFormDialog = React.lazy(() => import('./DonationFormDialog'));
 const SearchMemberDialog = React.lazy(() => import('./SearchMemberDialog'));
 const SortableTable = React.lazy(() => import('./SortableTable'));
@@ -57,7 +62,60 @@ const ParentComponent = () => {
 
     const [receivingMethods, setReceivingMethods] = useState([]);
 
+/////////////////////////////////////////////////////////
+// Here i will make formState and and one function to  fill the form here
 
+const [formData, setFormData] = useState({
+  userId: '',
+  name: '',
+  deathDate: '',
+  image:null
+});
+
+// const [image, setImage] = useState(null);
+const [preview, setPreview] = useState(null); // State for storing image preview URL
+
+const handleImageChange = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    // setImage(file);
+    setFormData({
+      ...formData,
+      image:file
+    })
+    setPreview(URL.createObjectURL(file)); // Create and set preview URL
+  }
+};
+// Common method to handle input changes for all fields
+const handleInputChange = (e) => {
+  const { name, value } = e.target;
+  setFormData((prevData) => ({
+    ...prevData,
+    [name]: value,  // Dynamically updating the field based on its name
+  }));
+};
+
+
+useEffect(()=>{
+  console.log(formData);
+},[formData])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
 
 
   
@@ -146,8 +204,13 @@ const handleDateRangeChange = (start, end) => {
   };
 
   const handleSelectMember = (member) => {
-    setUserId(member.code);
-    setName(member.name);
+  
+    setFormData({
+      ...formData,
+      userId:member.id,
+      name:member.name
+    });
+    // setFormData(member.name);
     handleSearchDialogClose(); // Close search dialog after selection
   };
 
@@ -262,6 +325,7 @@ const handleDateRangeChange = (start, end) => {
         <Typography variant="h4" gutterBottom color='#007bff' >
           Donation Management
         </Typography>
+
         <Button variant="contained" onClick={handleOpen} sx={{ backgroundColor: '#1976d2' }}>
             New Donation
         </Button>
@@ -323,6 +387,9 @@ const handleDateRangeChange = (start, end) => {
                 onPageChange={handlePageChange}
                 onPageSizeChange={handlePageSizeChange}
             />
+
+   {/* here donation form dialog will open so today it this would be our task */}
+
             <DonationFormDialog
               popupOpen={popupOpen}
               handleClose={handleClose}
@@ -351,8 +418,13 @@ const handleDateRangeChange = (start, end) => {
               handleSearchDialogOpen={handleSearchDialogOpen}
               receivingMethods={receivingMethods}
               setReceivingMethods={setReceivingMethods}
-              
+              formData={formData}
+              handleInputChange={handleInputChange}
+              handleImageChange={handleImageChange}
+              preview={preview}
             />
+
+
             <SearchMemberDialog
               searchDialogOpen={searchDialogOpen}
               handleSearchDialogClose={handleSearchDialogClose}

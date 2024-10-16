@@ -1,5 +1,10 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, FormControl, InputLabel, Select, MenuItem, Typography, Box } from '@mui/material';
+import ImageUpload from './FormFields/ImageUpload';
+import ActiveDeactiveCheckbox from './FormFields/ActiveDeactiveCheckbox';
+import NomineeComponent from './FormFields/NomineeComponent';
+import ReceivingMethodSelect from './FormFields/ReceivingMethodSelect';
+import DateRangePicker from './FormFields/DateRangePicker';
 
 const DonationFormDialog = ({
   popupOpen,
@@ -14,6 +19,7 @@ const DonationFormDialog = ({
   setEndDate,
   receivingMethods,
   setReceivingMethods,
+
   bankName,
   setBankName,
   accountNumber,
@@ -27,18 +33,42 @@ const DonationFormDialog = ({
   upiNumber,
   setUpiNumber,
   handleFileChange,
+
   handleSubmit,
-  handleSearchDialogOpen
+  handleSearchDialogOpen,
+  formData,
+  handleInputChange,
+  handleImageChange,
+  preview
 }) => {
   const handleReceivingMethodsChange = (event) => {
     setReceivingMethods(event.target.value);
   };
 
   return (
-    <Dialog open={popupOpen} onClose={handleClose}>
-      <DialogTitle>Donation Form</DialogTitle>
+    <Dialog open={popupOpen} onClose={handleClose}
+    sx={{
+      '& .MuiDialog-paper': {
+        height: '450px',   // Customize the height of the dialog
+        maxHeight: '450px', // Limit the maximum height of the dialog
+      },
+    }}
+    >
+      <DialogTitle 
+  color="primary" 
+  sx={{
+    textAlign: 'center',
+    fontSize: '26px', // Corrected font size
+    bgcolor:'#17874'
+  }}
+>
+  Donation Receiver Registration Form
+</DialogTitle>
+
       <DialogContent>
-        <Box sx={{ mb: 2 }}>
+
+        <Box sx={{ mb: 10 }}>
+
           <Button
             variant="contained"
             color="primary"
@@ -47,32 +77,59 @@ const DonationFormDialog = ({
           >
             Search Member by ID
           </Button>
+
+
+
+
+
+
           <TextField
             autoFocus
             margin="dense"
             label="User ID"
             fullWidth
             variant="outlined"
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
+            name="userId"  // Name should match the key in formData
+            value={formData.userId}
+            // onChange={handleInputChange}
+            InputProps={{
+              readOnly: true,  // This prevents the cursor from appearing and makes the field read-only
+            }}
           />
           <TextField
             margin="dense"
             label="Name"
             fullWidth
             variant="outlined"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            name="name"  // Name should match the key in formData
+            value={formData.name}
+            // onChange={handleInputChange}
+            InputProps={{
+              readOnly: true,  // This prevents the cursor from appearing and makes the field read-only
+            }}
           />
           <TextField
-              margin="dense"
-              label="Death Date"
-              type="date"
-              fullWidth
-              variant="outlined"
-              InputLabelProps={{ shrink: true }}
-              // value={deathDate}
-              // onChange={(e) => setDeathDate(e.target.value)}
+            margin="dense"
+            label="Death Date"
+            type="date"
+            fullWidth
+            variant="outlined"
+            InputLabelProps={{ shrink: true }}
+            name="deathDate"  // Name should match the key in formData
+            value={formData.deathDate}
+            onChange={handleInputChange}
+          />
+
+
+
+
+
+
+
+            <ImageUpload
+            formData={formData}
+            preview={preview}
+            handleImageChange={handleImageChange}
             />
             
            <TextField
@@ -85,195 +142,25 @@ const DonationFormDialog = ({
               // onChange={(e) => setMinimumAmount(e.target.value)}
             />
             
-          <TextField
-            margin="dense"
-            label="Start Date"
-            type="date"
-            fullWidth
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
+          <DateRangePicker
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
           />
-          <TextField
-            margin="dense"
-            label="End Date"
-            type="date"
-            fullWidth
-            variant="outlined"
-            InputLabelProps={{ shrink: true }}
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
+
+  
+
+          <ReceivingMethodSelect 
+          receivingMethods={receivingMethods}  
+          handleReceivingMethodsChange={handleReceivingMethodsChange}
           />
-          <FormControl fullWidth variant="outlined" margin="dense">
-            <InputLabel>Receiving Method</InputLabel>
-            <Select
-              multiple
-              value={receivingMethods}
-              onChange={handleReceivingMethodsChange}
-              renderValue={(selected) => selected.join(', ')}
-              label="Receiving Method"
-            >
-              <MenuItem value="bank">Bank Transfer</MenuItem>
-              <MenuItem value="upiId">UPI ID</MenuItem>
-              <MenuItem value="upiNumber">UPI Number</MenuItem>
-              <MenuItem value="qrCode">QR Code</MenuItem>
-            </Select>
-          </FormControl>
 
-          {receivingMethods.includes('bank') && (
-            <Box
-              sx={{
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                padding: '16px',
-                marginTop: '16px',
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  borderBottom: '1px solid #ccc',
-                  paddingBottom: '8px',
-                  marginBottom: '8px',
-                  color:'#1976d2'
-                }}
-              >
-                Bank Details
-              </Typography>
-              <TextField
-                margin="dense"
-                label="Bank Name"
-                fullWidth
-                variant="outlined"
-                value={bankName}
-                onChange={(e) => setBankName(e.target.value)}
-              />
-              <TextField
-                margin="dense"
-                label="Account Number"
-                fullWidth
-                variant="outlined"
-                value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
-              />
-              <TextField
-                margin="dense"
-                label="IFSC Code"
-                fullWidth
-                variant="outlined"
-                value={ifscCode}
-                onChange={(e) => setIfscCode(e.target.value)}
-              />
-            </Box>
-          )}
+          
 
-          {receivingMethods.includes('upiId') && (
-            <Box
-              sx={{
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                padding: '16px',
-                marginTop: '16px',
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  borderBottom: '1px solid #ccc',
-                  paddingBottom: '8px',
-                  marginBottom: '8px',
-                  color:'#1976d2'
-                }}
-              >
-                UPI ID Details
-              </Typography>
-              <TextField
-                margin="dense"
-                label="UPI ID"
-                fullWidth
-                variant="outlined"
-                value={upiId}
-                onChange={(e) => setUpiId(e.target.value)}
-              />
-            </Box>
-          )}
-
-          {receivingMethods.includes('upiNumber') && (
-            <Box
-              sx={{
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                padding: '16px',
-                marginTop: '16px',
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  borderBottom: '1px solid #ccc',
-                  paddingBottom: '8px',
-                  marginBottom: '8px',
-                  color:'#1976d2'
-                }}
-              >
-                UPI Number Details
-              </Typography>
-              <TextField
-                margin="dense"
-                label="UPI Name"
-                fullWidth
-                variant="outlined"
-                value={upiName}
-                onChange={(e) => setUpiName(e.target.value)}
-              />
-              <TextField
-                margin="dense"
-                label="UPI Number"
-                fullWidth
-                variant="outlined"
-                value={upiNumber}
-                onChange={(e) => setUpiNumber(e.target.value)}
-              />
-            </Box>
-          )}
-
-          {receivingMethods.includes('qrCode') && (
-            <Box
-              sx={{
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                padding: '16px',
-                marginTop: '16px',
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  borderBottom: '1px solid #ccc',
-                  paddingBottom: '8px',
-                  marginBottom: '8px',
-                  color:'#1976d2'
-                }}
-              >
-                QR Code Details
-              </Typography>
-              <Button
-                variant="outlined"
-                component="label"
-                fullWidth
-                margin="dense"
-              >
-                Upload QR Code
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={handleFileChange}
-                />
-              </Button>
-            </Box>
-          )}
+          
+          <NomineeComponent/>
+         {false && <ActiveDeactiveCheckbox/>}
         </Box>
       </DialogContent>
       <DialogActions>
