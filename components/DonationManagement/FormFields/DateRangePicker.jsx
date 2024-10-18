@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField } from '@mui/material';
 
-const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }) => {
+const DateRangePicker = ({formData,handleInputChange}) => {
   return (
     <div>
       <TextField
@@ -11,8 +11,9 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }) => {
         fullWidth
         variant="outlined"
         InputLabelProps={{ shrink: true }}
-        value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
+        name='start_date'
+        value={formData.startDate}
+        onChange={handleInputChange}
       />
       <TextField
         margin="dense"
@@ -21,8 +22,9 @@ const DateRangePicker = ({ startDate, endDate, setStartDate, setEndDate }) => {
         fullWidth
         variant="outlined"
         InputLabelProps={{ shrink: true }}
-        value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
+        name='end_date'
+        value={formData.endDateDate}
+        onChange={handleInputChange}
       />
     </div>
   );

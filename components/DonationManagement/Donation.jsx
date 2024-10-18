@@ -59,31 +59,89 @@ const ParentComponent = () => {
     const [bankName, setBankName] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
     const [ifscCode, setIfscCode] = useState('');
-
+//this one is important brother..
     const [receivingMethods, setReceivingMethods] = useState([]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /////////////////////////////////////////////////////////
 // Here i will make formState and and one function to  fill the form here
 
+const [donationData, setDonationData] = useState([]); // State to store API data
+  const [error, setError] = useState(null); // State to handle errors
+  const [loading, setLoading] = useState(true); // State to show loading indicator
+
+
+
 const [formData, setFormData] = useState({
-  userId: '',
+  member_id: '',
   name: '',
-  deathDate: '',
-  image:null
+  death_date: '',
+  file:null,
+  nominee1: "",
+  relation1: "",
+  mobile_no1: "",
 });
 
 // const [image, setImage] = useState(null);
-const [preview, setPreview] = useState(null); // State for storing image preview URL
+const [preview, setPreviews] = useState({
+  image1: '',
+  image2: '',
+  image3: '',
+});
+
+
+const [nomineeCount, setNomineeCount] = useState(1);
+
+
+
+// State for storing image preview URL
 
 const handleImageChange = (event) => {
-  const file = event.target.files[0];
+  const { name, files } = event.target;
+  const file = files[0]; // Select the first file
+  
+
   if (file) {
-    // setImage(file);
-    setFormData({
-      ...formData,
-      image:file
-    })
-    setPreview(URL.createObjectURL(file)); // Create and set preview URL
+    // Update formData dynamically based on the input's name attribute
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: file,
+    }));
+
+    // Set the corresponding preview dynamically
+    setPreviews((prevPreviews) => ({
+      ...prevPreviews,
+      [name]: URL.createObjectURL(file),
+    }));
   }
 };
 // Common method to handle input changes for all fields
@@ -95,10 +153,163 @@ const handleInputChange = (e) => {
   }));
 };
 
+const handleReceivingMethodsChange = (event) => {
+  console.log(event.target.value);
+  setReceivingMethods(event.target.value);
+};
+
+const addNominee = () => {
+  if (nomineeCount < 4) {
+    setNomineeCount(nomineeCount + 1);
+  }
+};
+
+// Function to remove nominee fields
+const removeNominee = (index) => {
+  // Create new form data without removed nominee
+  const newFormData = { ...formData };
+  delete newFormData[`nominee${index + 1}`];
+  delete newFormData[`relationship${index + 1}`];
+  delete newFormData[`phone${index + 1}`];
+
+  // Shift remaining nominee fields to fill gaps
+  for (let i = index + 1; i < nomineeCount; i++) {
+    newFormData[`nominee${i}`] = newFormData[`nominee${i + 1}`] || "";
+    newFormData[`relationship${i}`] = newFormData[`relationship${i + 1}`] || "";
+    newFormData[`phone${i}`] = newFormData[`phone${i + 1}`] || "";
+  }
+
+  setFormData(newFormData);
+  setNomineeCount(nomineeCount - 1);
+};
+
+
+const handleSubmit = async () => {
+  console.log(formData);
+
+  const { account_number, bank_name, ifsc_code, file,qrcode, ...rest } = formData;
+
+  // Create FormData object
+  const newFormData = new FormData();
+
+  // Append non-file fields
+  for (const key in rest) {
+    newFormData.append(key, rest[key]);
+  }
+
+  // Append bank details as nested object (if needed separately)
+  const bankDetails = {
+    account_number,
+    bank_name,
+    ifsc_code
+  };
+  newFormData.append('bank_detail', JSON.stringify(bankDetails)); // Append as JSON string
+
+
+  // Append file
+  if (file) {
+    newFormData.append('file', file); // Assuming 'file' is the key for the file input
+  }
+  if(qrcode){
+    newFormData.append('qrcode', qrcode); // Assuming 'file' is the key for the file input
+  }
+
+  console.log('FormData Prepared:', newFormData);
+
+  try {
+    // Send the POST request with FormData
+    const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
+      method: 'POST',
+      body: newFormData // Send FormData object directly, don't need JSON.stringify
+    });
+
+    // Check if response is not ok
+    if (!response.ok) {
+      throw new Error('Data fetch error');
+    }
+
+    // Parse the response JSON
+    const data = await response.json();
+    console.log('Here data will come: ' + JSON.stringify(data));
+
+  } catch (error) {
+    console.error('Error caught:', error);
+  }
+
+  handleClose(); // Close the popup after submission
+};
+
+
+useEffect(() => {
+  // Function to fetch data from the API
+  const fetchDonationData = async () => {
+    try {
+      const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json(); // Parse the response JSON
+      console.log(data.data);
+      setDonationData(data.data); // Store the data in state
+      setLoading(false); // Set loading to false after data is fetched
+    } catch (error) {
+      setError(error.message); // Handle and store the error
+      setLoading(false); // Set loading to false in case of error
+    }
+  };
+
+  fetchDonationData(); // Call the fetch function when the component mounts
+}, []); // Empty dependency array ensures this runs only on mount
+
+
+
+
+
+
+
+
 
 useEffect(()=>{
   console.log(formData);
 },[formData])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -207,7 +418,7 @@ const handleDateRangeChange = (start, end) => {
   
     setFormData({
       ...formData,
-      userId:member.id,
+      member_id:member.id,
       name:member.name
     });
     // setFormData(member.name);
@@ -242,11 +453,7 @@ const handleDateRangeChange = (start, end) => {
   };
 
 
-  const handleSubmit = () => {
-    // Handle form submission logic here
-    console.log('Form Submitted:', { userId, name, startDate, endDate, receivingMethod ,upiId,upiNumber,qrCode,bankName,ifscCode,accountNumber});
-    handleClose(); // Close the popup after submission
-  };
+
 
   //////////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
@@ -317,6 +524,34 @@ const handleDateRangeChange = (start, end) => {
   ////////////////////////////////////////////////////////////////////////////////
 
 
+
+
+
+
+
+
+  if (loading) return <p>Loading...</p>; // Show loading indicator while fetching data
+  if (error) return <p>Error: {error}</p>; // Show error message if something went wrong
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div>
 
@@ -367,7 +602,7 @@ const handleDateRangeChange = (start, end) => {
           
           <Suspense fallback={<Loading />}>
           <SortableTable
-                sortedRows={searchResults}
+                sortedRows={donationData}
                 sortConfig={sortConfig}
                 handleSort={handleSort}
                 getSortIcon={getSortIcon}
@@ -414,14 +649,25 @@ const handleDateRangeChange = (start, end) => {
               upiNumber={upiNumber}
               setUpiNumber={setUpiNumber}
               handleFileChange={handleFileChange}
+
+
               handleSubmit={handleSubmit}
               handleSearchDialogOpen={handleSearchDialogOpen}
+
+
               receivingMethods={receivingMethods}
               setReceivingMethods={setReceivingMethods}
+
+
               formData={formData}
               handleInputChange={handleInputChange}
               handleImageChange={handleImageChange}
               preview={preview}
+              handleReceivingMethodsChange={handleReceivingMethodsChange}
+              
+              addNominee={addNominee}
+              removeNominee={removeNominee}
+              nomineeCount={nomineeCount}
             />
 
 

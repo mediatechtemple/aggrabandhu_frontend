@@ -1,84 +1,79 @@
-import React, { useState } from 'react';
-import { TextField, Button, Box, Typography } from '@mui/material';
+// NomineeComponent.js
+import React from 'react';
 
-const NomineeComponent = () => {
-  const [nominees, setNominees] = useState([
-    { name: '', relationship: '', phone: '' },
-  ]); // Initial form with one nominee
-
-  // Function to handle input changes
-  const handleInputChange = (index, field, value) => {
-    const updatedNominees = [...nominees];
-    updatedNominees[index][field] = value;
-    setNominees(updatedNominees);
-  };
-
-  // Function to add a new nominee form
-  const handleAddNominee = () => {
-    if (nominees.length < 4) {
-      setNominees([...nominees, { name: '', relationship: '', phone: '' }]);
-    }
-  };
-
-  // Function to remove a nominee
-  const handleRemoveNominee = (index) => {
-    const updatedNominees = nominees.filter((_, i) => i !== index);
-    setNominees(updatedNominees);
-  };
-
+const NomineeComponent = ({
+  nomineeCount,
+  formData,
+  handleInputChange,
+  addNominee,
+  removeNominee,
+}) => {
   return (
-    <Box sx={{ maxWidth: '600px', margin: '0 auto' }}>
-      <Typography variant="h5" gutterBottom color="primary">
-        Nominee Details
-      </Typography>
-      {nominees.map((nominee, index) => (
-        <Box key={index} sx={{ marginBottom: '16px' }}>
-          <TextField
-            label={`Nominee Name ${index + 1}`}
-            variant="outlined"
-            fullWidth
-            value={nominee.name}
-            onChange={(e) => handleInputChange(index, 'name', e.target.value)}
-            sx={{ marginBottom: '8px' }}
-          />
-          <TextField
-            label="Relationship"
-            variant="outlined"
-            fullWidth
-            value={nominee.relationship}
-            onChange={(e) =>
-              handleInputChange(index, 'relationship', e.target.value)
-            }
-            sx={{ marginBottom: '8px' }}
-          />
-          <TextField
-            label="Phone Number"
-            variant="outlined"
-            fullWidth
-            value={nominee.phone}
-            onChange={(e) =>
-              handleInputChange(index, 'phone', e.target.value)
-            }
-            sx={{ marginBottom: '8px' }}
-          />
-          {nominees.length > 1 && (
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={() => handleRemoveNominee(index)}
-              sx={{ marginBottom: '8px' }}
+    <div>
+      {[...Array(nomineeCount)].map((_, index) => (
+        <div key={index} className="mb-4 border p-3 rounded">
+          <h4 className="text-sm font-medium mb-2">Nominee {index + 1}</h4>
+
+          <div className="mb-2">
+            <label className="block text-xs">Nominee Name</label>
+            <input
+              type="text"
+              name={`nominee${index + 1}`}
+              value={formData[`nominee${index + 1}`]}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 p-2 rounded"
+              required
+            />
+          </div>
+
+          <div className="mb-2">
+            <label className="block text-xs">Relationship</label>
+            <input
+              type="text"
+              name={`relation${index + 1}`}
+              value={formData[`relation${index + 1}`]}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 p-2 rounded"
+              required
+            />
+          </div>
+
+          <div className="mb-2">
+            <label className="block text-xs">Phone Number</label>
+            <input
+              type="text"
+              name={`mobile_no${index + 1}`}
+              value={formData[`mobile_no${index + 1}`]}
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 p-2 rounded"
+              required
+            />
+          </div>
+
+          {/* Remove Nominee Button */}
+          {nomineeCount > 1 && (
+            <button
+              type="button"
+              onClick={() => removeNominee(index)}
+              className="text-red-500 text-sm mt-2"
             >
-              Remove
-            </Button>
+              Remove Nominee {index + 1}
+            </button>
           )}
-        </Box>
+        </div>
       ))}
-      {nominees.length < 4 && (
-        <Button variant="contained" onClick={handleAddNominee}>
-          + Add Nominee
-        </Button>
+
+      {/* Add Nominee Button */}
+      {nomineeCount < 4 && (
+        <button
+          type="button"
+          onClick={addNominee}
+          className="mb-4 w-full bg-blue-500 text-white py-2 rounded"
+        >
+          Add Nominee
+        </button>
       )}
-    </Box>
+    </div>
   );
 };
 

@@ -35,6 +35,7 @@ const ImageUpload = ({formData,preview, handleImageChange}) => {
         id="upload-button"
         type="file"
         accept="image/*"
+        name='file'
         style={{ display: 'none' }} // Hides the default file input
         onChange={handleImageChange}
       />
@@ -47,16 +48,19 @@ const ImageUpload = ({formData,preview, handleImageChange}) => {
         Choose File
       </Button>
 
-      {formData.image && (
-        <div style={{ marginTop: '20px', position: 'relative', width: '100%', height: '300px' }}>
-          <p>Selected Image: {formData.image.name}</p>
-          
+      {formData.file && (
+        <div>
+          <p className='text-blue-500' >Selected file: {formData.file.name}</p>
+        <div style={{   position: 'relative', marginTop:'0px',marginLeft:'0px', width: '30%',height:'100px' }}>
           <Image
-            src={preview}   // This should be the preview URL of the uploaded image
+            src={preview.file}   // This should be the preview URL of the uploaded image
             alt="Selected"
-            layout="fill"    // Use the fill layout to fill the parent container
-            objectFit="contain"  // Ensure the image fits inside the container without being cut off
+            layout="fill"    // Use the fill layout to fill the parent container 
+            // objectFit="contain"  // Ensure the image fits inside the container without being cut off
+            objectFit="contain"   // Ensure the image fits inside the container without being cut off
+            objectPosition="top"  // Align the image to the top of the container
           />
+        </div>
         </div>
       )}
     </div>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import Image from 'next/image';
 
-const ReceivingMethodSelect = ({ receivingMethods, handleReceivingMethodsChange }) => {
+const ReceivingMethodSelect = ({ receivingMethods, handleReceivingMethodsChange,formData,handleInputChange,handleImageChange,preview  }) => {
   return (
     <>
     <FormControl fullWidth variant="outlined" margin="dense">
@@ -13,13 +14,13 @@ const ReceivingMethodSelect = ({ receivingMethods, handleReceivingMethodsChange 
         renderValue={(selected) => selected.join(', ')}
         label="Receiving Method"
       >
-        <MenuItem value="bank">Bank Transfer</MenuItem>
-        <MenuItem value="upiId">UPI ID</MenuItem>
-        <MenuItem value="upiNumber">UPI Number</MenuItem>
-        <MenuItem value="qrCode">QR Code</MenuItem>
+        <MenuItem value="bank_detail">bank_detail</MenuItem>
+        <MenuItem value="upi_id">upi_id</MenuItem>
+        <MenuItem value="upi_number">upi_number</MenuItem>
+        <MenuItem value="qrcode">Qr Code</MenuItem>
       </Select>
     </FormControl>
-    {receivingMethods.includes('bank') && (
+    {receivingMethods.includes('bank_detail') && (
             <Box
               sx={{
                 border: '1px solid #ccc',
@@ -39,34 +40,56 @@ const ReceivingMethodSelect = ({ receivingMethods, handleReceivingMethodsChange 
               >
                 Bank Details
               </Typography>
+
+
+
+
+
+
+
               <TextField
                 margin="dense"
                 label="Bank Name"
                 fullWidth
                 variant="outlined"
-                value={bankName}
-                onChange={(e) => setBankName(e.target.value)}
+                name='bank_name'
+                value={formData.bank_name}
+                onChange={handleInputChange}
               />
               <TextField
                 margin="dense"
                 label="Account Number"
                 fullWidth
                 variant="outlined"
-                value={accountNumber}
-                onChange={(e) => setAccountNumber(e.target.value)}
+                name='account_number'
+                value={formData.account_number}
+                onChange={handleInputChange}
               />
               <TextField
                 margin="dense"
                 label="IFSC Code"
                 fullWidth
                 variant="outlined"
-                value={ifscCode}
-                onChange={(e) => setIfscCode(e.target.value)}
+                name='ifsc_code'
+                value={formData.ifsc_code}
+                onChange={handleInputChange}
               />
             </Box>
           )}
 
-          {receivingMethods.includes('upiId') && (
+
+
+
+
+
+
+
+
+
+
+
+
+          {receivingMethods.includes('upi_id') && (
             <Box
               sx={{
                 border: '1px solid #ccc',
@@ -91,13 +114,23 @@ const ReceivingMethodSelect = ({ receivingMethods, handleReceivingMethodsChange 
                 label="UPI ID"
                 fullWidth
                 variant="outlined"
-                value={upiId}
-                onChange={(e) => setUpiId(e.target.value)}
+                name='upi_id'
+                value={formData.upi_id}
+                onChange={handleInputChange}
               />
             </Box>
           )}
 
-          {receivingMethods.includes('upiNumber') && (
+
+
+
+
+
+
+
+
+
+          {receivingMethods.includes('upi_number') && (
             <Box
               sx={{
                 border: '1px solid #ccc',
@@ -122,21 +155,33 @@ const ReceivingMethodSelect = ({ receivingMethods, handleReceivingMethodsChange 
                 label="UPI Name"
                 fullWidth
                 variant="outlined"
-                value={upiName}
-                onChange={(e) => setUpiName(e.target.value)}
+                name='upi_name'
+                value={formData.upi_name}
+                onChange={handleInputChange}
+                
               />
               <TextField
                 margin="dense"
                 label="UPI Number"
                 fullWidth
                 variant="outlined"
-                value={upiNumber}
-                onChange={(e) => setUpiNumber(e.target.value)}
+                name='upi_number'
+                value={formData.upi_number}
+                onChange={handleInputChange}
               />
             </Box>
           )}
 
-          {receivingMethods.includes('qrCode') && (
+
+
+
+
+
+
+
+
+
+          {receivingMethods.includes('qrcode') && (
             <Box
               sx={{
                 border: '1px solid #ccc',
@@ -167,9 +212,36 @@ const ReceivingMethodSelect = ({ receivingMethods, handleReceivingMethodsChange 
                   type="file"
                   hidden
                   accept="image/*"
-                  onChange={handleFileChange}
+                  name='qrcode'
+                  onChange={handleImageChange}
                 />
               </Button>
+                
+
+              {formData.qrcode && (
+                <div>
+                  <p className='text-blue-500' >Selected Image: {formData.qrcode.name}</p>
+                <div style={{   position: 'relative', marginTop:'0px',marginLeft:'0px', width: '30%',height:'100px' }}>
+                  <Image
+                    src={preview.qrcode}   // This should be the preview URL of the uploaded image
+                    alt="Selected"
+                    layout="fill"    // Use the fill layout to fill the parent container 
+                    // objectFit="contain"  // Ensure the image fits inside the container without being cut off
+                    objectFit="contain"   // Ensure the image fits inside the container without being cut off
+                    objectPosition="top"  // Align the image to the top of the container
+                  />
+                </div>
+                </div>
+      )}
+
+
+
+
+
+
+
+
+
             </Box>
           )}
     </>

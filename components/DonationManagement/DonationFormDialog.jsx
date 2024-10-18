@@ -9,42 +9,24 @@ import DateRangePicker from './FormFields/DateRangePicker';
 const DonationFormDialog = ({
   popupOpen,
   handleClose,
-  userId,
-  setUserId,
-  name,
-  setName,
-  startDate,
-  setStartDate,
-  endDate,
-  setEndDate,
+ 
   receivingMethods,
   setReceivingMethods,
 
-  bankName,
-  setBankName,
-  accountNumber,
-  setAccountNumber,
-  ifscCode,
-  setIfscCode,
-  upiId,
-  setUpiId,
-  upiName,
-  setUpiName,
-  upiNumber,
-  setUpiNumber,
-  handleFileChange,
-
   handleSubmit,
   handleSearchDialogOpen,
+
+
   formData,
   handleInputChange,
   handleImageChange,
-  preview
+  preview,
+  handleReceivingMethodsChange,
+  addNominee,
+  removeNominee,
+  nomineeCount
 }) => {
-  const handleReceivingMethodsChange = (event) => {
-    setReceivingMethods(event.target.value);
-  };
-
+  
   return (
     <Dialog open={popupOpen} onClose={handleClose}
     sx={{
@@ -67,7 +49,7 @@ const DonationFormDialog = ({
 
       <DialogContent>
 
-        <Box sx={{ mb: 10 }}>
+        <Box sx={{ mb: 2 }}>
 
           <Button
             variant="contained"
@@ -86,11 +68,11 @@ const DonationFormDialog = ({
           <TextField
             autoFocus
             margin="dense"
-            label="User ID"
+            label="member_id"
             fullWidth
             variant="outlined"
-            name="userId"  // Name should match the key in formData
-            value={formData.userId}
+            name="member_id"  // Name should match the key in formData
+            value={formData.member_id}
             // onChange={handleInputChange}
             InputProps={{
               readOnly: true,  // This prevents the cursor from appearing and makes the field read-only
@@ -115,7 +97,7 @@ const DonationFormDialog = ({
             fullWidth
             variant="outlined"
             InputLabelProps={{ shrink: true }}
-            name="deathDate"  // Name should match the key in formData
+            name="death_date"  // Name should match the key in formData
             value={formData.deathDate}
             onChange={handleInputChange}
           />
@@ -138,15 +120,14 @@ const DonationFormDialog = ({
               type="number"
               fullWidth
               variant="outlined"
-              // value={minimumAmount}
-              // onChange={(e) => setMinimumAmount(e.target.value)}
+              name="min_amount"  // Name should match the key in formData
+              value={formData.min_amount}
+              onChange={handleInputChange}
             />
             
           <DateRangePicker
-            startDate={startDate}
-            endDate={endDate}
-            setStartDate={setStartDate}
-            setEndDate={setEndDate}
+            formData={formData}
+            handleInputChange={handleInputChange}
           />
 
   
@@ -154,12 +135,26 @@ const DonationFormDialog = ({
           <ReceivingMethodSelect 
           receivingMethods={receivingMethods}  
           handleReceivingMethodsChange={handleReceivingMethodsChange}
+          formData={formData}
+          handleInputChange ={handleInputChange }
+          handleImageChange={handleImageChange}
+          preview={preview}
           />
 
           
 
-          
-          <NomineeComponent/>
+       
+
+        <NomineeComponent
+            nomineeCount={nomineeCount}
+            formData={formData}
+            handleInputChange={handleInputChange}
+            addNominee={addNominee}
+            removeNominee={removeNominee}
+          />
+
+
+
          {false && <ActiveDeactiveCheckbox/>}
         </Box>
       </DialogContent>
