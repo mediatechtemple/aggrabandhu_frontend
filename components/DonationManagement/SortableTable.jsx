@@ -3,8 +3,11 @@ import DonationLedgerModal from './DonationLedgerModal';
 import ReferenceByPopUp from './TablePopups/ReferenceByPopUp';
 import DeathCertificateModal from './TablePopups/DeathCertificateModal';
 import NomineeDetailsPopup from './TablePopups/NomineeDetailsPopup';
+import BankDetailPopup from './TablePopups/BankDetailPopup';
+import RemarkPopup from './TablePopups/RemarkPopup';
+import Image from 'next/image';
 
-const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, openHandler }) => {
+const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, openHandler,setsortedRows }) => {
   
   const [ledgerOpen, setLedgerOpen] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState(null);
@@ -23,6 +26,52 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
 
   const [NomineePopup, setNomineePopup] = useState(false);
   const [NomineeData,setNomineeData]=useState({});
+
+  const [showDetailPopup,setshowDetailPopup]=useState(false);
+  const [BandDetailData,setBandDetailData]=useState({});
+
+  const [remarkPopup,setRemarkPopup]=useState(false);
+  const [remarkData,setRemarkData]=useState({});
+
+  const activeHandler = (member) => {
+    // Map through the sortedRows to find the member with matching id
+    const updatedRows = sortedRows.map((row) =>
+      row.id === member.id 
+        ? { ...row, status: member.status === 'Active' ? 'Inactive' : 'Active' } 
+        : row
+    );
+  
+    setsortedRows(updatedRows); // Set the updated rows
+  };
+  
+
+  const handleRemarkClose=()=>{
+    setRemarkPopup(false);
+  }
+
+  const handleRemarkOpen=(member)=>{
+    setRemarkData(member);
+    console.log(member);
+    setRemarkPopup(true);
+  }
+
+
+
+
+
+
+  const handleBankDetailData=(data)=>{
+    console.log(data)
+    setBandDetailData({...data});
+    setshowDetailPopup(true);
+  }
+
+  const handleCloseBankDetails=()=>{
+    setshowDetailPopup(false);
+  }
+
+
+
 
   const handleOpenNominee=()=>{
     setNomineePopup(true);
@@ -79,7 +128,7 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
         <table className="min-w-full table-auto border border-gray-300">
           <thead>
             <tr className="bg-blue-600 text-white">
-              {['srNo', 'member_id','name', 'referenced_by', 'mobileNo', 'district', 'state','deathDate','Nominee_Detail', 'startDate', 'endDate', 'noOfDonation', 'totalDonation', 'paymentDetails', 'donationLedger', 'profile', 'action', 'status', 'remark'].map((column) => (
+              {['srNo', 'member_id','profile', 'name', 'referenced_by', 'mobileNo', 'district', 'state','deathDate','Nominee_Detail', 'startDate', 'endDate', 'noOfDonation', 'totalDonation', 'paymentDetails', 'donationLedger', 'action', 'status', 'remark'].map((column) => (
                 <th 
                   key={column} 
                   className="border border-gray-300 p-2 text-center cursor-pointer"
@@ -98,18 +147,56 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
               <tr key={member.index} className="hover:bg-gray-100">
                 <td className="border border-gray-300 text-black p-2 text-center">{index+1}</td>
                 <td className="border border-gray-300 text-black p-2 text-center">{member.id}</td>
+                <td className="border border-gray-300 p-2 text-center">
+
+
+                  {/* <a href={member.profile} className="text-blue-500 hover:underline">View Profile</a> */}
+                
+                  <Image
+                    src={`https://backend.aggrabandhuss.org${member.file}`}   // This should be the preview URL of the uploaded image
+                    alt="Selected"
+                    width={100}    // Use the fill layout to fill the parent container 
+                    // objectFit="contain"  // Ensure the image fits inside the container without being cut off
+                    objectFit="contain"   // Ensure the image fits inside the container without being cut off
+                    objectPosition="top"
+                    height={100}  // Align the image to the top of the container
+                  />
+
+
+                </td>
                 <td className="border border-gray-300 text-black p-2 text-center">{member.Member.name}</td>
-                <td onClick={handleButtonClick} className="border cursor-pointer border-gray-300 text-black p-2 text-center">Ashoka...</td>
+                <td onClick={handleButtonClick} className="border cursor-pointer border-gray-300 text-black p-2 text-center">
+                <button 
+                    className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+                    // onClick={() => handleLedgerOpen(member)}
+                  >
+                    Ashoka
+                  </button>
+                </td>
                 <td className="border border-gray-300 text-black p-2 text-center">9876514254</td>
                 <td className="border border-gray-300 text-black p-2 text-center">{member.Member.district}</td>
                 <td className="border border-gray-300 text-black p-2 text-center">{member.Member.state}</td>
                 <td  
                 onClick={() => handleDeathDateClick(member.file)} className=" cursor-pointer border border-gray-300 text-black p-2 text-center">
-                {new Date(member.death_date).toLocaleDateString('en-GB')}
+                   <button 
+                    className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+                    // onClick={() => handleLedgerOpen(member)}
+                  >
+                    {new Date(member.death_date).toLocaleDateString('en-GB')}
+                  </button>
+                
                 </td>
                 <td 
                 onClick={() => handleNomineeData(member)}
-                className="border border-gray-300 text-black p-2 text-center">Nominee_Detail</td>
+                className="border border-gray-300 text-black p-2 text-center">
+                   <button 
+                    className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+                    // onClick={() => handleLedgerOpen(member)}
+                  >
+                   Nominee_Detail
+                  </button>
+                  
+                  </td>
 
 
                 <td className="border border-gray-300 text-black p-2 text-center">
@@ -118,12 +205,12 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
                 <td className="border border-gray-300 text-black p-2 text-center">
                   {new Date(member.end_date).toLocaleDateString('en-GB')}
                 </td>
-                <td className="border border-gray-300 text-black  p-2 text-center">{member.total_donation_received}</td>
                 <td className="border border-gray-300 text-black  p-2 text-center">0</td>
+                <td className="border border-gray-300 text-black  p-2 text-center">0.00</td>
                 <td className="border border-gray-300 text-black p-2 text-center">
                   <button 
                     className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
-                    onClick={() => handleLedgerOpen(member)}
+                    onClick={() => handleBankDetailData(member)}
                   >
                     Payment
                   </button>
@@ -136,27 +223,31 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
                     Ledger
                   </button>
                 </td>
-                <td className="border border-gray-300 p-2 text-center">
-                  <a href={member.profile} className="text-blue-500 hover:underline">View Profile</a>
-                </td>
+                
                 <td className="border border-gray-300 p-2 text-center">
                   <button 
-                    className="bg-gray-300 hover:bg-gray-400 p-2 rounded"
+                    className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 w-24" 
                     onClick={() => openHandler(member)}
                   >
                     Edit
                   </button>
                 </td>
+
                 <td 
                   className="border border-gray-300 p-2 text-black text-center cursor-pointer"
-                  onClick={() => handleStatusToggle(index)}
                 >
-                  {member.status === 'active' ? 'Active' : 'Inactive'}
+                  <button 
+                    className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 w-24" 
+                    onClick={() => activeHandler(member)}
+                  >
+                    {member.status === 'Active' ? 'Active' : 'Inactive'}
+                  </button>
                 </td>
+
                 <td className="border border-gray-300 p-2 text-center">
                 <button 
                     className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
-                    onClick={() => handleLedgerOpen(member)}
+                    onClick={()=>handleRemarkOpen({id:member.id,remark:member.remark})}
                   >
                     Add
                   </button>
@@ -173,12 +264,26 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
         donation={selectedDonation}
       />
       {showPopup && <ReferenceByPopUp data={referenceData} onClose={handleClosePopup} />}
+
       {showModal && (
         <DeathCertificateModal certificateUrl={certificateUrl} onClose={handleCloseModal} />
       )}
 
       {NomineePopup && (
         <NomineeDetailsPopup NomineeData={NomineeData} onClose={handleCloseNominee} />
+      )}
+
+      {showDetailPopup && (
+        <BankDetailPopup BankDetailData={BandDetailData} onClose={handleCloseBankDetails} />
+      )}
+
+    { remarkPopup && (
+        <RemarkPopup 
+        handleRemarkClose={handleRemarkClose}
+         remarkData={remarkData} 
+         sortedRows={sortedRows}
+         setsortedRows={setsortedRows} 
+         />
       )}
 
     </>

@@ -184,6 +184,10 @@ const removeNominee = (index) => {
 };
 
 
+
+
+
+
 const handleSubmit = async () => {
   console.log(formData);
 
@@ -240,6 +244,22 @@ const handleSubmit = async () => {
 };
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 useEffect(() => {
   // Function to fetch data from the API
   const fetchDonationData = async () => {
@@ -270,7 +290,32 @@ useEffect(() => {
 
 
 
+const handleOpen = (data) => {
+  setPopupOpen(true);
+  setReceivingMethods(['bank_detail','upi_id','upi_number','qrcode']);
+  setNomineeCount(4)
+ 
+  // let death_data=formatDate(data.death_data);
+  console.log(data.death_date);
+  console.log(data.death_date=='2024-10-16');
+  let filePath=`https://backend.aggrabandhuss.org${data.file}`;
+  let qrcodePath=`https://backend.aggrabandhuss.org${data.qrcode}`;
+  setPreviews({
+    file:filePath
+  })
 
+  setPreviews({
+    ...preview,
+    qrcode:qrcodePath
+  })
+  
+  setFormData({...data,
+    name:data.Member.name,
+    death_date:data.death_date.split('T')[0],
+    start_date:data.start_date.split('T')[0],
+    end_date:data.end_date.split('T')[0]
+  });
+};
 
 
 
@@ -393,10 +438,7 @@ const handleDateRangeChange = (start, end) => {
 //   ---------------------------------------------------------------------------------------------------------------
 //   ---------------------------------------------------------------------------------------------------------------
 
-  const handleOpen = (data) => {
-    setPopupOpen(true);
-
-  };
+ 
 
   const handleFileChange = (e) => {
     setQrCode(e.target.files[0]);
@@ -419,7 +461,7 @@ const handleDateRangeChange = (start, end) => {
     setFormData({
       ...formData,
       member_id:member.id,
-      name:member.name
+      name:member.name,
     });
     // setFormData(member.name);
     handleSearchDialogClose(); // Close search dialog after selection
@@ -607,6 +649,7 @@ const handleDateRangeChange = (start, end) => {
                 handleSort={handleSort}
                 getSortIcon={getSortIcon}
                 openHandler={handleOpen}
+                setsortedRows={setDonationData}
                 />
           </Suspense>
             
@@ -679,6 +722,7 @@ const handleDateRangeChange = (start, end) => {
               handleSearch={handleSearch}
               searchResults={searchResults}
               handleSelectMember={handleSelectMember}
+              
             />
       </Suspense>
              

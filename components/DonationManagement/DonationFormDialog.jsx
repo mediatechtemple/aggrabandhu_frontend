@@ -98,9 +98,10 @@ const DonationFormDialog = ({
             variant="outlined"
             InputLabelProps={{ shrink: true }}
             name="death_date"  // Name should match the key in formData
-            value={formData.deathDate}
+            value={formData.death_date}
             onChange={handleInputChange}
           />
+        
 
 
 

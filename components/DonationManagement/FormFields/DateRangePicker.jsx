@@ -12,7 +12,7 @@ const DateRangePicker = ({formData,handleInputChange}) => {
         variant="outlined"
         InputLabelProps={{ shrink: true }}
         name='start_date'
-        value={formData.startDate}
+        value={formData.start_date}
         onChange={handleInputChange}
       />
       <TextField
@@ -23,7 +23,7 @@ const DateRangePicker = ({formData,handleInputChange}) => {
         variant="outlined"
         InputLabelProps={{ shrink: true }}
         name='end_date'
-        value={formData.endDateDate}
+        value={formData.end_date}
         onChange={handleInputChange}
       />
     </div>
