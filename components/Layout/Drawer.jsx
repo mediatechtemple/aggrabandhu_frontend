@@ -40,6 +40,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
   const [openInputManagement, setOpenInputManagement] = React.useState(false);
   const [openMakeDonation, setOpenMakeDonation] = React.useState(false);
   const [userManagement ,setUserManagement] = React.useState(false);
+  const [donationManagement,setDonationManagement]=React.useState(false);
   const [role,setRole]=useState(null);
 
 
@@ -68,6 +69,10 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
 
   const handleClickUserManagement=()=>{
     setUserManagement(!userManagement);
+  }
+
+  const handleClickDonationManagement=()=>{
+    setDonationManagement(!donationManagement);
   }
 
   
@@ -104,7 +109,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             { text: 'Legal For Web', icon: <GavelIcon />, route: '/Legal-For-Web',roles:['user'] },
             { text: 'Admin Management', icon: <GroupIcon />, route: '/User-Management',roles:['admin'] },
             { text: 'Members Management', icon: <PeopleIcon />, route: '/Members',roles:['admin'] },
-            { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers',roles:['admin'] },
+            // { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers',roles:['admin'] },
             { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations',roles:['admin'] },
             { text: 'Notification Management', icon: <NotificationsIcon />, route: '/Notification-Management',roles:['admin'] },
             // {text:'Make Donation',icon:<VolunteerActivismIcon/>,route:'/make-donation'}
@@ -148,6 +153,48 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
           </Collapse>
          </>
           }
+
+
+
+{role =='admin' && <>
+          <ListItem button onClick={handleClickDonationManagement}>
+            <ListItemIcon><VolunteerActivismIcon/></ListItemIcon>
+            <ListItemText primary="Donation Management" />
+            {donationManagement ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+
+          <Collapse in={donationManagement} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+              <Link href="/Donation-Receivers" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><People /></ListItemIcon>
+                  <ListItemText primary="Make Donation" />
+                </ListItem>
+              </Link>
+              <Link href="/Donators-List" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><LocationOn /></ListItemIcon>
+                  <ListItemText primary="Donator's List" />
+                </ListItem>
+              </Link>
+            </List>
+          </Collapse>
+         </>
+          }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

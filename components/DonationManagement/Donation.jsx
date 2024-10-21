@@ -306,7 +306,8 @@ const handleOpen = (data) => {
 
   setPreviews({
     ...preview,
-    qrcode:qrcodePath
+    qrcode:qrcodePath,
+    file:filePath
   })
   
   setFormData({...data,

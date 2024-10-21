@@ -1,8 +1,7 @@
 'use client'
-import LiveDonation from '@/components/LiveDonation/LiveDonation';
 import React, { useEffect, useState } from 'react';
 
-const Page = () => {
+const LiveDonation = () => {
   const [donationData, setDonationData] = useState([]); // State to store fetched data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
@@ -112,12 +111,81 @@ const Page = () => {
 
   return (
     <>
-    <LiveDonation/>
+    <div className="overflow-x-auto">
+      <table className="table-auto border-collapse border border-spacing-1 w-full">
+        <thead>
+          <tr>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">S.No</th>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Member ID</th>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Name</th>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Death Date</th>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Death Certificate</th>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Payment Method</th>
+
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Min Donate Amount</th>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Transaction ID</th>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Donated Amount</th>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Screenshot</th>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {donationData.map((donation, index) => (
+            <tr key={donation.id}> {/* Use a unique key for each row */}
+              <td className="p-2 text-center border">{index + 1}</td> {/* Serial number */}
+              <td className="p-2 text-center border">{donation.member_id}</td>
+              <td className="p-2 text-center border">{donation.Member.name || 'N/A'}</td> {/* Member Name */}
+              <td className="p-2 text-center border">{new Date(donation.donation_date).toLocaleDateString() || 'N/A'}</td> {/* Death Date */}
+              <td className="p-2 text-center border">
+                <a href={donation.transaction_file} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">View</a> {/* Death Certificate */}
+              </td>
+              <td className="p-2 text-center border">Ashoka</td>
+
+              <td className="p-2 text-center border">${donation.min_donate_amount || 'N/A'}</td> {/* Min Donate Amount */}
+              <td className="p-2 text-center border">
+                <input 
+                  type="text" 
+                  placeholder='Transaction No' 
+                  className="border p-1" 
+                  value={transactionNos[index] || ''} 
+                  onChange={(e) => handleInputChange(index, 'transactionNo', e.target.value)} 
+                />
+              </td>
+              <td className="p-2 text-center border">
+                <input 
+                  type="text" 
+                  placeholder='Donated Amount' 
+                  className="border p-1" 
+                  value={donatedAmounts[index] || ''} 
+                  onChange={(e) => handleInputChange(index, 'donatedAmount', e.target.value)} 
+                />
+              </td>
+              <td className="p-2 text-center border">
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={(e) => handleInputChange(index, 'screenshot', e.target.files[0])} 
+                />
+              </td>
+              <td className="p-2 text-center border">
+                <button 
+                  className="bg-green-500 text-white px-4 py-2 rounded" 
+                  onClick={() => handleSubmit(index)} 
+                >
+                  Submit
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    
     </>
   );
 };
 
-export default Page;
+export default LiveDonation;
 
 
 
