@@ -96,7 +96,7 @@ const paymentPopDownHandler=()=>{
 
 const handleOpenModal=(deathFile)=>{
   console.log(deathFile)
-  setcertificateUrl(deathFile.qrcode);
+  setcertificateUrl(deathFile.file);
   setshowDeathPage(!showDeathPage);
 
 }
