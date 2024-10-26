@@ -49,7 +49,7 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
             <tbody>
                 {
                   DonatorsData.map((item,index)=>{
-                   return <tr>
+                   return <tr key={key}>
                         <td className="border border-gray-300 px-4 py-2">{index+1}</td>
                         <td className="border border-gray-300 px-4 py-2">{item.Member.name}</td>
                         <td className="border border-gray-300 px-4 py-2">{item.Member.email}</td>
