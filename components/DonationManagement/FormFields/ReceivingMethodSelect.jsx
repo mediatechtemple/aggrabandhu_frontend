@@ -20,6 +20,10 @@ const ReceivingMethodSelect = ({ receivingMethods, handleReceivingMethodsChange,
         <MenuItem value="qrcode">Qr Code</MenuItem>
       </Select>
     </FormControl>
+
+
+
+    
     {receivingMethods.includes('bank_detail') && (
             <Box
               sx={{
@@ -232,7 +236,7 @@ const ReceivingMethodSelect = ({ receivingMethods, handleReceivingMethodsChange,
                   />
                 </div>
                 </div>
-      )}
+              )}
 
 
 
@@ -244,6 +248,12 @@ const ReceivingMethodSelect = ({ receivingMethods, handleReceivingMethodsChange,
 
             </Box>
           )}
+
+
+
+
+
+
     </>
   );
 };

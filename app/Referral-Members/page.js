@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 const column = [
   { key: 'SNo', value: 'S No' },
   { key: 'id', value: 'memberId' },
-  { key: 'reference_id', value: 'referenceId' },
+  // { key: 'reference_id', value: 'referenceId' },
   { key: 'name', value: 'memberName' },
   { key: 'mobile_no', value: 'phoneNo' },
   { key: 'address', value: 'address' },
@@ -92,6 +92,7 @@ const Page = () => {
         />
       </div>
       <div>
+
         <table className="min-w-full border-collapse border border-red-500 border-spacing-1">
           <thead>
             <tr>
@@ -107,12 +108,13 @@ const Page = () => {
               ))}
             </tr>
           </thead>
+
           <tbody>
             {filteredData.map((item, index) => (
               <tr key={item.id}>
                 <td className="p-2 text-center border">{index + 1}</td>
                 <td className="p-2 text-center border">{item.id}</td>
-                <td className="p-2 text-center border">{item.reference_id}</td>
+                {/* <td className="p-2 text-center border">{item.reference_id}</td> */}
                 <td className="p-2 text-center border">{item.name}</td>
                 <td className="p-2 text-center border">{item.mobile_no}</td>
                 <td className="p-2 text-center border">{item.address}</td>

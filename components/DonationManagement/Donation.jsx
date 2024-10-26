@@ -42,23 +42,14 @@ const ParentComponent = () => {
     // const classes=useStyles();
     const [popupOpen, setPopupOpen] = useState(false);
     const [searchDialogOpen, setSearchDialogOpen] = useState(false);
-
     const [searchResults, setSearchResults] = useState([]);
   ///////////////////////////////////////////////////////////
   // these are nothing but form field
 
-    const [userId, setUserId] = useState('');
-    const [name, setName] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [receivingMethod, setReceivingMethod] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
-    const [upiId, setUpiId] = useState('');
-    const [upiNumber, setUpiNumber] = useState('');
-    const [qrCode, setQrCode] = useState(null);
-    const [bankName, setBankName] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
-    const [ifscCode, setIfscCode] = useState('');
+
+
+
 //this one is important brother..
     const [receivingMethods, setReceivingMethods] = useState([]);
 
@@ -120,7 +111,7 @@ const [preview, setPreviews] = useState({
 
 
 const [nomineeCount, setNomineeCount] = useState(1);
-
+const [editData,setEditData]=useState(null);
 
 
 // State for storing image preview URL
@@ -189,8 +180,13 @@ const removeNominee = (index) => {
 
 
 const handleSubmit = async () => {
-  console.log(formData);
 
+  if(error){
+
+  }
+  
+  
+ 
   const { account_number, bank_name, ifsc_code, file,qrcode, ...rest } = formData;
 
   // Create FormData object
@@ -209,6 +205,9 @@ const handleSubmit = async () => {
   };
   newFormData.append('bank_detail', JSON.stringify(bankDetails)); // Append as JSON string
 
+  newFormData.append('receivingMethods', JSON.stringify(receivingMethods)); // Append as JSON string
+  
+  newFormData.append('nomineeCount', nomineeCount);
 
   // Append file
   if (file) {
@@ -220,25 +219,71 @@ const handleSubmit = async () => {
 
   console.log('FormData Prepared:', newFormData);
 
-  try {
-    // Send the POST request with FormData
-    const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
-      method: 'POST',
-      body: newFormData // Send FormData object directly, don't need JSON.stringify
-    });
 
-    // Check if response is not ok
-    if (!response.ok) {
-      throw new Error('Data fetch error');
+  if(editData){
+    alert(editData)
+    try {
+      // Send the POST request with FormData
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/donationreceive/${editData}`, {
+        method: 'PUT',
+        body: newFormData // Send FormData object directly, don't need JSON.stringify
+      });
+  
+      // Check if response is not ok
+      if (!response.ok) {
+        throw new Error('Data fetch error');
+      }
+  
+      // Parse the response JSON
+      const data = await response.json();
+      alert('edit done')
+      console.log('Here edit data will come: ' + JSON.stringify(data));
+      setFormData({
+        
+      });
+      setReceivingMethods([]);
+      setNomineeCount(1);
+      setEditData(null);
+  
+  
+    } catch (error) {
+      alert('edit error')
+      console.error('Error caught:', error);
+      
     }
+    
 
-    // Parse the response JSON
-    const data = await response.json();
-    console.log('Here data will come: ' + JSON.stringify(data));
 
-  } catch (error) {
-    console.error('Error caught:', error);
+  }else{
+    try {
+      // Send the POST request with FormData
+      const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
+        method: 'POST',
+        body: newFormData // Send FormData object directly, don't need JSON.stringify
+      });
+  
+      // Check if response is not ok
+      if (!response.ok) {
+        throw new Error('Data fetch error');
+      }
+  
+      // Parse the response JSON
+      const data = await response.json();
+      console.log('Here data will come: ' + JSON.stringify(data));
+      setFormData({
+        
+      });
+      setReceivingMethods([]);
+      setNomineeCount(1);
+  
+  
+    } catch (error) {
+      console.error('Error caught:', error);
+    }
   }
+
+  
+  
 
   handleClose(); // Close the popup after submission
 };
@@ -290,16 +335,29 @@ useEffect(() => {
 
 
 
-const handleOpen = (data) => {
+const handleEditOpen = (data) => {
   setPopupOpen(true);
-  setReceivingMethods(['bank_detail','upi_id','upi_number','qrcode']);
-  setNomineeCount(4)
- 
   // let death_data=formatDate(data.death_data);
+
+  console.log(data);
+  setEditData(data.id);
+
   console.log(data.death_date);
   console.log(data.death_date=='2024-10-16');
+  console.log(data.receivingMethods);
   let filePath=`https://backend.aggrabandhuss.org${data.file}`;
   let qrcodePath=`https://backend.aggrabandhuss.org${data.qrcode}`;
+  let bank_detail=JSON.parse(data.bank_detail);
+
+  console.log(filePath);
+  console.log(qrcodePath);
+
+  console.log(bank_detail);
+
+  setNomineeCount(data.nomineeCount);
+  setReceivingMethods(JSON.parse(data.receivingMethods))
+
+
   setPreviews({
     file:filePath
   })
@@ -314,9 +372,40 @@ const handleOpen = (data) => {
     name:data.Member.name,
     death_date:data.death_date.split('T')[0],
     start_date:data.start_date.split('T')[0],
-    end_date:data.end_date.split('T')[0]
+    end_date:data.end_date.split('T')[0],
+    bank_name:bank_detail.bank_name,
+    account_number:bank_detail.account_number,
+    ifsc_code:bank_detail.ifsc_code,
+    
   });
 };
+
+
+const handleOpen = (data) => {
+  setPopupOpen(true);
+};
+
+const handleClose = () => {
+  setPopupOpen(false);
+  setPreviews({
+    qrcode:'',
+    file:null
+  })
+  
+  setFormData({
+    name:'',
+    death_date:'',
+    start_date:'',
+    end_date:''
+  });
+
+  setNomineeCount(1);
+  setReceivingMethods([])
+};
+
+
+
+
 
 
 
@@ -445,10 +534,7 @@ const handleDateRangeChange = (start, end) => {
     setQrCode(e.target.files[0]);
   };
 
-  const handleClose = () => {
-    setPopupOpen(false);
-  };
-
+  
   const handleSearchDialogOpen = () => {
     setSearchDialogOpen(true);
   };
@@ -649,7 +735,7 @@ const handleDateRangeChange = (start, end) => {
                 sortConfig={sortConfig}
                 handleSort={handleSort}
                 getSortIcon={getSortIcon}
-                openHandler={handleOpen}
+                openHandler={handleEditOpen}
                 setsortedRows={setDonationData}
                 />
           </Suspense>
@@ -672,26 +758,7 @@ const handleDateRangeChange = (start, end) => {
             <DonationFormDialog
               popupOpen={popupOpen}
               handleClose={handleClose}
-              userId={userId}
-              setUserId={setUserId}
-              name={name}
-              setName={setName}
-              startDate={startDate}
-              setStartDate={setStartDate}
-              endDate={endDate}
-              setEndDate={setEndDate}
-              receivingMethod={receivingMethod}
-              setReceivingMethod={setReceivingMethod}
-              bankName={bankName}
-              setBankName={setBankName}
-              accountNumber={accountNumber}
-              setAccountNumber={setAccountNumber}
-              ifscCode={ifscCode}
-              setIfscCode={setIfscCode}
-              upiId={upiId}
-              setUpiId={setUpiId}
-              upiNumber={upiNumber}
-              setUpiNumber={setUpiNumber}
+             
               handleFileChange={handleFileChange}
 
 

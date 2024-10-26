@@ -102,11 +102,11 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             { text: 'Live Donation', icon: <VolunteerActivismIcon />, route: '/Live-Donation',roles:['user'] },
             { text: 'My Donation', icon: <DonationIcon />, route: '/My-Donation',roles:['user'] },
             { text: 'Member List', icon: <PeopleIcon />, route: '/Member-List',roles:['user'] },
-            { text: 'Donation List', icon: <VolunteerActivismIcon />, route: '/Donation-List',roles:['user'] },
+            { text: 'Donation Receiever', icon: <VolunteerActivismIcon />, route: '/Donation-Receiever-List',roles:['user'] },
             { text: 'Referral Members', icon: <GroupIcon />, route: '/Referral-Members',roles:['user'] },
             { text: 'Support', icon: <SupportIcon />, route: '/Support',roles:['user'] },
             { text: 'Follow Us', icon: <FollowTheSignsIcon />, route: '/Follow-Us',roles:['user'] },
-            { text: 'Legal For Web', icon: <GavelIcon />, route: '/Legal-For-Web',roles:['user'] },
+            { text: 'Rules & Regulations', icon: <GavelIcon />, route: '/User-Rules-Regulations',roles:['user'] },
             { text: 'Admin Management', icon: <GroupIcon />, route: '/User-Management',roles:['admin'] },
             { text: 'Members Management', icon: <PeopleIcon />, route: '/Members',roles:['admin'] },
             // { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers',roles:['admin'] },
@@ -309,6 +309,12 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
                 <ListItem button sx={{ pl: 4 }}>
                   <ListItemIcon><PhotoLibraryIcon /></ListItemIcon>
                   <ListItemText primary="Gallery" />
+                </ListItem>
+              </Link>
+              <Link href="/Add-Member-List" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><ContactMailIcon /></ListItemIcon>
+                  <ListItemText primary="Add-Member-List" />
                 </ListItem>
               </Link>
               <Link href="/Contact-Us" passHref>

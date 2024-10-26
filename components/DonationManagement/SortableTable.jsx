@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import DonationLedgerModal from './DonationLedgerModal';
+// import DonationLedgerModal from './DonationLedgerModal';
 import ReferenceByPopUp from './TablePopups/ReferenceByPopUp';
 import DeathCertificateModal from './TablePopups/DeathCertificateModal';
 import NomineeDetailsPopup from './TablePopups/NomineeDetailsPopup';
 import BankDetailPopup from './TablePopups/BankDetailPopup';
 import RemarkPopup from './TablePopups/RemarkPopup';
 import Image from 'next/image';
+import DonationLedgerModal from './TablePopups/DonationLedgerModal';
 
 const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, openHandler,setsortedRows }) => {
   
@@ -109,7 +110,6 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
 
   const handleLedgerClose = () => {
     setLedgerOpen(false);
-    setSelectedDonation(null);
   };
 
   const handleNomineeData=(data)=>{
@@ -258,11 +258,15 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
         </table>
       </div>
 
-      <DonationLedgerModal
+      {/* <DonationLedgerModal
         open={ledgerOpen}
         handleClose={handleLedgerClose}
-        donation={selectedDonation}
-      />
+        ledgerId={selectedDonation}
+      /> */}
+
+     { ledgerOpen && <DonationLedgerModal ledgerData={selectedDonation} handleLedgerClose={handleLedgerClose} />}
+
+      
       {showPopup && <ReferenceByPopUp data={referenceData} onClose={handleClosePopup} />}
 
       {showModal && (
