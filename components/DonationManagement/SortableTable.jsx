@@ -144,7 +144,7 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
             {sortedRows.map((member, index) => (
               <tr key={member.index} className="hover:bg-gray-100">
                 <td className="border border-gray-300 text-black p-2 text-center">{index+1}</td>
-                <td className="border border-gray-300 text-black p-2 text-center">{member.id}</td>
+                <td className="border border-gray-300 text-black p-2 text-center">{member.Member.id}</td>
                 <td className="border border-gray-300 p-2 text-center">
 
 
