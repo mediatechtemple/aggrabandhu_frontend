@@ -110,7 +110,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             { text: 'Admin Management', icon: <GroupIcon />, route: '/User-Management',roles:['admin'] },
             { text: 'Members Management', icon: <PeopleIcon />, route: '/Members',roles:['admin'] },
             // { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers',roles:['admin'] },
-            { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations',roles:['admin'] },
+            // { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations',roles:['admin'] },
             { text: 'Notification Management', icon: <NotificationsIcon />, route: '/Notification-Management',roles:['admin'] },
             // {text:'Make Donation',icon:<VolunteerActivismIcon/>,route:'/make-donation'}
           ]

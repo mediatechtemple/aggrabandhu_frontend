@@ -14,10 +14,7 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
   const [selectedDonation, setSelectedDonation] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [referenceData,setReferenceData]=useState({
-    id: 101,
-    name: "John Doe",
-    phone: "123-456-7890",
-    address: "123, Main Street, City, Country"
+   
   });
 
 
@@ -91,7 +88,8 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
     setShowModal(false);     // Close the modal
   };
   
-  const handleButtonClick = () => {
+  const handleButtonClick = (data) => {
+    setReferenceData({...data})
     setShowPopup(true); // Show popup on button click
   };
 
@@ -165,12 +163,12 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
 
                 </td>
                 <td className="border border-gray-300 text-black p-2 text-center">{member.Member.name}</td>
-                <td onClick={handleButtonClick} className="border cursor-pointer border-gray-300 text-black p-2 text-center">
+                <td onClick={()=>handleButtonClick(member.refer_by)} className="border cursor-pointer border-gray-300 text-black p-2 text-center">
                 <button 
                     className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
                     // onClick={() => handleLedgerOpen(member)}
                   >
-                    Ashoka
+                    View
                   </button>
                 </td>
                 <td className="border border-gray-300 text-black p-2 text-center">9876514254</td>
@@ -206,7 +204,7 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
                   {new Date(member.end_date).toLocaleDateString('en-GB')}
                 </td>
                 <td className="border border-gray-300 text-black  p-2 text-center">0</td>
-                <td className="border border-gray-300 text-black  p-2 text-center">0.00</td>
+                <td className="border border-gray-300 text-black  p-2 text-center">{member.total_donation_received}</td>
                 <td className="border border-gray-300 text-black p-2 text-center">
                   <button 
                     className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"

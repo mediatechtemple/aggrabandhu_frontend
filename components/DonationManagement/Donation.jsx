@@ -181,34 +181,37 @@ const removeNominee = (index) => {
 
 const handleSubmit = async () => {
 
-  if(error){
-
-  }
   
   
- 
+  
+  
+  
   const { account_number, bank_name, ifsc_code, file,qrcode, ...rest } = formData;
 
+ 
   // Create FormData object
   const newFormData = new FormData();
-
+  
   // Append non-file fields
   for (const key in rest) {
     newFormData.append(key, rest[key]);
   }
-
+  
   // Append bank details as nested object (if needed separately)
   const bankDetails = {
     account_number,
     bank_name,
     ifsc_code
   };
+
+
   newFormData.append('bank_detail', JSON.stringify(bankDetails)); // Append as JSON string
 
+  
   newFormData.append('receivingMethods', JSON.stringify(receivingMethods)); // Append as JSON string
   
   newFormData.append('nomineeCount', nomineeCount);
-
+  
   // Append file
   if (file) {
     newFormData.append('file', file); // Assuming 'file' is the key for the file input
@@ -216,12 +219,15 @@ const handleSubmit = async () => {
   if(qrcode){
     newFormData.append('qrcode', qrcode); // Assuming 'file' is the key for the file input
   }
-
+  
   console.log('FormData Prepared:', newFormData);
-
+  
+  
+ 
 
   if(editData){
     alert(editData)
+    alert('ashoka123')
     try {
       // Send the POST request with FormData
       const response = await fetch(`https://backend.aggrabandhuss.org/api/donationreceive/${editData}`, {
@@ -244,7 +250,7 @@ const handleSubmit = async () => {
       setReceivingMethods([]);
       setNomineeCount(1);
       setEditData(null);
-  
+      handleClose();
   
     } catch (error) {
       alert('edit error')
@@ -276,6 +282,7 @@ const handleSubmit = async () => {
       setReceivingMethods([]);
       setNomineeCount(1);
   
+      handleClose(); // Close the popup after submission
   
     } catch (error) {
       console.error('Error caught:', error);
@@ -283,9 +290,8 @@ const handleSubmit = async () => {
   }
 
   
-  
+  fetchDonationData()
 
-  handleClose(); // Close the popup after submission
 };
 
 
@@ -301,84 +307,94 @@ const handleSubmit = async () => {
 
 
 
+const fetchDonationData = async () => {
+  try {
+    const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+
+    const data = await response.json(); // Parse the response JSON
+    console.log(data.data);
+    setDonationData(data.data); // Store the data in state
+    setLoading(false); // Set loading to false after data is fetched
+  } catch (error) {
+    setError(error.message); // Handle and store the error
+    setLoading(false); // Set loading to false in case of error
+  }
+};
 
 
 
 useEffect(() => {
   // Function to fetch data from the API
-  const fetchDonationData = async () => {
-    try {
-      const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-
-      const data = await response.json(); // Parse the response JSON
-      console.log(data.data);
-      setDonationData(data.data); // Store the data in state
-      setLoading(false); // Set loading to false after data is fetched
-    } catch (error) {
-      setError(error.message); // Handle and store the error
-      setLoading(false); // Set loading to false in case of error
-    }
-  };
 
   fetchDonationData(); // Call the fetch function when the component mounts
 }, []); // Empty dependency array ensures this runs only on mount
 
 
 
-const handleEditOpen = (data) => {
+const handleEditOpen = (member) => {
+  const {receivingMethods,bank_detail,nomineeCount,...data}=member;
+  
   setPopupOpen(true);
   // let death_data=formatDate(data.death_data);
 
   console.log(data);
   setEditData(data.id);
 
-  console.log(data.death_date);
-  console.log(data.death_date=='2024-10-16');
-  console.log(data.receivingMethods);
+  console.log(receivingMethods);
+
   let filePath=`https://backend.aggrabandhuss.org${data.file}`;
   let qrcodePath=`https://backend.aggrabandhuss.org${data.qrcode}`;
-  let bank_detail=JSON.parse(data.bank_detail);
+  let bank_details=JSON.parse(bank_detail);
 
   console.log(filePath);
   console.log(qrcodePath);
 
   console.log(bank_detail);
 
-  setNomineeCount(data.nomineeCount);
-  setReceivingMethods(JSON.parse(data.receivingMethods))
+  setNomineeCount(+nomineeCount);
+  setReceivingMethods(JSON.parse(receivingMethods))
 
-
+  
   setPreviews({
     file:filePath
   })
-
+  
   setPreviews({
     ...preview,
     qrcode:qrcodePath,
     file:filePath
   })
+
+
+
   
-  setFormData({...data,
+  setFormData({
+    ...data,
     name:data.Member.name,
     death_date:data.death_date.split('T')[0],
     start_date:data.start_date.split('T')[0],
     end_date:data.end_date.split('T')[0],
-    bank_name:bank_detail.bank_name,
-    account_number:bank_detail.account_number,
-    ifsc_code:bank_detail.ifsc_code,
+    bank_name:bank_details.bank_name,
+    account_number:bank_details.account_number,
+    ifsc_code:bank_details.ifsc_code,
     
   });
+
+  
+
 };
+
+
+
 
 
 const handleOpen = (data) => {
