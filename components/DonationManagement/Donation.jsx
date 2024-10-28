@@ -180,119 +180,49 @@ const removeNominee = (index) => {
 
 
 const handleSubmit = async () => {
+  const { account_number, bank_name, ifsc_code, file, qrcode, ...rest } = formData;
 
-  
-  
-  
-  
-  
-  const { account_number, bank_name, ifsc_code, file,qrcode, ...rest } = formData;
-
- 
   // Create FormData object
   const newFormData = new FormData();
-  
-  // Append non-file fields
-  for (const key in rest) {
-    newFormData.append(key, rest[key]);
-  }
-  
-  // Append bank details as nested object (if needed separately)
-  const bankDetails = {
-    account_number,
-    bank_name,
-    ifsc_code
-  };
+  Object.keys(rest).forEach(key => newFormData.append(key, rest[key]));
 
-
-  newFormData.append('bank_detail', JSON.stringify(bankDetails)); // Append as JSON string
-
-  
-  newFormData.append('receivingMethods', JSON.stringify(receivingMethods)); // Append as JSON string
-  
+  // Append bank details as JSON
+  const bankDetails = { account_number, bank_name, ifsc_code };
+  newFormData.append('bank_detail', JSON.stringify(bankDetails));
+  newFormData.append('receivingMethods', JSON.stringify(receivingMethods));
   newFormData.append('nomineeCount', nomineeCount);
-  
-  // Append file
-  if (file) {
-    newFormData.append('file', file); // Assuming 'file' is the key for the file input
+
+  // Append files if they exist
+  if (file) newFormData.append('file', file);
+  if (qrcode) newFormData.append('qrcode', qrcode);
+
+  try {
+    const url = editData 
+      ? `https://backend.aggrabandhuss.org/api/donationreceive/${editData}`
+      : 'https://backend.aggrabandhuss.org/api/donationreceive/';
+    const method = editData ? 'PUT' : 'POST';
+
+    const response = await fetch(url, { method, body: newFormData });
+    if (!response.ok) throw new Error('Data fetch error');
+
+    const message = editData ? 'Edit Successful!' : 'Submission Successful!';
+    alert(message);
+
+    // Reset form and states after submission
+    setFormData({});
+    setReceivingMethods([]);
+    setNomineeCount(1);
+    setEditData(null);
+
+    fetchDonationData(); // Refresh donationData
+    handleClose(); // Close the popup
+
+  } catch (error) {
+    console.error('Error:', error);
+    alert('An error occurred during submission.');
   }
-  if(qrcode){
-    newFormData.append('qrcode', qrcode); // Assuming 'file' is the key for the file input
-  }
-  
-  console.log('FormData Prepared:', newFormData);
-  
-  
- 
-
-  if(editData){
-    alert(editData)
-    alert('ashoka123')
-    try {
-      // Send the POST request with FormData
-      const response = await fetch(`https://backend.aggrabandhuss.org/api/donationreceive/${editData}`, {
-        method: 'PUT',
-        body: newFormData // Send FormData object directly, don't need JSON.stringify
-      });
-  
-      // Check if response is not ok
-      if (!response.ok) {
-        throw new Error('Data fetch error');
-      }
-  
-      // Parse the response JSON
-      const data = await response.json();
-      alert('edit done')
-      console.log('Here edit data will come: ' + JSON.stringify(data));
-      setFormData({
-        
-      });
-      setReceivingMethods([]);
-      setNomineeCount(1);
-      setEditData(null);
-      handleClose();
-  
-    } catch (error) {
-      alert('edit error')
-      console.error('Error caught:', error);
-      
-    }
-    
-
-
-  }else{
-    try {
-      // Send the POST request with FormData
-      const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
-        method: 'POST',
-        body: newFormData // Send FormData object directly, don't need JSON.stringify
-      });
-  
-      // Check if response is not ok
-      if (!response.ok) {
-        throw new Error('Data fetch error');
-      }
-  
-      // Parse the response JSON
-      const data = await response.json();
-      console.log('Here data will come: ' + JSON.stringify(data));
-      setFormData({
-        
-      });
-      setReceivingMethods([]);
-      setNomineeCount(1);
-  
-      handleClose(); // Close the popup after submission
-  
-    } catch (error) {
-      console.error('Error caught:', error);
-    }
-  }
-
-  
-  fetchDonationData()
-
 };
+
 
 
 

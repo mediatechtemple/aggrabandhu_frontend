@@ -151,7 +151,7 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
                   {/* <a href={member.profile} className="text-blue-500 hover:underline">View Profile</a> */}
                 
                   <Image
-                    src={`https://backend.aggrabandhuss.org${member.file}`}   // This should be the preview URL of the uploaded image
+                    src={`https://backend.aggrabandhuss.org${member.Member.profileUrl}`}   // This should be the preview URL of the uploaded image
                     alt="Selected"
                     width={100}    // Use the fill layout to fill the parent container 
                     // objectFit="contain"  // Ensure the image fits inside the container without being cut off
