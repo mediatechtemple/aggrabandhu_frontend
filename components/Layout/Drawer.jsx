@@ -98,6 +98,9 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
           {
           [
             { text: 'Dashboard', icon: <DashboardIcon />, route: '/Dashboard' ,roles:['admin']},
+            { text: 'Notification Management', icon: <NotificationsIcon />, route: '/Notification-Management',roles:['admin'] },
+            { text: 'Notification ', icon: <NotificationsIcon />, route: '/Notification-Management',roles:['user'] },
+
             { text: 'Profile', icon: <PersonIcon />, route: '/Profile',roles:['user'] },
             { text: 'Live Donation', icon: <VolunteerActivismIcon />, route: '/Live-Donation',roles:['user'] },
             { text: 'My Donation', icon: <DonationIcon />, route: '/My-Donation',roles:['user'] },
@@ -111,7 +114,6 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             { text: 'Members Management', icon: <PeopleIcon />, route: '/Members',roles:['admin'] },
             // { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers',roles:['admin'] },
             // { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations',roles:['admin'] },
-            { text: 'Notification Management', icon: <NotificationsIcon />, route: '/Notification-Management',roles:['admin'] },
             // {text:'Make Donation',icon:<VolunteerActivismIcon/>,route:'/make-donation'}
           ]
           .filter(item => item.roles.includes(role))

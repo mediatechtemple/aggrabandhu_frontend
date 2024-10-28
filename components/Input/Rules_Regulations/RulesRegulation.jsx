@@ -64,7 +64,7 @@ const PrivacyPolicy = () => {
     return (
         <>
         <div>
-            <h2 className='text-center bg-blue-500 text-white p-4 text-2xl'>Privacy Policy</h2>
+            <h2 className='text-center bg-blue-500 text-white p-4 text-2xl'>Rules And Regulation</h2>
             <form onSubmit={handleSubmit}> {/* Wrap editor in a form */}
                 <div>
                     <JoditEditor
@@ -77,7 +77,7 @@ const PrivacyPolicy = () => {
 
             {postedData && ( // Conditionally rendering the posted data
             <div className="mt-4 p-4 border border-blue-300 rounded overflow-x-auto">
-                <h3 className="text-lg font-semibold">Posted Privacy Policy:</h3>
+                <h3 className="text-lg font-semibold">Posted Rules And Regulation:</h3>
                 <div dangerouslySetInnerHTML={{ __html: postedData }} />
             </div>
             )}

@@ -7,7 +7,8 @@ const DiseaseAndRules = ({
   handleDiseaseFileChange,
   handleRulesChange,
   handleDiseasefile,
-  handleDeclaration
+  handleDeclaration,
+  editData
 }) => {
   const [open, setOpen] = useState(false);  // Popup state
   const [decOpen, setDecOpen] = useState(false);
@@ -164,7 +165,7 @@ const DiseaseAndRules = ({
         control={
           <Checkbox
             checked={formData.rulesAccepted}
-            onClick={handleRulesClick} // Handle the checkbox click
+            onClick={editData ? ()=>{}:handleRulesClick} // Handle the checkbox click
           />
         }
         label="Accept Rules & Regulations"
@@ -246,7 +247,7 @@ const DiseaseAndRules = ({
       control={
         <Checkbox
           checked={formData.declaration}
-          onClick={handleDeclarationClick} // Opens the dialog if not accepted yet
+          onClick={editData ? () => {} : handleDeclarationClick} // Opens the dialog if not accepted yet
         />
       }
       label="Declarations"

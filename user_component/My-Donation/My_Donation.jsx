@@ -30,7 +30,7 @@ const My_Donation = () => {
             <th className="py-2 px-4 border  bg-blue-500 text-white">Member ID</th>
             <th className="py-2 px-4 border bg-blue-500 text-white">Photo</th>
             <th className="py-2 px-4 border  bg-blue-500 text-white">Name</th>
-            {/* <th className="py-2 px-4 border  bg-blue-500 text-white">Profession</th> */}
+            <th className="py-2 px-4 border  bg-blue-500 text-white">Amount</th>
             <th className="py-2 px-4 border  bg-blue-500 text-white">Address</th>
             <th className="py-2 px-4 border  bg-blue-500 text-white">Date</th>
           </tr>
@@ -38,7 +38,7 @@ const My_Donation = () => {
         <tbody>
           {memberList.map((donation) => (
             <tr key={donation.id} className="text-center">
-                <td className="py-2 px-4 border">{donation.member_id}</td>
+                <td className="py-2 px-4 border">{donation.donation_id}</td>
               <td className="py-2 px-4 border">
                 <img
                   src={`https://backend.aggrabandhuss.org${donation.to.profileUrl}`}
@@ -47,7 +47,7 @@ const My_Donation = () => {
                 />
               </td>
               <td className="py-2 px-4 border">{donation.to.name}</td>
-              {/* <td className="py-2 px-4 border">₹{donation.profession}</td> */}
+              <td className="py-2 px-4 border">₹{donation.amount}</td>
               <td className="py-2 px-4 border">
                 {donation.to.state}-{donation.to.district}
               </td>

@@ -1,4 +1,5 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -22,6 +23,12 @@ const Header = ({
   openChangePassword,
   rediretLogin
 }) => {
+  const [loginUser,setLoginUser]=useState('') 
+  useEffect(()=>{
+    let a=localStorage.getItem('user');
+    let b=JSON.parse(a).username;
+    setLoginUser(b);
+  },[])
   return (
     
     <AppBar position="fixed" >
@@ -60,6 +67,9 @@ const Header = ({
 
         {/* Right side: Notifications and Account */}
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
+        <Typography variant="h6" noWrap>
+           {loginUser}
+          </Typography>
           <IconButton
             edge="end"
             aria-label="notifications"

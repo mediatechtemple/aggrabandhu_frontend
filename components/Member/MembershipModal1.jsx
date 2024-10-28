@@ -333,6 +333,7 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
           setFormData={setFormData}
           handleDiseasefile={handleDiseasefile}
           handleDeclaration={handleDeclaration}
+          editData={editData}
         />
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
           Submit

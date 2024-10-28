@@ -50,6 +50,7 @@ const Profile = () => {
   const[block,setBehsil]=useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const[memberId,setMemberId]=useState(null);
+  
 
   const [copied, setCopied] = useState(false);
 
@@ -242,6 +243,23 @@ const handleEditClick = (edit) => {
     setOpen(false);
   }
   
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+  
+  // Function to update each string property in the data object
+  const capitalizeData = (data) => {
+    const newData = { ...data }; // Create a copy of the data
+  
+    for (let key in newData) {
+      // Check if the value is a string and non-empty
+      if (typeof newData[key] === 'string' && newData[key].length > 0) {
+        newData[key] = capitalizeFirstLetter(newData[key]); // Capitalize first letter
+      }
+    }
+  
+    return newData;
+  };
 
 
 
@@ -249,14 +267,15 @@ const handleEditClick = (edit) => {
 
 const handleSubmittt = async (e) => {
     e.preventDefault();
-  
+
     console.log("this is in MembershipModal1");
     console.log(formData);
-
+    const capitalFormData=capitalizeData(formData);
     // Prepare form data for sending to the API
     const formToSubmit = new FormData();
-    Object.keys(formData).forEach((key) => {
-      formToSubmit.append(key, formData[key]);
+
+    Object.keys(capitalFormData).forEach((key) => {
+      formToSubmit.append(key, capitalFormData[key]);
     });
   
     try {
@@ -353,7 +372,7 @@ const handleSubmittt = async (e) => {
                         className={`bg-blue-500 w-[180px]  text-white py-2 px-4 ml-6 rounded-lg shadow-md transform transition-all duration-200 hover:bg-green-600 active:scale-95 ${copied ? 'bg-green-700' : ''}`}
                         onClick={() => copyToClipboard(member.reference_id)}
                       >
-                        {copied ? 'Copied!' : 'Copy reference id'}
+                        {copied ? 'Copied!' : 'Copy Reference ID'}
                       </button>
                     </tr>
 
@@ -423,7 +442,7 @@ const handleSubmittt = async (e) => {
 
             <tr>
               <th className="pr-4 py-2 text-gray-500">Marriage Age:</th>
-              <td>{member.marriage_age ? member.marriage_age : 'not define'} Years</td>
+              <td>{member.marriage_age ? member.marriage_age : 'Not Define'} Years</td>
             </tr>
 
 

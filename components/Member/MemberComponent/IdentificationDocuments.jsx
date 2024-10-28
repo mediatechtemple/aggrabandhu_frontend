@@ -217,25 +217,25 @@ const [mached,setMached]=useState(false);
         label="Enter 12 digit Aadhar Card no"
         name="aadhar_no"
         value={formData.aadhar_no}
-        onChange={handleChange}
+        onChange={editData?()=>{}:handleChange}
         fullWidth
         margin="normal"
         required
       />
       
-      <p className='text-lg text-blue-600 font-bold font-serif'>Upload high quality Image in .jpg</p>
-  <Button variant="contained" component="label" fullWidth
-  disabled={formData.aadhar_no.length !== 12}
+     {!editData &&  <p className='text-lg text-blue-600 font-bold font-serif' >Upload high quality Image in .jpg</p>
+ } { !editData && <Button variant="contained" component="label" fullWidth 
+  disabled={formData.aadhar_no.length !== 12 }   
   >
     Attach Aadhar Card
-    <input
+    <input 
       type="file"
        accept=".jpg,.jpeg"
       hidden
       ref={aadharFileInputRef} // Reference for Aadhar file input
       onChange={handleAadharFileChange}
     />
-  </Button>
+  </Button>}
   {checkImageType && <p className='text-red-500  font-serif font-bold text-3xl'>Attach Image Of Aadhar Card!</p>}
 
 
@@ -277,7 +277,7 @@ const [mached,setMached]=useState(false);
 
 
 
-  <FormControl fullWidth margin="normal">
+  {!editData && <FormControl fullWidth margin="normal">
       <InputLabel>Select Identification Document</InputLabel>
       <Select
         name="id_type"
@@ -291,25 +291,25 @@ const [mached,setMached]=useState(false);
         <MenuItem value="Voter ID">Voter ID</MenuItem>
         <MenuItem value="Driving License">Driving License</MenuItem>
       </Select>
-    </FormControl>
+    </FormControl>}
 
 
 
 
 
 
-    <p className='text-lg  text-blue-600 font-bold font-serif'>Upload high quality Image in .jpg</p>
-      <TextField
+    {!editData &&<p className='text-lg  text-blue-600 font-bold font-serif'>Upload high quality Image in .jpg</p>
+  }    <TextField
         label={formData.id_type == "Driving License"?"Enter 16 digit driving Licence no":formData.id_type=="Pan card" ? "enter 10 digit pan card no" : formData.id_type=="Voter ID" ? "enter 10 digit VoterId": "Voter ID / Driving License / Pan Card No"}
         name="id_no"
         value={formData.id_no}
-        onChange={handleChange}
+        onChange={editData?()=>{}:handleChange}
         fullWidth
         required
         
       />
 
-
+{!editData &&
       <Button variant="contained" component="label" fullWidth
         disabled={ formData.id_type=='Driving License' ? formData.id_no.length !== 16 : formData.id_no.length !== 10 }
       >
@@ -322,7 +322,7 @@ const [mached,setMached]=useState(false);
           onChange={handleVoterIdFileChange}
         />
       </Button>
-
+}
 
 
 

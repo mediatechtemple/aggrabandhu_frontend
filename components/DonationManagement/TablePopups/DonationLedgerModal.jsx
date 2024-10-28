@@ -49,12 +49,12 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
             <tbody>
                 {
                   DonatorsData.map((item,index)=>{
-                   return <tr key={key}>
+                   return <tr key={index}>
                         <td className="border border-gray-300 px-4 py-2">{index+1}</td>
                         <td className="border border-gray-300 px-4 py-2">{item.Member.name}</td>
                         <td className="border border-gray-300 px-4 py-2">{item.Member.email}</td>
                         <td className="border border-gray-300 px-4 py-2">{item.Member.state}</td>
-                        <td className="border border-gray-300 px-4 py-2">{item.donation_date}</td>
+                        <td className="border border-gray-300 px-4 py-2">{new Date(item.donation_date).toLocaleDateString('en-GB')}</td>
                         <td className="border border-gray-300 px-4 py-2">{item.transaction_id}</td>
                         <td className="border border-gray-300 px-4 py-2">
                             <button
@@ -67,6 +67,7 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
                 }
             </tbody>
         </table>
+        {DonatorsData.length==0 && <h1 className="text-center text-red-500"> No data available!</h1>}
       </div>
     </div>
   );
