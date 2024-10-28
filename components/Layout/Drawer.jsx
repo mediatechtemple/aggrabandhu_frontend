@@ -200,7 +200,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
 
 
 
-          {role=="admin" && <><ListItem button onClick={handleClickMakeDonation}>
+          {/* {role=="admin" && <><ListItem button onClick={handleClickMakeDonation}>
             <ListItemIcon><VolunteerActivismIcon/></ListItemIcon>
             <ListItemText primary="Make Donation" />
             {openMakeDonation ? <ExpandLess /> : <ExpandMore />}
@@ -224,7 +224,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             </List>
           </Collapse>
           </>
-          }
+          } */}
 
 
 
