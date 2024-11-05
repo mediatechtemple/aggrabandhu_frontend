@@ -16,6 +16,11 @@ const DateRangeFilter = ({ onDateRangeChange }) => {
   const handleApplyFilter = () => {
    console.log(startDate)
     if (startDate && endDate) {
+      let obj={
+        mm:"2-digit",
+        dd:'2-digit',
+        year:'yyyy'
+      }
       onDateRangeChange(new Date(startDate), new Date(endDate));
     } else {
       // Handle invalid input or provide feedback to user

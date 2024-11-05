@@ -1,83 +1,156 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const useNotificationForm = () => {
+const useNotificationForm = (closeModal) => {
   // State to store form data
-  const [formData, setFormData] = useState({ title: '', message: '' });
+  const [formData, setFormData] = useState({ 
+      title: '',
+      content: '',
+      file:null,
+      web:false,
+      app:false
+
+     });
   // State to store an array of submissions
-  const [submissions, setSubmissions] = useState([ {
-    title: "Project Kickoff Meeting",
-    message: "Discussed the project scope and timeline with the team.",
-    date: "2024-08-01"
-  },
-  {
-    title: "Design Review",
-    message: "Reviewed the initial design drafts and provided feedback.",
-    date: "2024-08-03"
-  },
-  {
-    title: "Client Presentation",
-    message: "Presented the project proposal to the client.",
-    date: "2024-08-05"
-  },
-  {
-    title: "Code Implementation",
-    message: "Started implementing the core features of the application.",
-    date: "2024-08-07"
-  },
-  {
-    title: "Testing Phase",
-    message: "Conducted unit testing for the new features.",
-    date: "2024-08-09"
-  },
-  {
-    title: "Bug Fixing",
-    message: "Resolved critical bugs identified during testing.",
-    date: "2024-08-10"
-  },
-  {
-    title: "Team Stand-up",
-    message: "Daily stand-up meeting to discuss progress and blockers.",
-    date: "2024-08-12"
-  },
-  {
-    title: "Feature Enhancement",
-    message: "Added new enhancements based on client feedback.",
-    date: "2024-08-14"
-  },
-  {
-    title: "Final Review",
-    message: "Conducted a final review before the project handover.",
-    date: "2024-08-16"
-  },
-  {
-    title: "Project Handover",
-    message: "Successfully handed over the project to the client.",
-    date: "2024-08-18"
-  }]);
+  const [submissions, setSubmissions] = useState([]);
+  // State to handle loading and error messages
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Function to fetch notifications from API
+  const getNotification = async () => {
+    try {
+      const response = await fetch('https://backend.aggrabandhuss.org/api/notificationweb?limit=100');
+      if (!response.ok) {
+        throw new Error('Data not fetched from API');
+      }
+      const data = await response.json();
+      setSubmissions(data.data); // Assuming data.data is an array
+    } catch (error) {
+      setError(error.message); // Set the error message
+    } finally {
+      setLoading(false); // Set loading to false when done
+    }
+  };
+
+  
+
+  useEffect(() => {
+    getNotification(); // Fetch notifications when component mounts
+  }, []);
+
+  useEffect(()=>{
+    console.log(formData);
+  },[formData])
+
 
   // Handle changes in form inputs
   const handleChange = (event) => {
-    const { id, value } = event.target;
-    setFormData(prevData => ({
+    
+    const { id, value,type, checked } = event.target;
+    console.log(id);
+    console.log(value);
+    console.log(type),
+    console.log(checked);
+    setFormData((prevData) => ({
       ...prevData,
-      [id]: value
+      [id]: type === 'checkbox'? checked : value,
     }));
   };
 
+
+  const handleFileChange=(event)=>{
+    const {id,value,files}=event.target;
+    console.log(id);
+    console.log(value);
+    console.log(files);
+    setFormData((prevData) => ({
+      ...prevData,
+      file: files[0],
+    }));
+  }
+
+
+
+
+
+
+
+
   // Handle form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Add the form data to the submissions array
-    setSubmissions(prevSubmissions => [...prevSubmissions, formData]);
-    // Reset the form
-    setFormData({ title: '', message: '' });
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append('title', formData.title);
+    formDataToSubmit.append('content', formData.content);
+    if (formData.file) formDataToSubmit.append('file', formData.file);
+
+    try {
+      const endpoints = [];
+      if (formData.web) endpoints.push('https://backend.aggrabandhuss.org/api/notificationweb');
+      if (formData.app) endpoints.push('https://backend.aggrabandhuss.org/api/notification');
+
+      const responses = await Promise.all(
+        endpoints.map((url) =>
+          fetch(url, { method: 'POST', body: formDataToSubmit })
+        )
+      );
+
+      responses.forEach((response) => {
+        if (!response.ok) throw new Error('Failed to submit notification');
+      });
+
+      const data = await responses[0].json();
+      setSubmissions((prevSubmissions) => [{ ...data }, ...prevSubmissions]);
+
+      setFormData({ title: '', content: '', file: null, web: false, app: false });
+      closeModal();
+    } catch (error) {
+      console.error('Error submitting notification:', error);
+      setError(error.message);
+    }
   };
+
+
+
+
+
+
+
+
+
+
+
+  const deleteNotification = async (id) => {
+    
+    try {
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/notificationweb/${id}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete the notification');
+      }
+  
+      // Agar delete successful ho gaya toh updated submissions list set karo
+      setSubmissions((prevSubmissions) =>
+        prevSubmissions.filter((notification) => notification.id !== id)
+      );
+      console.log('Notification deleted successfully');
+    } catch (error) {
+      console.error('Error deleting notification:', error);
+    }
+  };
+  
 
   return {
     formData,
     handleChange,
     handleSubmit,
-    submissions, // Expose the submissions array
+    submissions,
+    loading, // Expose loading state
+    error, // Expose error state
+    deleteNotification,
+    handleFileChange
   };
 };
 

@@ -28,9 +28,9 @@ const TableWithPagination = () => {
   ];
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); // Displaying 5 items per page
+  const [itemsPerPage] = useState(1); // Displaying 5 items per page
 
-  
+
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "ascending" });
 
@@ -64,7 +64,10 @@ const TableWithPagination = () => {
     setSortConfig({ key, direction });
   };
 
-  const handlePageChange = (pageNumber) => setCurrentPage(pageNumber);
+  const handlePageChange = (pageNumber) => {
+    alert(pageNumber);
+    setCurrentPage(pageNumber);
+  }
 
   return (
     <div className="p-4">

@@ -71,8 +71,15 @@ console.log(members);
 
   const[block,setBehsil]=useState([]);
 
+  useEffect(()=>{
+    console.log(filters)
+  },[filters])
+
   // Handle filter changes
-  const handleFilterChange = (key, value) => setFilters(prev => ({ ...prev, [key]: value }));
+  const handleFilterChange = (key, value) => {
+    setFilters(prev => ({ ...prev, [key]: value }));
+    return true;
+  };
 
   useEffect(() => {
     const fetchMembers = async () => {
@@ -105,6 +112,26 @@ console.log(members);
 
 
   // Filter and paginate members
+  // useEffect(() => {
+  //   let result = members.filter(member => {
+  //     const { searchQuery, role, isActive, state, district, referenceId, startDate, endDate } = filters;
+  //     return (
+  //       (!searchQuery || member.name.toLowerCase().includes(searchQuery.toLowerCase())) &&
+  //       (!role || member.role === role) &&
+  //       (!isActive || member.status === 'active') &&
+  //       (!state || member.state === state) &&
+  //       (!district || member.district === district) &&
+  //       (!referenceId || member.code?.toString() === referenceId) &&
+  //       (!startDate || !endDate || (new Date(member.joiningDate) >= startDate && new Date(member.joiningDate) <= endDate))
+  //     );
+  //   });
+
+  //   setTotalPages(Math.ceil(result.length / pageSize));
+  //   setFilteredMembers(result.slice((page - 1) * pageSize, page * pageSize));
+  // }, [filters, members, page, pageSize]);
+
+
+
   useEffect(() => {
     let result = members.filter(member => {
       const { searchQuery, role, isActive, state, district, referenceId, startDate, endDate } = filters;
@@ -114,8 +141,8 @@ console.log(members);
         (!isActive || member.status === 'active') &&
         (!state || member.state === state) &&
         (!district || member.district === district) &&
-        (!referenceId || member.code?.toString() === referenceId) &&
-        (!startDate || !endDate || (new Date(member.joiningDate) >= startDate && new Date(member.joiningDate) <= endDate))
+        (!referenceId || member.reference_id?.toString() === referenceId) &&
+        (!startDate || !endDate || (new Date(member.createdAt) >= startDate && new Date(member.createdAt) <= endDate))
       );
     });
 

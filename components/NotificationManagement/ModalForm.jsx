@@ -1,72 +1,99 @@
 import React from 'react';
-import { Modal, Box, Typography, Button } from '@mui/material';
 import useNotificationForm from './hooks/useNotificationForm';
-// import useNotificationForm from '../hooks/useNotificationForm'; // Adjust the path as necessary
 
-const ModalForm = ({ open, onClose ,formData, handleChange, handleSubmit}) => {
-  
+const ModalForm = ({ open, onClose, formData, handleChange, handleSubmit,handleFileChange }) => {
+  if (!open) return null; // Return null if the modal is not open
 
   return (
-    <Modal
-      open={open}
-      onClose={onClose}
-      aria-labelledby="modal-title"
-      aria-describedby="modal-description"
-    >
-      <Box sx={{ width: 600, padding: 2, backgroundColor: 'white', margin: 'auto', marginTop: '20vh' }}>
-        <Typography
-          id="modal-title"
-          variant="h6"
-          component="h2"
-          sx={{ textAlign: 'center', color: '#1976d2' }}
-        >
-          Notification Form
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <div style={{ margin: '16px 0' }}>
-            <label htmlFor="title" style={{ display: 'block', marginBottom: 8 }}>
-              Title:
-            </label>
-            <input
-              type="text"
-              id="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              style={{
-                width: '100%',
-                padding: '8px',
-                boxSizing: 'border-box',
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-              }}
-            />
-          </div>
-          <div style={{ margin: '16px 0' }}>
-            <label htmlFor="message" style={{ display: 'block', marginBottom: 8 }}>
-              Notification Message:
-            </label>
-            <textarea
-              id="message"
-              value={formData.message}
-              onChange={handleChange}
-              required
-              rows={4}
-              style={{
-                width: '100%',
-                padding: '8px',
-                boxSizing: 'border-box',
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-              }}
-            />
-          </div>
-          <Button type="submit" variant="contained" color="primary" sx={{ marginTop: 2 }}>
-            Submit
-          </Button>
-        </form>
-      </Box>
-    </Modal>
+    <>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[2800]">
+        <div className="bg-white w-96 p-6 rounded-lg shadow-lg">
+          <h2 id="modal-title" className="text-xl text-center text-blue-600 font-semibold mb-4">
+            Notification Form
+          </h2>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="title" className="block mb-1 font-medium">
+                Title:
+              </label>
+              <input
+                type="text"
+                id="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="message" className="block mb-1 font-medium">
+                Notification Message:
+              </label>
+              <textarea
+                id="content"
+                value={formData.content}
+                onChange={handleChange}
+                required
+                rows={4}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block mb-1 font-medium">
+                Upload File:
+              </label>
+              <input
+                type="file"
+                id="file"
+                onChange={handleFileChange}
+                className="w-full p-2 border border-gray-300 rounded"
+              />
+            </div>
+
+            <div className="mb-4">
+        <label className=" text-blue-500 block text-sm">
+        Add Notification Preferences (Web, App, or Both)
+          </label>
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="web"
+            checked={formData.web}
+            onChange={handleChange}
+            className="mr-2"
+          />
+          <label className="text-gray-700">Web</label>
+        </div>
+        <div className="flex items-center mt-2">
+          <input
+            type="checkbox"
+            id="app"
+            checked={formData.app}
+            onChange={handleChange}
+            className="mr-2"
+          />
+          <label className="text-gray-700">App</label>
+        </div>
+      </div>
+            
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white font-semibold py-2 rounded hover:bg-blue-700 transition duration-200"
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-full mt-2 bg-gray-300 text-black font-semibold py-2 rounded hover:bg-gray-400 transition duration-200"
+            >
+              Cancel
+            </button>
+          </form>
+        </div>
+      </div>
+    </>
   );
 };
 

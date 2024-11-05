@@ -133,7 +133,7 @@ const Iconsss = ({ dataObject,tableId, columnsToExclude = [] }) => {
         <PictureAsPdfIcon />
       </IconButton>
 
-      <IconButton onClick={printTable} aria-label="Print" sx={{ border: '1px solid #969999', 
+      {/* <IconButton onClick={printTable} aria-label="Print" sx={{ border: '1px solid #969999', 
       borderRadius: '0', 
       marginLeft:'1px',
       padding: '8px',}}>
@@ -145,7 +145,7 @@ const Iconsss = ({ dataObject,tableId, columnsToExclude = [] }) => {
       marginLeft:'1px',
       padding: '8px',}}>
         <FileCopyIcon />
-      </IconButton>
+      </IconButton> */}
 
     </Box>
   );

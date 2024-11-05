@@ -1,7 +1,10 @@
 // Pagination.js
 import React from "react";
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+const Pagination = ({ currentPage, totalPages, onPageChange ,handleItemPerChange,membersLength}) => {
+
+
+
   const getPaginationGroup = () => {
     const delta = 2;
     const range = [];
@@ -16,8 +19,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     return [1, ...range, totalPages];
   };
 
+
+
+  
   return (
-    <nav aria-label="Page navigation example" className="mt-4">
+    <div className="flex justify-between">
+      <nav aria-label="Page navigation example" className="mt-4">
       <ul className="inline-flex -space-x-px text-sm">
         <li>
           <button
@@ -28,6 +35,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             Previous
           </button>
         </li>
+
+
+
 
         {getPaginationGroup().map((page, index) => (
           <li key={index}>
@@ -48,6 +58,10 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           </li>
         ))}
 
+
+
+
+
         <li>
           <button
             onClick={() => onPageChange(currentPage + 1)}
@@ -59,6 +73,31 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
         </li>
       </ul>
     </nav>
+
+    <nav className="flex space-x-2 list-none mt-4">
+  {/* Previous Button */}
+  <li>
+    <button
+      onClick={() => handleItemPerChange(100)}
+      className="px-3 py-1 border border-gray-300 rounded-l-lg text-gray-500 hover:bg-gray-100 disabled:text-gray-300"
+    >
+      100
+    </button>
+  </li>
+
+  {/* Next Button */}
+  <li>
+    <button
+      onClick={() => handleItemPerChange(membersLength)}
+      className="px-3 py-1 border border-gray-300 rounded-r-lg text-gray-500 hover:bg-gray-100 disabled:text-gray-300"
+    >
+      All
+    </button>
+  </li>
+    </nav>
+
+    </div>
+    
   );
 };
 

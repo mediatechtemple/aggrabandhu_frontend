@@ -111,7 +111,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             { text: 'Follow Us', icon: <FollowTheSignsIcon />, route: '/Follow-Us',roles:['user'] },
             { text: 'Rules & Regulations', icon: <GavelIcon />, route: '/User-Rules-Regulations',roles:['user'] },
             { text: 'Admin Management', icon: <GroupIcon />, route: '/User-Management',roles:['admin'] },
-            { text: 'Members Management', icon: <PeopleIcon />, route: '/Members',roles:['admin'] },
+            // { text: 'Members Management', icon: <PeopleIcon />, route: '/Members',roles:['admin'] },
             // { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers',roles:['admin'] },
             // { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations',roles:['admin'] },
             // {text:'Make Donation',icon:<VolunteerActivismIcon/>,route:'/make-donation'}
@@ -139,7 +139,8 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
 
           <Collapse in={userManagement} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              <Link href="/User-Management" passHref>
+              {/* <Link href="/User-Management" passHref> */}
+              <Link href="/Members" passHref>
                 <ListItem button sx={{ pl: 4 }}>
                   <ListItemIcon><People /></ListItemIcon>
                   <ListItemText primary="Members Management" />
@@ -319,12 +320,12 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
                   <ListItemText primary="Add-Member-List" />
                 </ListItem>
               </Link>
-              <Link href="/Contact-Us" passHref>
+              {/* <Link href="/Contact-Us" passHref>
                 <ListItem button sx={{ pl: 4 }}>
                   <ListItemIcon><ContactMailIcon /></ListItemIcon>
                   <ListItemText primary="Contact Us" />
                 </ListItem>
-              </Link>
+              </Link> */}
             </List>
           </Collapse>
             </>
