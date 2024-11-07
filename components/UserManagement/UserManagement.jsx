@@ -1,197 +1,200 @@
 'use client';
-import React, { useState, useEffect, useMemo } from 'react';
-import { Checkbox, TextField, Button, Table, TableHead, TableRow, TableCell, TableBody, Box, Container, Paper, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import React, { useEffect, useMemo, useState } from 'react';
+import useAdminData from './AdminCustomHook/useAdminData';
+import useSelectedUsers from './AdminCustomHook/useSelectedUsers';
+import useDialog from './AdminCustomHook/useDialog';
+// import useCheckboxes from './AdminCustomHook/useCheckboxes';
 import PermissionsDialog from './PermissionsDialog';
 
-// Define styled components
-const StyledTable = styled(Table)(({ theme }) => ({
-  border: '1px solid #ddd',
-  minWidth: 600,
-}));
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  border: '1px solid #ddd',
-  padding: '8px',
-  textAlign: 'center',
-}));
-
-const StyledTableHeadCell = styled(TableCell)(({ theme }) => ({
-  border: '1px solid #ddd',
-  cursor: 'pointer',
-  color: 'white',
-  textAlign: 'center',
-  backgroundColor: '#1976d2',
-  fontWeight: 'bold',
-  padding: '8px',
-}));
-
-const HeaderRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: '#1976d2',
-}));
-
 const UserManagement = () => {
-  const [checkboxes, setCheckboxes] = useState({
-    checkbox1: false,
-    checkbox2: false,
-    checkbox3: false,
-    checkbox4: false,
-  });
-  const [currentId, setCurrentId] = useState(null);
+  const { dialogOpen, 
+    searchDialogOpen, 
+    handleDialogOpen, 
+    handleDialogClose, 
+    handleSearchDialogOpen, 
+    handleSearchDialogClose ,
+    // selectedAdmin
+  } = useDialog();
 
-  const allUsers = useMemo(() => [
-    { id: '01', name: 'Alice' },
-    { id: '02', name: 'Bob' },
-    { id: '03', name: 'Charlie' },
-    { id: '04', name: 'Alice' },
-    { id: '05', name: 'Bob' },
-    { id: '06', name: 'Charlie' },
-    { id: '07', name: 'Alice' },
-    { id: '08', name: 'Bob' },
-    { id: '09', name: 'Charlie' },
-    { id: '10', name: 'Alice' },
-    { id: '11', name: 'Bob' },
-    { id: '12', name: 'Charlie' },
-  ], []);
+  const { allUsers, searchQuery, setSearchQuery, filteredUsers } = useAdminData();
+  const { selectedUsers, addUser } = useSelectedUsers();
+  const [selectedAdmin, setSelectedAdmin] = useState(null);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState(allUsers);
-  const [selectedUsers, setSelectedUsers] = useState([]);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [searchDialogOpen, setSearchDialogOpen] = useState(false);
+
+  const initialPermissions = useMemo(() => ({
+    "User Management": { view: false, add: false, edit: false, delete: false },
+    "Member Management": { view: false, add: false, edit: false, delete: false },
+    "Donation Management": { view: false, add: false, edit: false, delete: false },
+    "Rules & Reg. Management": { view: false, add: false, edit: false, delete: false },
+    "Input Management": { view: false, add: false, edit: false, delete: false },
+    "Notification Management": { view: false, add: false, edit: false, delete: false },
+    "Websites Management": { view: false, add: false, edit: false, delete: false }
+  }), []);
+
+
+  
+  const [permissions, setPermissions] = useState({});
+
 
   useEffect(() => {
-    const results = allUsers.filter(user =>
-      user.id.includes(searchQuery) || user.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredUsers(results);
-  }, [searchQuery,allUsers]);
+    const updatedPermissions = {};
+    selectedUsers.forEach(user => {
+      updatedPermissions[user.admin_id] = { ...initialPermissions };
+    });
+    setPermissions(updatedPermissions);
+  }, [selectedUsers,initialPermissions]);
 
+  useEffect(()=>{
+    console.log(selectedUsers)
+    console.log(permissions)
+    console.log(selectedAdmin)
+  },[permissions,selectedUsers,selectedAdmin])
+  
 
-
-  const addUser = (user) => {
-    if (!selectedUsers.some(selected => selected.id === user.id)) {
-      setSelectedUsers([...selectedUsers, user]);
-    }
-  };
-
-
-
-  const handleDialogOpen = (currentId) => {
-    setDialogOpen(true);
-    setCurrentId(currentId);
-  };
-
-
-
-  const handleDialogClose = () => {
-    setDialogOpen(false);
-  };
-
-  const handleSearchDialogOpen = () => {
-    setSearchDialogOpen(true);
-  };
-
-  const handleSearchDialogClose = () => {
-    setSearchDialogOpen(false);
-  };
-
-
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target;
-    setCheckboxes(prevState => ({
-      ...prevState,
-      [name]: checked,
+  const handleCheckboxChange = (e, page, permission) => {
+    const { checked } = e.target;
+    setPermissions(prevPermissions => ({
+      ...prevPermissions,
+      [selectedAdmin]: {
+        ...prevPermissions[selectedAdmin],
+        [page]: {
+          ...prevPermissions[selectedAdmin][page],
+          [permission]: checked,
+        },
+      },
     }));
   };
 
+  const adminSelectedHandler=(user)=>{
+    setSelectedAdmin(user);
+    handleDialogOpen()
+  }
 
-  const handleUpdate = (section) => {
-    console.log(`${section} management`);
-    console.log(checkboxes);
-    console.log({ ...checkboxes, Id: currentId });
-  };
 
+  const handleSubmitPermissions = async () => {
+    try {
+      // Close the dialog
+     
+      
+      // Define the payload
+      const payload = {
+        role: permissions[selectedAdmin],
+      };
+      handleDialogClose();
+      console.log(payload);
+
+      return;
+
+      // Make the API request
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/auth/addrole/${selectedAdmin}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          ...payload 
+        }),
+      });
   
+      // Check if the request was successful
+      if (response.ok) {
+        console.log('Permissions updated successfully for Id', selectedAdmin, payload);
+        handleDialogClose();
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to update permissions:', errorData.message);
+        handleDialogClose();
+      }
+    } catch (error) {
+      console.error('An error occurred while updating permissions:', error.message);
+      handleDialogClose();
+    }
+  };
+  
+
+
   return (
-    <Container>
-      <Typography 
-        sx={{ 
-          backgroundColor: '#1976d2', 
-          color: 'white', 
-          textAlign: 'center',
-          padding: '10px',
-          marginTop: '20px',
-          marginBottom: '2px'
-        }}
-      >
-        User Management
-      </Typography>
-      <Box
-        display="flex"
-        justifyContent="flex-end"
-        alignItems="center"
-        marginBottom="20px"
-      >
-        <Button variant="contained" color="primary" onClick={handleSearchDialogOpen}>
+    <div className="container mx-auto p-4">
+      <h2 className="bg-blue-700 text-white text-center py-2 my-4">User Management</h2>
+
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={handleSearchDialogOpen}
+          className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800"
+        >
           Search
-        </Button>
-      </Box>
-
-      <Typography 
-        sx={{ 
-          backgroundColor: '#1976d2', 
-          color: 'white', 
-          textAlign: 'center',
-          padding: '10px',
-          marginTop: '20px'
-        }}
-      >
-        Selected Users
-      </Typography>
-
-
-
-
-      <StyledTable>
-        <TableHead>
-          <HeaderRow>
-            <StyledTableHeadCell>Name</StyledTableHeadCell>
-            <StyledTableHeadCell>ID</StyledTableHeadCell>
-            <StyledTableHeadCell>Right</StyledTableHeadCell>
-            <StyledTableHeadCell>Actions</StyledTableHeadCell>
-          </HeaderRow>
-        </TableHead>
-        <TableBody>
-          {selectedUsers.map(user => (
-            <TableRow key={user.id}>
-              <StyledTableCell>{user.name}</StyledTableCell>
-              <StyledTableCell>{user.id}</StyledTableCell>
-              <StyledTableCell>
-                <Button onClick={() => handleDialogOpen(user.id)}>Right</Button>
-              </StyledTableCell>
-              <StyledTableCell>
-                <Button>Edit</Button>
-                <Button>Delete</Button>
-              </StyledTableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </StyledTable>
+        </button>
+      </div>
 
 
 
 
 
 
-      <PermissionsDialog
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <h3 className="bg-blue-700 text-white text-center py-2">Selected Users</h3>
+
+      <div className="overflow-x-auto">
+        <table className="table-auto w-full border border-gray-300">
+          <thead className="bg-blue-700 text-white">
+            <tr>
+              <th className="border border-gray-300 px-4 py-2">Name</th>
+              <th className="border border-gray-300 px-4 py-2">Mobile No</th>
+              <th className="border border-gray-300 px-4 py-2">Right</th>
+              <th className="border border-gray-300 px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {selectedUsers.map(user => (
+              <tr key={user.id}>
+                <td className="border border-gray-300 px-4 py-2 text-center">{user.name}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">{user.mobile_no}</td>
+                <td className="border border-gray-300 px-4 py-2 text-center">
+                  <button
+                    onClick={() =>adminSelectedHandler(user.id)}
+                    className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+                  >
+                    Right
+                  </button>
+                </td>
+                <td className="border border-gray-300 px-4 py-2 text-center space-x-2">
+                  <button className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Edit</button>
+                  <button className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+
+
+
+
+      {selectedAdmin  &&
+       <PermissionsDialog
         open={dialogOpen}
         onClose={handleDialogClose}
-        checkboxes={checkboxes}
+        // checkboxes={checkboxes}
+        initialPermissions={initialPermissions}
+        permissions={permissions}
         handleCheckboxChange={handleCheckboxChange}
-        handleUpdate={handleUpdate}
-        currentId={currentId}
-      />
+        selectedAdmin={selectedAdmin}
+        handleSubmitPermissions={handleSubmitPermissions}
+      />}
 
 
 
@@ -210,6 +213,56 @@ const UserManagement = () => {
 
 
 
+      {/* Search Dialog */}
+      {searchDialogOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-[2800]">
+          <div className="bg-white rounded-lg w-3/4 md:w-1/2 lg:w-1/3 p-4">
+            <h3 className="text-lg font-semibold mb-4">Search Registered Users</h3>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+              placeholder="Search by ID or name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <div className="max-h-64 overflow-y-auto border border-gray-300 rounded">
+              <table className="table-auto w-full border border-gray-300">
+                <thead className="bg-blue-700 text-white">
+                  <tr>
+                    <th className="border border-gray-300 px-4 py-2">Name</th>
+                    <th className="border border-gray-300 px-4 py-2">Mobile No</th>
+                    <th className="border border-gray-300 px-4 py-2">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredUsers.map(user => (
+                    <tr key={user.id}>
+                      <td className="border border-gray-300 px-4 py-2 text-center">{user.name}</td>
+                      <td className="border border-gray-300 px-4 py-2 text-center">{user.mobile_no}</td>
+                      <td className="border border-gray-300 px-4 py-2 text-center">
+                        <button
+                          onClick={() => addUser(user)}
+                          className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600"
+                        >
+                          Add
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={handleSearchDialogClose}
+                className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
 
 
@@ -217,47 +270,14 @@ const UserManagement = () => {
 
 
 
-      <Dialog open={searchDialogOpen} onClose={handleSearchDialogClose} fullWidth maxWidth="md">
-        <DialogTitle>Search Registered Users</DialogTitle>
-        <DialogContent style={{ maxHeight: '400px'}}>
-          <TextField
-            label="Search by ID or name"
-            variant="outlined"
-            fullWidth
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ marginBottom: '20px', marginTop:'6px' }}
-          />
-          <Paper style={{ height: '300px', overflow: 'auto' }}>
-            <StyledTable stickyHeader>
-              <TableHead>
-                <HeaderRow>
-                  <StyledTableHeadCell>Name</StyledTableHeadCell>
-                  <StyledTableHeadCell>ID</StyledTableHeadCell>
-                  <StyledTableHeadCell>Actions</StyledTableHeadCell>
-                </HeaderRow>
-              </TableHead>
-              <TableBody>
-                {filteredUsers.map(user => (
-                  <TableRow key={user.id}>
-                    <StyledTableCell>{user.name}</StyledTableCell>
-                    <StyledTableCell>{user.id}</StyledTableCell>
-                    <StyledTableCell>
-                      <Button variant="outlined" color="secondary" onClick={() => addUser(user)}>
-                        Add
-                      </Button>
-                    </StyledTableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </StyledTable>
-          </Paper>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleSearchDialogClose} color="primary">Close</Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
+
+
+
+
+
+
+      
+    </div>
   );
 };
 

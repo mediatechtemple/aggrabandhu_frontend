@@ -4,12 +4,14 @@ import React, { useState } from 'react';
 import useSortableData from './hooks/useSortableData';
 import useFetchMembers from './hooks/useFetchMembers';
 import Pagination from '@/user_component/Pagination/Pagination';
+import DownloadCSVButton from '../DataConverters/DownloadCSVButton';
+import DownloadPDFButton from '../DataConverters/DownloadPDFButton';
 
 const Refral_Report = () => {
   const { data: members, loading, error } = useFetchMembers('https://backend.aggrabandhuss.org/api/member/referall');
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage,setitemsPerPage] = useState(50);
+  const [itemsPerPage,setitemsPerPage] = useState(100);
   const [searchTerm, setSearchTerm] = useState('');
   
   const { items: sortedMembers, requestSort, getSortIcon } = useSortableData(members);
@@ -19,6 +21,7 @@ const Refral_Report = () => {
   };
 
   const handleItemPerChange = (pageNumber) => {
+    setCurrentPage(1)
     setitemsPerPage(pageNumber);
   };
 
@@ -47,6 +50,7 @@ const Refral_Report = () => {
   const columns = [
     { key: 'SNo', label: 'S.No' },
     { key: 'id', label: 'Member Id' },
+    { key: 'referFrom', label: 'Referred Member' },
     { key: 'reference_id', label: 'Reference Id' },
     { key: 'name', label: 'Member Name' },
     { key: 'mobile_no', label: 'Phone No' },
@@ -59,7 +63,11 @@ const Refral_Report = () => {
       <h1 className="text-center text-2xl text-white mb-5 bg-blue-500">Referral Reports</h1>
 
       {/* Search Input */}
-      <div className="mb-4 flex justify-end">
+      <div className="mb-4 flex justify-between">
+      <div>
+      <DownloadCSVButton data={members} filename="my_data.csv" />
+      <DownloadPDFButton data={members} filename="table_data.pdf" />
+    </div>
         <input
           type="text"
           placeholder="Search..."
@@ -90,6 +98,7 @@ const Refral_Report = () => {
               <tr key={item.id}>
                 <td className="p-2 text-center border">{index + 1 + indexOfFirstItem}</td>
                 <td className="p-2 text-center border">{item.id}</td>
+                <td className="p-2 text-center border">{item.referFrom}</td>
                 <td className="p-2 text-center border">{item.reference_id}</td>
                 <td className="p-2 text-center border">{item.name}</td>
                 <td className="p-2 text-center border">{item.mobile_no}</td>

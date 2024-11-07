@@ -1,106 +1,65 @@
-// PermissionsDialog.jsx
-import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, Checkbox, Button, Table, TableHead, TableRow, TableCell, TableBody } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-// Define styled components
-const StyledTable = styled(Table)(({ theme }) => ({
-  border: '1px solid #ddd',
-  minWidth: 600,
-}));
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  border: '1px solid #ddd',
-  padding: '8px',
-  textAlign: 'center',
-}));
-
-const StyledTableHeadCell = styled(TableCell)(({ theme }) => ({
-  cursor: 'pointer',
-  color: 'white',
-  textAlign: 'center',
-  backgroundColor: '#1976d2',
-  fontWeight: 'bold',
-  padding: '8px',
-}));
 
 
 
-const HeaderRow = styled(TableRow)(({ theme }) => ({
-  backgroundColor: '#1976d2',
-}));
 
-const PermissionsDialog = ({ open, onClose, currentId}) => {
+const PermissionsDialog = ({ open, onClose, initialPermissions,
+  permissions, handleCheckboxChange, 
+  selectedAdmin,
+  handleSubmitPermissions
+ }) => {
+ 
+// !initialPermissions &&  return;
 
-    // alert(currentId)
-  const initialPermissions = {
-    "User Management": { "view": false, "add": false, "edit": false, "delete": false },
-    "Member Management": { "view": false, "add": false, "edit": false, "delete": false },
-    "Donation Management": { "view": false, "add": false, "edit": false, "delete": false },
-    "Rules & Reg. Management": { "view": false, "add": false, "edit": false, "delete": false },
-    "Input Management": { "view": false, "add": false, "edit": false, "delete": false },
-    "Notification Management": { "view": false, "add": false, "edit": false, "delete": false },
-    "Websites Management": { "view": false, "add": false, "edit": false, "delete": false }
-  };
 
-  const [permissions, setPermissions] = useState(initialPermissions);
-
-  const handleCheckboxChange = (event) => {
-    const [category, permission] = event.target.name.split('-');
-    setPermissions(prevPermissions => ({
-      ...prevPermissions,
-      [category]: {
-        ...prevPermissions[category],
-        [permission]: event.target.checked
-      }
-    }));
-  };
-
-  const handleSubmit = () => {
-    console.log('Permissions submitted:', permissions);
-    onClose(); // Close the dialog after submission
-  };
+  console.log(initialPermissions);
+  console.log(permissions);
+  // console.log(handleCheckboxChange)
+  console.log(selectedAdmin)
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle sx={{ color: 'white', textAlign: 'center', backgroundColor: '#1976d2', fontWeight: 'bold', padding: '8px', marginBottom: '1px' }}>
-        Permissions Table
-      </DialogTitle>
-      <DialogContent sx={{ padding: '0px' ,maxHeight:'500px'}}>
-        <StyledTable>
-          <TableHead>
-            <HeaderRow>
-              <StyledTableHeadCell>Names</StyledTableHeadCell>
-              <StyledTableHeadCell>View</StyledTableHeadCell>
-              <StyledTableHeadCell>Add</StyledTableHeadCell>
-              <StyledTableHeadCell>Edit</StyledTableHeadCell>
-              <StyledTableHeadCell>Delete</StyledTableHeadCell>
-            </HeaderRow>
-          </TableHead>
-          <TableBody>
-            {Object.keys(permissions).map(category => (
-              <TableRow key={category}>
-                <StyledTableCell>{category}</StyledTableCell>
-                {['view', 'add', 'edit', 'delete'].map(permission => (
-                  <TableCell key={permission} sx={{textAlign:'center'}}>
-                    <Checkbox
-                      name={`${category}-${permission}`}
-                      checked={permissions[category][permission]}
-                      onChange={handleCheckboxChange}
+   
+      <div className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[2800] ${open ? '' : 'hidden'}`}>
+      <div className="bg-white  p-6 rounded-lg shadow-lg">
+        <h3 className="text-lg font-semibold mb-4">Manage Permissions for {selectedAdmin}</h3>
+
+        <table className="w-full border border-gray-300">
+          <thead>
+            <tr>
+              <th className="border border-gray-300 px-4 py-2">Page</th>
+              <th className="border border-gray-300 px-4 py-2">View</th>
+              <th className="border border-gray-300 px-4 py-2">Add</th>
+              <th className="border border-gray-300 px-4 py-2">Edit</th>
+              <th className="border border-gray-300 px-4 py-2">Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Object.keys(initialPermissions).map(page => (
+              <tr key={page}>
+                <td className="border border-gray-300 px-4 py-2">{page}</td>
+                {["view", "add", "edit", "delete"].map(permissionType => (
+                  <td key={permissionType} className="border border-gray-300 px-4 py-2 text-center">
+                    <input
+                      type="checkbox"
+                      checked={permissions[selectedAdmin]?.[page]?.[permissionType]}
+                      onChange={(e) => handleCheckboxChange( e, page, permissionType)}
                     />
-                  </TableCell>
+                  </td>
                 ))}
-              </TableRow>
+              </tr>
             ))}
-          </TableBody>
-        </StyledTable>
-        <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '20px' }}>
-          <Button onClick={handleSubmit} variant="contained" color="primary">
+          </tbody>
+        </table>
+
+        <div className="flex justify-end mt-4">
+          <button onClick={onClose} className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800">
+            Close
+          </button>
+          <button onClick={handleSubmitPermissions} className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800">
             Submit
-          </Button>
+          </button>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 };
 

@@ -15,6 +15,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange ,handleItemPerChange
 
     if (currentPage - delta > 2) range.unshift("...");
     if (currentPage + delta < totalPages - 1) range.push("...");
+    if(totalPages==1){
+      return[1];
+    }
+    if(totalPages==0){
+      return []
+    }
 
     return [1, ...range, totalPages];
   };
