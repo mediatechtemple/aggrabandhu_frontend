@@ -1,8 +1,8 @@
 
 
 
-
-const PermissionsDialog = ({ open, onClose, initialPermissions,
+// initialPermissions,
+const PermissionsDialog = ({ open, onClose,
   permissions, handleCheckboxChange, 
   selectedAdmin,
   handleSubmitPermissions
@@ -11,7 +11,8 @@ const PermissionsDialog = ({ open, onClose, initialPermissions,
 // !initialPermissions &&  return;
 
 
-  console.log(initialPermissions);
+
+  // console.log(initialPermissions);
   console.log(permissions);
   // console.log(handleCheckboxChange)
   console.log(selectedAdmin)
@@ -33,7 +34,7 @@ const PermissionsDialog = ({ open, onClose, initialPermissions,
             </tr>
           </thead>
           <tbody>
-            {Object.keys(initialPermissions).map(page => (
+            {Object.keys(permissions[selectedAdmin]).map(page => (
               <tr key={page}>
                 <td className="border border-gray-300 px-4 py-2">{page}</td>
                 {["view", "add", "edit", "delete"].map(permissionType => (

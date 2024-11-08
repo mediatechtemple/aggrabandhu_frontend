@@ -21,28 +21,29 @@ const UserManagement = () => {
   const [selectedAdmin, setSelectedAdmin] = useState(null);
 
 
-  const initialPermissions = useMemo(() => ({
-    "User Management": { view: false, add: false, edit: false, delete: false },
-    "Member Management": { view: false, add: false, edit: false, delete: false },
-    "Donation Management": { view: false, add: false, edit: false, delete: false },
-    "Rules & Reg. Management": { view: false, add: false, edit: false, delete: false },
-    "Input Management": { view: false, add: false, edit: false, delete: false },
-    "Notification Management": { view: false, add: false, edit: false, delete: false },
-    "Websites Management": { view: false, add: false, edit: false, delete: false }
-  }), []);
+  // const initialPermissions = useMemo(() => ({
+  //   "User Management": { view: false, add: false, edit: false, delete: false },
+  //   "Member Management": { view: false, add: false, edit: false, delete: false },
+  //   "Donation Management": { view: false, add: false, edit: false, delete: false },
+  //   "Rules & Reg. Management": { view: false, add: false, edit: false, delete: false },
+  //   "Input Management": { view: false, add: false, edit: false, delete: false },
+  //   "Notification Management": { view: false, add: false, edit: false, delete: false },
+  //   "Websites Management": { view: false, add: false, edit: false, delete: false }
+  // }), []);
 
 
   
-  const [permissions, setPermissions] = useState({});
+  const [permissions, setPermissions] = useState(selectedUsers.role || null);
 
 
   useEffect(() => {
     const updatedPermissions = {};
     selectedUsers.forEach(user => {
-      updatedPermissions[user.admin_id] = { ...initialPermissions };
+      updatedPermissions[user.id]={...user.role}
     });
     setPermissions(updatedPermissions);
-  }, [selectedUsers,initialPermissions]);
+  }, [selectedUsers]);
+
 
   useEffect(()=>{
     console.log(selectedUsers)
@@ -83,7 +84,7 @@ const UserManagement = () => {
       handleDialogClose();
       console.log(payload);
 
-      return;
+      
 
       // Make the API request
       const response = await fetch(`https://backend.aggrabandhuss.org/api/auth/addrole/${selectedAdmin}`, {
@@ -184,12 +185,12 @@ const UserManagement = () => {
 
 
 
-      {selectedAdmin  &&
+      {selectedAdmin && permissions  &&
        <PermissionsDialog
         open={dialogOpen}
         onClose={handleDialogClose}
         // checkboxes={checkboxes}
-        initialPermissions={initialPermissions}
+        // initialPermissions={initialPermissions}
         permissions={permissions}
         handleCheckboxChange={handleCheckboxChange}
         selectedAdmin={selectedAdmin}
