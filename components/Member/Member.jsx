@@ -71,9 +71,21 @@ console.log(members);
 
   const[block,setBehsil]=useState([]);
 
+  const [memberRights,setmemberRights]=useState([]);
+  
+let temp;
+  
   useEffect(()=>{
-    console.log(filters)
-  },[filters])
+    // console.log(filters)
+   console.log(memberRights['Member Management']?.['add'])
+  },[filters,memberRights]);
+
+  useEffect(()=>{
+    setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
+    console.log(memberRights);
+    console.log('Asoka rights');
+  },[]);
+
 
   // Handle filter changes
   const handleFilterChange = (key, value) => {
@@ -382,8 +394,8 @@ console.log(members);
     <>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
         <Typography variant="h4" gutterBottom color='#007bff'>Members Management</Typography>
-        <Button variant="contained" onClick={() => setOpen(true)} sx={{ backgroundColor: '#1976d2' }}>Application for New Membership</Button>
-      </Box>
+       {memberRights['Member Management']?.['add']  && <Button variant="contained" onClick={() => setOpen(true)} sx={{ backgroundColor: '#1976d2' }}>Application for New Membership</Button>
+   }   </Box>
 
       <MembershipModal1 
       formData={formData} 
@@ -431,6 +443,7 @@ console.log(members);
       handleEditClick={handleEditClick} 
       id="my-tablee"
       setMembers={setMembers}
+      memberRights={memberRights}
       />
 
       <Pagination page={page} pageSize={pageSize} totalPages={totalPages} onPageChange={setPage} onPageSizeChange={newSize => setPageSize(newSize === 'all' ? members.length : newSize)} />

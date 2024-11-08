@@ -49,7 +49,7 @@ const StyledHeaderCell = styled('div')({
   justifyContent:'center'
 });
 
-const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers }) => {
+const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers,memberRights }) => {
   const [sortConfig, setSortConfig] = useState({ key: '', direction: 'asc' });
   const [modalData, setModalData] = useState(null);
   const [selectedMember, setSelectedMember] = useState(null);
@@ -346,14 +346,14 @@ const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers }) 
       ))}
       <StyledTableCell>
         <Tooltip title="Edit">
-          <IconButton onClick={() => handleEditClick(member)} aria-label="edit">
+         {memberRights['Member Management']?.['edit']  && <IconButton onClick={() => handleEditClick(member)} aria-label="edit">
             <EditIcon />
-          </IconButton>
+          </IconButton>}
         </Tooltip>
         <Tooltip title="Delete">
-          <IconButton onClick={() => removeMember(member.id)} aria-label="delete">
+          {memberRights['Member Management']?.['delete'] && <IconButton onClick={() => removeMember(member.id)} aria-label="delete">
             <DeleteIcon />
-          </IconButton>
+          </IconButton>}
         </Tooltip>
         <Tooltip title="Print">
           <IconButton onClick={() => handlePrint(member)} aria-label="print">
