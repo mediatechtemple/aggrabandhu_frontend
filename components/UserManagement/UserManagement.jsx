@@ -119,12 +119,19 @@ const UserManagement = () => {
       <h2 className="bg-blue-700 text-white text-center py-2 my-4">User Management</h2>
 
       <div className="flex justify-end mb-4">
-        <button
+        {/* <button
           onClick={handleSearchDialogOpen}
           className="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-800"
         >
           Search
-        </button>
+        </button> */}
+        <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+              placeholder="Search by ID or name"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
       </div>
 
 
@@ -159,7 +166,7 @@ const UserManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {selectedUsers.map(user => (
+            {filteredUsers.map(user => (
               <tr key={user.id}>
                 <td className="border border-gray-300 px-4 py-2 text-center">{user.name}</td>
                 <td className="border border-gray-300 px-4 py-2 text-center">{user.mobile_no}</td>
@@ -215,7 +222,7 @@ const UserManagement = () => {
 
 
       {/* Search Dialog */}
-      {searchDialogOpen && (
+      {/* {searchDialogOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-700 bg-opacity-50 z-[2800]">
           <div className="bg-white rounded-lg w-3/4 md:w-1/2 lg:w-1/3 p-4">
             <h3 className="text-lg font-semibold mb-4">Search Registered Users</h3>
@@ -263,7 +270,7 @@ const UserManagement = () => {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
 
 

@@ -22,7 +22,7 @@ const ReferenceSearch = React.lazy(() => import('../Member/ReferenceSearch'));
 
 const DonationFormDialog = React.lazy(() => import('./DonationFormDialog'));
 const SearchMemberDialog = React.lazy(() => import('./SearchMemberDialog'));
-const SortableTable = React.lazy(() => import('./SortableTable'));
+const     SortableTable = React.lazy(() => import('./SortableTable'));
 
 
 
@@ -55,8 +55,8 @@ const ParentComponent = () => {
 
 
 
-
-
+  
+    const [memberRights, setmemberRights] = useState([]);
 
 
 
@@ -362,7 +362,11 @@ useEffect(()=>{
 },[formData])
 
 
-
+useEffect(()=>{
+  setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
+  console.log(memberRights);
+  console.log('Asoka rights');
+},[]);
 
 
 
@@ -636,9 +640,9 @@ const handleDateRangeChange = (start, end) => {
           Donation Management
         </Typography>
 
-        <Button variant="contained" onClick={handleOpen} sx={{ backgroundColor: '#1976d2' }}>
+       {memberRights['Donation Management']?.['add'] && <Button variant="contained" onClick={handleOpen} sx={{ backgroundColor: '#1976d2' }}>
             New Donation
-        </Button>
+        </Button>}
       </Box>
 
 
@@ -683,6 +687,7 @@ const handleDateRangeChange = (start, end) => {
                 getSortIcon={getSortIcon}
                 openHandler={handleEditOpen}
                 setsortedRows={setDonationData}
+                memberRights={memberRights}
                 />
           </Suspense>
             

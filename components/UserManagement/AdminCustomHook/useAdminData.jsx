@@ -6,7 +6,7 @@ const useAdminData = () => {
 
   const getAdminData = async () => {
     try {
-      const response = await fetch('https://backend.aggrabandhuss.org/api/auth/users/');
+      const response = await fetch('https://backend.aggrabandhuss.org/api/auth/addrole/');
       if (!response.ok) throw new Error('Data fetch error from admin');
       const data = await response.json();
       setAllUsers(data);

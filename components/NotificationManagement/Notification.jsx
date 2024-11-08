@@ -1,6 +1,6 @@
 'use client'
 import { Box, Button, TableHead, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import useModal from './hooks/useModal'
 import ModalForm from './ModalForm'
 import useNotificationForm from './hooks/useNotificationForm'
@@ -20,7 +20,7 @@ const Notification = () => {
       handleFileChange
       } = useNotificationForm(closeModal);
 
-
+const [memberRights,setMemberRights]=useState([])
 
       const { filteredMembers,
         filters,
@@ -41,6 +41,12 @@ const Notification = () => {
           });
         };
 
+        useEffect(()=>{
+          setMemberRights(JSON.parse( localStorage.getItem('user')).rights)
+          console.log(memberRights);
+          console.log('Asoka rights');
+        },[]);
+
   
   return (
     <>
@@ -48,9 +54,9 @@ const Notification = () => {
             <Typography variant="h4" gutterBottom color='#007bff'>
                 Notification Management
             </Typography>
-            <Button variant="contained" onClick={openModal} sx={{ backgroundColor: '#1976d2' }}>
+            {memberRights['Notification Management']?.['add'] && <Button variant="contained" onClick={openModal} sx={{ backgroundColor: '#1976d2' }}>
                 Add New Notification
-            </Button>
+            </Button>}
         </Box>
         <Box borderBottom='1px solid #bcd1c2' display="flex" justifyContent="space-between" alignItems="center" mb={2}> </Box>
         
@@ -144,12 +150,12 @@ const Notification = () => {
                           </button>}
                          
                           </Box>
-                          <Box>
+                          {memberRights['Notification Management']?.['delete'] && <Box>
                             <button
                              className="px-4 py-2 bg-red-500 text-white rounded-lg text-lg font-semibold hover:bg-red-600 transition duration-200"
                              onClick={()=>deleteNotification(item.id)}
                             >Delete</button>
-                          </Box>
+                          </Box>}
                         </Box>
                       </li>
                   ))}

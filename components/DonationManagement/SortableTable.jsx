@@ -8,7 +8,10 @@ import RemarkPopup from './TablePopups/RemarkPopup';
 import Image from 'next/image';
 import DonationLedgerModal from './TablePopups/DonationLedgerModal';
 
-const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, openHandler,setsortedRows }) => {
+const SortableTable = ({ sortedRows=[], sortConfig, handleSort, 
+  getSortIcon, openHandler,setsortedRows,
+  memberRights
+ }) => {
   
   const [ledgerOpen, setLedgerOpen] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState(null);
@@ -124,22 +127,24 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
     <>
       <div className="overflow-x-auto w-full">
         <table className="min-w-full table-auto border border-gray-300">
-          <thead>
-            <tr className="bg-blue-600 text-white">
-              {['srNo', 'member_id','profile', 'name', 'referenced_by', 'mobileNo', 'district', 'state','deathDate','Nominee_Detail', 'startDate', 'endDate', 'noOfDonation', 'totalDonation', 'paymentDetails', 'donationLedger', 'action', 'status', 'remark'].map((column) => (
-                <th 
-                  key={column} 
-                  className="border border-gray-300 p-2 text-center cursor-pointer"
-                  onClick={() => handleSort(column)}
-                >
-                  <div className="flex justify-center items-center">
-                    {column === 'srNo' ? 'Sr. No' : column.charAt(0).toUpperCase() + column.slice(1).replace(/([A-Z])/g, ' $1').trim()}
-                    {getSortIcon(column, sortConfig)}
-                  </div>
-                </th>
-              ))}
-            </tr>
-          </thead>
+        <thead>
+  <tr className="bg-blue-600 text-white">
+    {['srNo', 'member_id', 'profile', 'name', 'referenced_by', 'mobileNo', 'district', 'state', 'deathDate', 'Nominee_Detail', 'startDate', 'endDate', 'noOfDonation', 'totalDonation', 'paymentDetails', 'donationLedger', 'action', 'status', 'remark'].map((column) => (
+      (column === 'action' || column === 'status') && !memberRights['Donation Management']?.['edit'] ? null : (
+        <th 
+          key={column} 
+          className="border border-gray-300 p-2 text-center cursor-pointer"
+          onClick={() => handleSort(column)}
+        >
+          <div className="flex justify-center items-center">
+            {column === 'srNo' ? 'Sr. No' : column.charAt(0).toUpperCase() + column.slice(1).replace(/([A-Z])/g, ' $1').trim()}
+            {getSortIcon(column, sortConfig)}
+          </div>
+        </th>
+      )
+    ))}
+  </tr>
+</thead>
           <tbody>
             {sortedRows.map((member, index) => (
               <tr key={member.index} className="hover:bg-gray-100">
@@ -222,16 +227,16 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
                   </button>
                 </td>
                 
-                <td className="border border-gray-300 p-2 text-center">
+               {memberRights['Donation Management']?.['edit'] && <td className="border border-gray-300 p-2 text-center">
                   <button 
                     className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 w-24" 
                     onClick={() => openHandler(member)}
                   >
                     Edit
                   </button>
-                </td>
+                </td>}
 
-                <td 
+                {memberRights['Donation Management']?.['edit'] && <td 
                   className="border border-gray-300 p-2 text-black text-center cursor-pointer"
                 >
                   <button 
@@ -240,7 +245,7 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort, getSortIcon, ope
                   >
                     {member.status === 'Active' ? 'Active' : 'Inactive'}
                   </button>
-                </td>
+                </td>}
 
                 <td className="border border-gray-300 p-2 text-center">
                 <button 
