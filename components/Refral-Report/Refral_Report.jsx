@@ -51,8 +51,9 @@ const Refral_Report = () => {
     { key: 'SNo', label: 'S.No' },
     { key: 'id', label: 'Member Id' },
     { key: 'referFrom', label: 'Referred Member' },
-    { key: 'reference_id', label: 'Reference Id' },
+    // { key: 'reference_id', label: 'Reference Id' },
     { key: 'name', label: 'Member Name' },
+    { key: 'father_name', label: 'Father Name' },
     { key: 'mobile_no', label: 'Phone No' },
     { key: 'address', label: 'Address' },
     { key: 'referCount', label: 'Total Referred' },
@@ -97,10 +98,11 @@ const Refral_Report = () => {
             {currentItems.map((item, index) => (
               <tr key={item.id}>
                 <td className="p-2 text-center border">{index + 1 + indexOfFirstItem}</td>
-                <td className="p-2 text-center border">{item.id}</td>
-                <td className="p-2 text-center border">{item.referFrom}</td>
                 <td className="p-2 text-center border">{item.reference_id}</td>
+                <td className="p-2 text-center border">{item.referFrom}</td>
+                {/* <td className="p-2 text-center border">{item.reference_id}</td> */}
                 <td className="p-2 text-center border">{item.name}</td>
+                <td className="p-2 text-center border">{item.father_name}</td>
                 <td className="p-2 text-center border">{item.mobile_no}</td>
                 <td className="p-2 text-center border">{item.address}</td>
                 <td className="p-2 text-center border">{item.referCount}</td>

@@ -96,7 +96,7 @@ let temp;
   useEffect(() => {
     const fetchMembers = async () => {
       try {
-        const response = await fetch('https://backend.aggrabandhuss.org/api/member');
+        const response = await fetch('https://backend.aggrabandhuss.org/api/member?limit=1000');
         if(!response.ok){
           throw new Error('Failed to fetch Donars');
         }

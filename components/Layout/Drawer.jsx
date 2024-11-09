@@ -149,7 +149,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
               <Link href="/Refral-Report" passHref>
                 <ListItem button sx={{ pl: 4 }}>
                   <ListItemIcon><LocationOn /></ListItemIcon>
-                  <ListItemText primary="Refral Report" />
+                  <ListItemText primary="Referral Report" />
                 </ListItem>
               </Link>
             </List>
