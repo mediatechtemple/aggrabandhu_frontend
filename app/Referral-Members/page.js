@@ -1,13 +1,16 @@
 'use client'
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 
 const column = [
-  { key: 'SNo', value: 'S No' },
-  { key: 'id', value: 'memberId' },
+  { key: 'SNo', value: 'S.No' },
+  { key: 'id', value: 'Member Id' },
   // { key: 'reference_id', value: 'referenceId' },
-  { key: 'name', value: 'memberName' },
-  { key: 'mobile_no', value: 'phoneNo' },
-  { key: 'address', value: 'address' },
+  { key: 'name', value: 'Member Name' },
+  { key: 'profileUrl', value: 'Member Photo' },
+  { key: 'father_name', value: 'Father Name' },
+  { key: 'mobile_no', value: 'PhoneNo' },
+  { key: 'address', value: 'Address' },
 ];
 
 const Page = () => {
@@ -113,9 +116,13 @@ const Page = () => {
             {filteredData.map((item, index) => (
               <tr key={item.id}>
                 <td className="p-2 text-center border">{index + 1}</td>
-                <td className="p-2 text-center border">{item.id}</td>
+                <td className="p-2 text-center border">{item.reference_id}</td>
                 {/* <td className="p-2 text-center border">{item.reference_id}</td> */}
                 <td className="p-2 text-center border">{item.name}</td>
+                <td className=" flex justify-center text-center border">
+                 { item.profileUrl && <Image src={`https://backend.aggrabandhuss.org${item.profileUrl}`} width={80} height={60}  className='h-16 text-center' />
+               } </td>
+                <td className="p-2 text-center border">{item.father_name}</td>
                 <td className="p-2 text-center border">{item.mobile_no}</td>
                 <td className="p-2 text-center border">{item.address}</td>
               </tr>

@@ -6,9 +6,13 @@ import useFetchMembers from './hooks/useFetchMembers';
 import Pagination from '@/user_component/Pagination/Pagination';
 import DownloadCSVButton from '../DataConverters/DownloadCSVButton';
 import DownloadPDFButton from '../DataConverters/DownloadPDFButton';
+import Image from 'next/image';
+import ReferredDialog from './ReferalPopup/ReferredDialog';
 
 const Refral_Report = () => {
   const { data: members, loading, error } = useFetchMembers('https://backend.aggrabandhuss.org/api/member/referall');
+  const[referDialog,setReferDialog]=useState(false);
+  const[referDialogId,setReferDialogId]=useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage,setitemsPerPage] = useState(100);
@@ -29,6 +33,19 @@ const Refral_Report = () => {
     setSearchTerm(e.target.value);
     setCurrentPage(1); // Reset to the first page on new search
   };
+
+  const referDialogOpneHandler = (id) => {
+    setReferDialog(true);
+    setReferDialogId(id);
+  };
+
+  const referDialogCloseHandler = (id) => {
+    setReferDialog(false);
+  };
+
+
+
+
 
   // Filter members based on the search term
   const filteredMembers = sortedMembers.filter((item) =>
@@ -51,8 +68,11 @@ const Refral_Report = () => {
     { key: 'SNo', label: 'S.No' },
     { key: 'id', label: 'Member Id' },
     { key: 'referFrom', label: 'Referred Member' },
+    { key: 'referFrom', label: 'Referred Name' },
+     { key: 'referFrom', label: 'Referred Photo' },
     // { key: 'reference_id', label: 'Reference Id' },
     { key: 'name', label: 'Member Name' },
+    { key: 'Member Photo', label: 'Member Photo' },
     { key: 'father_name', label: 'Father Name' },
     { key: 'mobile_no', label: 'Phone No' },
     { key: 'address', label: 'Address' },
@@ -100,12 +120,23 @@ const Refral_Report = () => {
                 <td className="p-2 text-center border">{index + 1 + indexOfFirstItem}</td>
                 <td className="p-2 text-center border">{item.reference_id}</td>
                 <td className="p-2 text-center border">{item.referFrom}</td>
+                <td className="p-2 text-center border">{item.refer_name}</td>
+                <td className="p-2 text-center border">
+                 { item.refer_profileUrl && <Image src={`https://backend.aggrabandhuss.org${item.refer_profileUrl}`} width={60} height={60} />
+               } </td>
                 {/* <td className="p-2 text-center border">{item.reference_id}</td> */}
                 <td className="p-2 text-center border">{item.name}</td>
+                <td className="p-2 text-center border">
+                 { item.profileUrl && <Image src={`https://backend.aggrabandhuss.org${item.profileUrl}`} width={60} height={60} />
+               } </td>
                 <td className="p-2 text-center border">{item.father_name}</td>
                 <td className="p-2 text-center border">{item.mobile_no}</td>
                 <td className="p-2 text-center border">{item.address}</td>
-                <td className="p-2 text-center border">{item.referCount}</td>
+                <td onClick={() => referDialogOpneHandler(item.id)} className="p-2 text-center border">
+                <button className="bg-blue-500 text-white font-semibold py-1 px-3 rounded-lg transition-transform transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+                  {item.referCount}
+                </button>
+              </td>
               </tr>
             ))}
           </tbody>
@@ -119,6 +150,8 @@ const Refral_Report = () => {
         handleItemPerChange={handleItemPerChange}
         membersLength={members.length}
       />
+
+      {referDialog && <ReferredDialog id={referDialogId} referDialogCloseHandler={referDialogCloseHandler} />}
     </>
   );
 };
