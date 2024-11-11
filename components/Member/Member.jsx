@@ -82,8 +82,8 @@ let temp;
 
   useEffect(()=>{
     setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
-    console.log(memberRights);
-    console.log('Asoka rights');
+    // console.log(memberRights);
+    // console.log('Asoka rights');
   },[]);
 
 
