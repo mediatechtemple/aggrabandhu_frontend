@@ -138,9 +138,15 @@ const LoginPage = () => {
         console.log('Login successful:', data);
         window.localStorage.setItem('role', JSON.stringify(data.role));
         window.localStorage.setItem('user', JSON.stringify(data));
-        // You can redirect or show success message here
-        // router.push('/') 
-        window.location.href="/Profile";
+
+        if(data.role=="user"){
+
+          window.location.href="/Profile";
+        }else{
+          window.location.href="/Dashboard"
+        }
+
+        
       } else {
         // Handle error if login failed
         setError(data.message || 'Login failed. Please try again.');

@@ -1,6 +1,6 @@
 import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
-const ProfesstionTable = ({HeaderData, gotras, onEdit, onDelete }) => {
+const ProfesstionTable = ({HeaderData, gotras, onEdit, onDelete ,memberRights}) => {
 
 
   return (
@@ -28,22 +28,26 @@ const ProfesstionTable = ({HeaderData, gotras, onEdit, onDelete }) => {
             <TableRow key={item.id} sx={{ border: '1px solid #eee' }}>
               <TableCell sx={{  border: '2px solid #ddd', textAlign: 'center' }}>{item.name}</TableCell>
               <TableCell sx={{  border: '2px solid #ddd', textAlign: 'center' }}>
-                <Button
+                {
+                memberRights['Profession Management']?.['edit'] &&      
+                  <Button
                   onClick={() => onEdit(item.id)}
                   variant="outlined"
                   color="primary"
                   sx={{ marginRight: 1 }}
                 >
                   Edit
-                </Button>
+                </Button>}
 
-                <Button
+                {
+                  memberRights['Profession Management']?.['delete'] &&      
+                  <Button
                   onClick={() => onDelete(item.id)}
                   variant="outlined"
                   color="secondary"
                 >
                   Delete
-                </Button>
+                </Button>}
 
               </TableCell>
             </TableRow>

@@ -65,7 +65,7 @@ const BasicInformation = ({
 
  return <>
 
-   {!editData && <TextField
+   <TextField
       label="Reference id *"
       name="reference_id"
       value={formData.reference_id}
@@ -73,7 +73,7 @@ const BasicInformation = ({
       fullWidth
       margin="normal"
       required
-    />}
+    />
 
 
 

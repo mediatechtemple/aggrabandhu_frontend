@@ -10,7 +10,7 @@ import Image from 'next/image';
 import ReferredDialog from './ReferalPopup/ReferredDialog';
 
 const Refral_Report = () => {
-  const { data: members, loading, error } = useFetchMembers('https://backend.aggrabandhuss.org/api/member/referall');
+  const { data: members, loading, error,downloadData1 } = useFetchMembers('https://backend.aggrabandhuss.org/api/member/referall');
   const[referDialog,setReferDialog]=useState(false);
   const[referDialogId,setReferDialogId]=useState(false);
 
@@ -81,13 +81,29 @@ const Refral_Report = () => {
 
   return (
     <>
+    {/* <div className="flex space-x-4 mb-4">
+        <input
+          type="date"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+          className="border rounded p-2"
+          placeholder="Start Date"
+        />
+        <input
+          type="date"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+          className="border rounded p-2"
+          placeholder="End Date"
+        />
+      </div> */}
       <h1 className="text-center text-2xl text-white mb-5 bg-blue-500">Referral Reports</h1>
 
       {/* Search Input */}
       <div className="mb-4 flex justify-between">
       <div>
-      <DownloadCSVButton data={members} filename="my_data.csv" />
-      <DownloadPDFButton data={members} filename="table_data.pdf" />
+      <DownloadCSVButton data={downloadData1} filename="my_data.csv" />
+      <DownloadPDFButton data={downloadData1} filename="table_data.pdf" />
     </div>
         <input
           type="text"

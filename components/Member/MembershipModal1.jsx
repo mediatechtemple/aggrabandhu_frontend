@@ -9,6 +9,8 @@ import NomineeDetails from './MemberComponent/NomineeDetails';
 import DiseaseAndRules from './MemberComponent/DiseaseAndRules';
 import { AiOutlineClose } from 'react-icons/ai';
 import { FaTimes } from 'react-icons/fa';
+import AadharCardVerification from './MemberComponent/AadharCardVerification';
+import IdentityDocumentVerification from './MemberComponent/IdentityDocumentVerification';
 const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData ,editData,handleSubmit,handlePincodeChange,block,loading=false,Cross_handleClose}) => {
   
   const [errorMessage, setErrorMessage] = useState('');
@@ -318,11 +320,30 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
         block={block}
          />
 
-        <IdentificationDocuments formData={formData} handleChange={handleChange}
+        <IdentificationDocuments 
+        formData={formData} 
+        handleChange={handleChange}
          setFormData={setFormData} 
          editData={editData}
          checkImageType={checkImageType}
          />
+         
+         {/* <AadharCardVerification
+         formData={formData} 
+         handleChange={handleChange}
+          setFormData={setFormData} 
+          editData={editData}
+          checkImageType={checkImageType}
+         />
+
+         <IdentityDocumentVerification
+          formData={formData} 
+          handleChange={handleChange}
+           setFormData={setFormData} 
+           editData={editData}
+           checkImageType={checkImageType}
+         />
+          */}
 
         <NomineeDetails formData={formData} handleChange={handleChange} />
 

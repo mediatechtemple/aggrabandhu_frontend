@@ -4,14 +4,14 @@ import { TextField, Button, Typography, FormControl, InputLabel, Select, MenuIte
 const IdentificationDocuments = ({ formData,handleChange,setFormData, editData}) => {
 
   const [aadharVerificationMessage, setAadharVerificationMessage] = useState('');
+  const[adharError,setAdharError]=useState(true);
   const [setEr,setErr]=useState(false);
+  const [checkImageType,setCheckImageType]=useState('');
 
 
   const [voterIdVerificationMessage, setVoterIdVerificationMessage] = useState('');
   
-  const[adharError,setAdharError]=useState(true);
 
-  const [checkImageType,setCheckImageType]=useState('');
   const [checkImageType1,setCheckImageType1]=useState('');
 
 
@@ -23,6 +23,7 @@ const IdentificationDocuments = ({ formData,handleChange,setFormData, editData})
 const [mached,setMached]=useState(false);
 
 
+const[isAdmin,setIsAdmin]=useState(false);
 
 
 
@@ -188,7 +189,10 @@ const [mached,setMached]=useState(false);
 
 
 
-
+useEffect(()=>{
+  let role=JSON.parse(localStorage.getItem('role'));
+  setIsAdmin(role=='admin');
+},[])
 
 
 
@@ -217,14 +221,14 @@ const [mached,setMached]=useState(false);
         label="Enter 12 digit Aadhar Card no"
         name="aadhar_no"
         value={formData.aadhar_no}
-        onChange={editData?()=>{}:handleChange}
+        onChange={!isAdmin?()=>{}:handleChange}
         fullWidth
         margin="normal"
         required
       />
       
-     {!editData &&  <p className='text-lg text-blue-600 font-bold font-serif' >Upload high quality Image in .jpg</p>
- } { !editData && <Button variant="contained" component="label" fullWidth 
+     {isAdmin &&  <p className='text-lg text-blue-600 font-bold font-serif' >Upload high quality Image in .jpg</p>
+ } { isAdmin && <Button variant="contained" component="label" fullWidth 
   disabled={formData.aadhar_no.length !== 12 }   
   >
     Attach Aadhar Card
@@ -277,7 +281,7 @@ const [mached,setMached]=useState(false);
 
 
 
-  {!editData && <FormControl fullWidth margin="normal">
+  {isAdmin && <FormControl fullWidth margin="normal">
       <InputLabel>Select Identification Document</InputLabel>
       <Select
         name="id_type"
@@ -298,18 +302,18 @@ const [mached,setMached]=useState(false);
 
 
 
-    {!editData &&<p className='text-lg  text-blue-600 font-bold font-serif'>Upload high quality Image in .jpg</p>
+    {isAdmin &&<p className='text-lg  text-blue-600 font-bold font-serif'>Upload high quality Image in .jpg</p>
   }    <TextField
         label={formData.id_type == "Driving License"?"Enter 16 digit driving Licence no":formData.id_type=="Pan card" ? "enter 10 digit pan card no" : formData.id_type=="Voter ID" ? "enter 10 digit VoterId": "Voter ID / Driving License / Pan Card No"}
         name="id_no"
         value={formData.id_no}
-        onChange={editData?()=>{}:handleChange}
+        onChange={!isAdmin?()=>{}:handleChange}
         fullWidth
         required
         
       />
 
-{!editData &&
+{isAdmin &&
       <Button variant="contained" component="label" fullWidth
         disabled={ formData.id_type=='Driving License' ? formData.id_no.length !== 16 : formData.id_no.length !== 10 }
       >

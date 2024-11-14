@@ -16,6 +16,15 @@ const GotraPage = () => {
 
   const HeaderData=['Gotra'];
 
+
+  const [memberRights,setmemberRights]=useState([]);
+
+  useEffect(()=>{
+      setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
+      // console.log(memberRights);
+      // console.log('Asoka rights');
+  },[]);
+
   useEffect(() => {
     const fetchGotras = async () => {
       
@@ -147,7 +156,9 @@ const handleAddGotra = async (gotra) => {
   return (
     <Stack spacing={2} padding={2}>
 
-      <Box display="flex" justifyContent="flex-end">
+      {
+        memberRights['Gotra Management']?.['add'] &&
+        <Box display="flex" justifyContent="flex-end">
         <Button
           variant="contained"
           color="primary"
@@ -155,7 +166,7 @@ const handleAddGotra = async (gotra) => {
         >
           Add Gotra
         </Button>
-      </Box>
+      </Box>}
 
 
       <Dialog open={isFormOpen} onClose={() => setIsFormOpen(false)}>
@@ -188,7 +199,7 @@ const handleAddGotra = async (gotra) => {
           gotras={filteredGotras}
           onEdit={handleEditGotra}
           onDelete={handleDeleteGotra}
-
+          memberRights={memberRights}
         />
       </Suspense>
       

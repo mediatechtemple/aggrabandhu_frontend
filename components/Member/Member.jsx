@@ -281,7 +281,7 @@ let temp;
 
   const handleEditClick = (member) => {
     handlePincodeChange(member.pincode);
-    delete member.reference_id;
+    member.reference_id;
     if (Array.isArray(member.nominees) && member.nominees.length > 0) {
       const detailsObj = member.nominees[0]; // Get the first object from the array
       

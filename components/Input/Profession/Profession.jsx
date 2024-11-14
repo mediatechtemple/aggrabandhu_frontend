@@ -16,6 +16,15 @@ const Profession = () => {
 
     const HeaderData = ['Professions'];
 
+    const [memberRights,setmemberRights]=useState([]);
+
+    useEffect(()=>{
+        setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
+        // console.log(memberRights);
+        // console.log('Asoka rights');
+    },[]);
+
+
     useEffect(() => {
         async function fetchProfession() {
             try {
@@ -122,7 +131,8 @@ const Profession = () => {
 
     return (
         <Stack spacing={2} padding={2}>
-            <Box display='flex' justifyContent="flex-end">
+           {
+          memberRights['Profession Management']?.['add'] &&  <Box display='flex' justifyContent="flex-end">
                 <Button
                     variant="contained"
                     color="primary"
@@ -131,7 +141,7 @@ const Profession = () => {
                     Add Profession
                 </Button>
             </Box>
-
+}
             <Dialog open={isFormOpen} onClose={() => {
                 setIsFormOpen(false);
                 setEditIndex(null);
@@ -159,6 +169,7 @@ const Profession = () => {
                 gotras={filteredProfession}
                 onEdit={handleEditProfession}
                 onDelete={handleDeleteProfession}
+                memberRights={memberRights}
             />
         </Stack>
     );

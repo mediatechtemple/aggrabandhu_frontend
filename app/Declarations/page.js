@@ -6,6 +6,14 @@ import React, { useEffect, useState } from 'react';
 const PrivacyPolicy = () => {
     const [postedData, setPostedData] = useState(null);
     const [content, setContent] = useState(''); // Store editor content
+    const [memberRights,setmemberRights]=useState([]);
+
+    useEffect(()=>{
+        setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
+        // console.log(memberRights);
+        // console.log('Asoka rights');
+      },[]);
+
 
     // Method to handle form submission
     const handleSubmit = (event) => {

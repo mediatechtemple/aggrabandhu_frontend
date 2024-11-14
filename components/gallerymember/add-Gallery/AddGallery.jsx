@@ -3,8 +3,7 @@ import React, { useState } from "react";
 
 const AddGallery = () => {
   const [image, setImage] = useState(null);
-  const [name, setName] = useState("");
-  const [designation, setDesignation] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
@@ -16,19 +15,18 @@ const AddGallery = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!image || !name) {
-      setMessage("Please add an image and a name.");
+    if (!image || !description) {
+      setMessage("Please add an image and a description.");
       return;
     }
     setLoading(true);
     const formData = new FormData();
     formData.append("file", image);
-    formData.append("name", name);
-    formData.append("designation", designation);
+    formData.append("description", description);
 
     try {
       const response = await fetch(
-        "https://backend.aggrabandhuss.org/api/designation",
+        "https://backend.aggrabandhuss.org/api/gallery",
         {
           method: "POST",
           body: formData,
@@ -38,8 +36,8 @@ const AddGallery = () => {
         setMessage("Image uploaded successfully!");
         setIsSuccess(true);
         setImage(null);
-        setName("");
-        setDesignation("");
+        setDescription("");
+        document.getElementById("fileInput").value = ""; // Reset file input
       } else {
         setMessage("Failed to upload the image.");
         setIsSuccess(false);
@@ -65,7 +63,7 @@ const AddGallery = () => {
             Upload Image
           </label>
           <input
-            key={image || "file-input"}
+            id="fileInput"
             type="file"
             accept="image/*"
             onChange={handleImageChange}
@@ -75,27 +73,14 @@ const AddGallery = () => {
 
         <div>
           <label className="block mb-2 text-sm font-medium text-gray-700">
-            Full Name
+            Description
           </label>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             className="w-full p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-            placeholder="Enter Full Name"
-          />
-        </div>
-
-        <div>
-          <label className="block mb-2 text-sm font-medium text-gray-700">
-            Designation
-          </label>
-          <input
-            type="text"
-            value={designation}
-            onChange={(e) => setDesignation(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-            placeholder="Enter Designation"
+            placeholder="Enter Description"
           />
         </div>
 

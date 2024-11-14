@@ -42,11 +42,11 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
   const [userManagement ,setUserManagement] = React.useState(false);
   const [donationManagement,setDonationManagement]=React.useState(false);
   const [role,setRole]=useState(null);
-
-
+  const [user,setUser]=useState(null);
 
   useEffect(()=>{
     setRole(JSON.parse(localStorage.getItem('role')));
+    setUser(JSON.parse(localStorage.getItem('user')));
   },[])
   
   // console.log((localStorage.getItem('role')));
@@ -110,21 +110,26 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
             { text: 'Support', icon: <SupportIcon />, route: '/Support',roles:['user'] },
             { text: 'Follow Us', icon: <FollowTheSignsIcon />, route: '/Follow-Us',roles:['user'] },
             { text: 'Rules & Regulations', icon: <GavelIcon />, route: '/User-Rules-Regulations',roles:['user'] },
-            { text: 'Admin Management', icon: <GroupIcon />, route: '/User-Management',roles:['admin'] },
+            { 
+              
+              text: 'Admin Management', icon: <GroupIcon />, route: '/User-Management',roles:['admin'] },
             // { text: 'Members Management', icon: <PeopleIcon />, route: '/Members',roles:['admin'] },
             // { text: 'Donation Management', icon: <VolunteerActivismIcon />, route: '/Donation-Receivers',roles:['admin'] },
             // { text: 'Rules & Regulations', icon: <RuleIcon />, route: '/Rules-Regulations',roles:['admin'] },
             // {text:'Make Donation',icon:<VolunteerActivismIcon/>,route:'/make-donation'}
           ]
           .filter(item => item.roles.includes(role))
-          .map((item) => (
-            <Link href={item.route} passHref key={item.text}>
+          .map((item) => {
+            if (item.text === 'Admin Management' && !(user.super_admin=='Yes')) {
+              return null; // Don't render if user doesn't exist
+            }
+            return <Link href={item.route} passHref key={item.text}>
               <ListItem >
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />
               </ListItem>
             </Link>
-          ))
+          })
           
           }
 
@@ -245,12 +250,12 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
                   <ListItemText primary="Gotra" />
                 </ListItem>
               </Link>
-              <Link href="/State-District" passHref>
+              {/* <Link href="/State-District" passHref>
                 <ListItem button sx={{ pl: 4 }}>
                   <ListItemIcon><LocationOn /></ListItemIcon>
                   <ListItemText primary="State-District" />
                 </ListItem>
-              </Link>
+              </Link> */}
               <Link href="/Profession" passHref>
                 <ListItem button sx={{ pl: 4 }}>
                   <ListItemIcon><WorkIcon /></ListItemIcon>
