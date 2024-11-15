@@ -235,45 +235,88 @@ let temp;
 
   const handleClose = () => {
     // Reset form data
-    setFormData({
-      reference_id: '',
-      gotra: '',
-      profile: null,
-      name: '',
-      gender:'',
-      father_name: '',
-      mother_name: '',
-      dob: '',
-      marital_status: '',
-      spouse_name: '',
-      mobile_no: '',
-      otp: '',
-      password: '',
-      confirmPassword: '',
-      email: '',
-      address: '',
-      district: '',
-      state: '',
-      pincode: '',
-      profession: '',
-      aadhar_no: '',
-      file: null,
-      id_no: '',
-      file2: null,
-      nominee: '',
-      relationship: '',
-      nominee2: '',
-      relationship2: '',
-      disease: false,
-      diseaseFile: '',
-      rulesAccepted: false,
-      id_type:''
-    });
+    // setFormData({
+    //   reference_id: '',
+    //   gotra: '',
+    //   profile: null,
+    //   name: '',
+    //   gender:'',
+    //   father_name: '',
+    //   mother_name: '',
+    //   dob: '',
+    //   marital_status: '',
+    //   spouse_name: '',
+    //   mobile_no: '',
+    //   otp: '',
+    //   password: '',
+    //   confirmPassword: '',
+    //   email: '',
+    //   address: '',
+    //   district: '',
+    //   state: '',
+    //   pincode: '',
+    //   profession: '',
+    //   aadhar_no: '',
+    //   file: null,
+    //   id_no: '',
+    //   file2: null,
+    //   nominee: '',
+    //   relationship: '',
+    //   nominee2: '',
+    //   relationship2: '',
+    //   disease: false,
+    //   diseaseFile: '',
+    //   rulesAccepted: false,
+    //   id_type:''
+    // });
 
     // Set open to false
     setEditData(null)
     setOpen(false);
   };
+
+  function Cross_handleClose(){
+    setOpen(false);
+    setFormData({
+    reference_id: '',
+    gotra: '',
+    profile: null,
+    name: '',
+    gender:'',
+    father_name: '',
+    mother_name: '',
+    dob: '',
+    marital_status: '',
+    spouse_name: '',
+    marriage_date:'',
+    marriage_age:'',
+    mobile_no: '',
+    otp: '',
+    password: '',
+    confirmPassword: '',
+    email: '',
+    address: '',
+    district: '',
+    state: '',
+    pincode: '',
+    tehsil:'',
+    profession: '',
+    aadhar_no: '',
+    file: null,
+    id_no: '',
+    file2: null,
+    nominee: '',
+    relationship: '',
+    nominee2: '',
+    relationship2: '',
+    disease: false,
+    diseaseFile: '',
+    rulesAccepted: false,
+    id_type:'',
+    declaration:false
+    })
+    
+  }
 
  
 
@@ -407,6 +450,8 @@ let temp;
       handleSubmit={handleSubmit}
       handlePincodeChange={handlePincodeChange}
       block={block}
+      loading={loading}
+      Cross_handleClose={Cross_handleClose}
         />
         
 

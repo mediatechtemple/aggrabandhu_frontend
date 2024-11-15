@@ -14,7 +14,7 @@ const column = [
   { key: 'address', value: 'Address' },
 ];
 
-const ReferredDialog = ({ id,referDialogCloseHandler }) => {
+const ReferredDialog = ({ id,referDialogCloseHandler,referDialogName }) => {
 
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -111,7 +111,7 @@ const ReferredDialog = ({ id,referDialogCloseHandler }) => {
       <div onClick={(e) => e.stopPropagation()} className="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl max-h-[80vh] z-[1401] overflow-y-auto">
       
         <div>
-          <p className="w-full p-2 bg-blue-500 text-white text-center text-2xl font-serif">Referred Members</p>
+          <p className="w-full p-2 bg-blue-500 text-white text-center text-2xl font-serif">Referred By {referDialogName}</p>
         </div>
         <div>
           <DownloadCSVButton data={downloadData} filename="my_data.csv" />

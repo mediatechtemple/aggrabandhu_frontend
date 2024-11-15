@@ -13,6 +13,7 @@ const Refral_Report = () => {
   const { data: members, loading, error,downloadData1 } = useFetchMembers('https://backend.aggrabandhuss.org/api/member/referall');
   const[referDialog,setReferDialog]=useState(false);
   const[referDialogId,setReferDialogId]=useState(false);
+  const[referDialogName,setReferDialogName]=useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage,setitemsPerPage] = useState(100);
@@ -34,9 +35,10 @@ const Refral_Report = () => {
     setCurrentPage(1); // Reset to the first page on new search
   };
 
-  const referDialogOpneHandler = (id) => {
+  const referDialogOpneHandler = (id,name) => {
     setReferDialog(true);
     setReferDialogId(id);
+    setReferDialogName(name);
   };
 
   const referDialogCloseHandler = (id) => {
@@ -148,7 +150,7 @@ const Refral_Report = () => {
                 <td className="p-2 text-center border">{item.father_name}</td>
                 <td className="p-2 text-center border">{item.mobile_no}</td>
                 <td className="p-2 text-center border">{item.address}</td>
-                <td onClick={() => referDialogOpneHandler(item.id)} className="p-2 text-center border">
+                <td onClick={() => referDialogOpneHandler(item.id,item.name)} className="p-2 text-center border">
                 <button className="bg-blue-500 text-white font-semibold py-1 px-3 rounded-lg transition-transform transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
                   {item.referCount}
                 </button>
@@ -167,7 +169,10 @@ const Refral_Report = () => {
         membersLength={members.length}
       />
 
-      {referDialog && <ReferredDialog id={referDialogId} referDialogCloseHandler={referDialogCloseHandler} />}
+      {referDialog && <ReferredDialog id={referDialogId}
+       referDialogCloseHandler={referDialogCloseHandler} 
+       referDialogName={referDialogName}
+       />}
     </>
   );
 };

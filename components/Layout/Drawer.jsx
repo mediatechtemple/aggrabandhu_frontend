@@ -265,6 +265,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
 
             {/* here we are going to add three more inputs */}
 
+           {(user.super_admin=='Yes') && ( <>
             <Link href="/Rules_Regulations" passHref>
                 <ListItem button sx={{ pl: 4 }}>
                   <ListItemIcon><WorkIcon /></ListItemIcon>
@@ -292,6 +293,7 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
                   <ListItemText primary="Term & Condition" />
                 </ListItem>
               </Link>
+            </>)}
 
 
             </List>

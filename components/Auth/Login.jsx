@@ -1,10 +1,10 @@
 'use client'
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 const LoginPage = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const [mobileNo, setMobileNo] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -19,6 +19,7 @@ const LoginPage = () => {
       mobile_no: mobileNo,
       password: password,
     };
+    
 
     try {
       const response = await fetch('https://backend.aggrabandhuss.org/api/member/login', {
