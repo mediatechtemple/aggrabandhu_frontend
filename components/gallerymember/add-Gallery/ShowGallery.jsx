@@ -4,46 +4,15 @@ import { useEffect, useState } from "react";
 // import { Loading } from "@/Loading";
 // import urlApi from "@/utils/api";
 
-const ShowGallery = ({memberRights}) => {
-  const [galleryList, setGalleryList] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [deleting, setDeleting] = useState(null); 
+const ShowGallery = ({memberRights,
+  galleryList,
+  loading,
+  deleting,
+  handleDeleteGallery,
 
-  const handleGalleryList = async () => {
-    setLoading(true);
-    try {
-      const apiResponse = await fetch(`https://backend.aggrabandhuss.org/api/gallery`);
-      const response = await apiResponse.json();
 
-      setGalleryList(response);
-     
-    } catch (error) {
-      console.error("Error fetching gallery data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDeleteGallery = async (getCurrentID) => {
-    try {
-      const apiResponse = await fetch(`https://backend.aggrabandhuss.org/api/gallery/${getCurrentID}`, {
-        method: "DELETE",
-      });
-      
-      if (!apiResponse.ok) {
-        throw new Error("Network response was not ok");
-      }
-      setGalleryList((prevList) => prevList.filter((item) => item.id !== getCurrentID));
-    } catch (error) {
-      console.log(error);
-    }finally{
-      setDeleting(null)
-    }
-  };
-
-  useEffect(() => {
-    handleGalleryList();
-  }, []);
+}) => {
+  
 
   // if (loading) {
   //   return (

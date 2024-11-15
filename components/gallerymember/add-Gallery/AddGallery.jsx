@@ -1,12 +1,56 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import ShowGallery from "./ShowGallery";
 
-const AddGallery = () => {
+const AddGallery = ({memberRights}) => {
   const [image, setImage] = useState(null);
   const [description, setDescription] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const [galleryList, setGalleryList] = useState([]); 
+  const [loading, setLoading] = useState(false);
+  const [deleting, setDeleting] = useState(null); 
+
+  const handleGalleryList = async () => {
+    setLoading(true);
+    try {
+      const apiResponse = await fetch(`https://backend.aggrabandhuss.org/api/gallery`);
+      const response = await apiResponse.json();
+
+      setGalleryList(response);
+     
+    } catch (error) {
+      console.error("Error fetching gallery data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteGallery = async (getCurrentID) => {
+    try {
+      const apiResponse = await fetch(`https://backend.aggrabandhuss.org/api/gallery/${getCurrentID}`, {
+        method: "DELETE",
+      });
+      
+      if (!apiResponse.ok) {
+        throw new Error("Network response was not ok");
+      }
+      setGalleryList((prevList) => prevList.filter((item) => item.id !== getCurrentID));
+    } catch (error) {
+      console.log(error);
+    }finally{
+      setDeleting(null)
+    }
+  };
+
+  
+  useEffect(() => {
+    handleGalleryList();
+  }, []);
+
+
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -48,10 +92,12 @@ const AddGallery = () => {
       setIsSuccess(false);
     } finally {
       setLoading(false);
+      handleGalleryList();
     }
   };
 
   return (
+    <>
     <div className="max-w-lg mx-auto p-6 bg-white shadow-md rounded-lg mt-20">
       <h2 className="text-2xl font-extrabold text-green-600 mb-6 text-center">
         Add to Gallery
@@ -107,6 +153,16 @@ const AddGallery = () => {
         )}
       </form>
     </div>
+    <div>
+      <ShowGallery
+        memberRights={memberRights}
+        galleryList={galleryList}
+        loading={loading}
+        deleting={deleting}
+        handleDeleteGallery={handleDeleteGallery}
+        />
+    </div>
+    </>
   );
 };
 

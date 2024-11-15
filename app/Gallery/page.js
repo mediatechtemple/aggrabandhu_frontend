@@ -19,9 +19,7 @@ const Page = () => {
         <AddGallery
         memberRights={memberRights}
         />}
-        <ShowGallery
-        memberRights={memberRights}
-        />
+        
     </div>
   )
 }
