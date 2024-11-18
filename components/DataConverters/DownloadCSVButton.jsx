@@ -2,6 +2,10 @@ import { FaFileCsv } from 'react-icons/fa';
 const DownloadCSVButton = ({ data, filename = 'table_data.csv' }) => {
   
     const convertToCSV = (data) => {
+      if(data.length == 0){
+        alert("No data available");
+        return;
+      }
       // Extracting headers
       const headers = Object.keys(data[0]);
       const csvRows = [];

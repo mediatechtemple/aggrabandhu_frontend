@@ -1,10 +1,12 @@
 'use client';
 // import jsPDF from 'jspdf';
 import { FaDownload } from 'react-icons/fa';
+import { FaFilePdf } from 'react-icons/fa';
 import { jsPDF } from 'jspdf';  // Make sure you import this way
 import 'jspdf-autotable';
 
 const DownloadPDFButton = ({ data, filename = 'table_data.pdf' }) => {
+
   const downloadPDF = () => {
     const doc = new jsPDF();
     doc.setFontSize(10);
@@ -15,7 +17,7 @@ const DownloadPDFButton = ({ data, filename = 'table_data.pdf' }) => {
 
     // Format data for autoTable
     const tableData = data.map((item, index) => [
-      index + 1, 
+      // index + 1, 
       ...headers.map(header => item[header] || 'N/A')
     ]);
 
@@ -33,9 +35,9 @@ const DownloadPDFButton = ({ data, filename = 'table_data.pdf' }) => {
       columnStyles: {
         // Adjust column widths if necessary
         0: { cellWidth: 10 }, // ID column width
-        1: { cellWidth: 30 }, // Adjust other columns similarly
-        2: { cellWidth: 50 },
-        3: { cellWidth: 30 },
+        1: { cellWidth: 10 }, // Adjust other columns similarly
+        2: { cellWidth: 10 },
+        3: { cellWidth: 10 },
         // Add more column styles as needed
       },
       margin: { left: 10, top: 20 },
@@ -47,7 +49,7 @@ const DownloadPDFButton = ({ data, filename = 'table_data.pdf' }) => {
 
   return (
     <button onClick={downloadPDF} className="bg-green-500 text-white p-3 m-1 rounded">
-      <FaDownload />
+      <FaFilePdf />
     </button>
   );
 };

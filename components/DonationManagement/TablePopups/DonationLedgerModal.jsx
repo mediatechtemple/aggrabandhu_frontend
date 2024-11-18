@@ -1,3 +1,5 @@
+import DownloadCSVButton from "@/components/DataConverters/DownloadCSVButton";
+import DownloadPDFButton from "@/components/DataConverters/DownloadPDFButton";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 
@@ -33,6 +35,10 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
   return (
     <div onClick={handleLedgerClose} className="fixed inset-0 text-black bg-gray-800 bg-opacity-50 flex justify-center items-center z-[2800]">
       <div className="bg-white rounded-lg shadow-lg p-6 w-1/2 z-[2800] max-h-[60vh] overflow-y-auto">
+        <div>
+            <DownloadCSVButton data={DonatorsData}/>
+            <DownloadPDFButton data={DonatorsData}/>
+        </div>
         <table min-w-full table-auto border-collapse border border-gray-300 text-black text-center>
             <thead>
                 <tr>

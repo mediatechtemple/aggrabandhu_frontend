@@ -239,12 +239,28 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort,
                 {memberRights['Donation Management']?.['edit'] && <td 
                   className="border border-gray-300 p-2 text-black text-center cursor-pointer"
                 >
-                  <button 
+                  {/* <button 
                     className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 w-24" 
                     onClick={() => activeHandler(member)}
                   >
                     {member.status === 'Active' ? 'Active' : 'Inactive'}
-                  </button>
+                  </button> */}
+
+                <button
+                  className={`px-4 py-1 rounded w-24 ${
+                    member.status === "Active"
+                      ? "bg-blue-500 text-white hover:bg-blue-600"
+                      : "bg-red-500 text-white hover:bg-red-600"
+                  }`}
+                  onClick={() => activeHandler(member)}
+                >
+                  {member.status === "Active" ? "Active" : "Inactive"}
+                </button>
+
+
+
+
+
                 </td>}
 
                 <td className="border border-gray-300 p-2 text-center">

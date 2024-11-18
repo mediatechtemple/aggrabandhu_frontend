@@ -7,6 +7,8 @@ import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
 import Iconsss from '../Icons/Iconsss';
 
 import data from '@/utils/donationTableData'
+import DownloadCSVButton from '../DataConverters/DownloadCSVButton';
+import DownloadPDFButton from '../DataConverters/DownloadPDFButton';
 
 
 
@@ -655,7 +657,11 @@ const handleDateRangeChange = (start, end) => {
         </Box>
           <Box display="flex" justifyContent="space-between" >
           <Box padding='1px'>
-              <Iconsss tableId="my-tablee"/>
+              {/* <Iconsss tableId="my-tablee"/> */}
+              <div>
+              <DownloadCSVButton data={donationData} filename="my_data.csv" />
+              <DownloadPDFButton data={donationData} filename="table_data.pdf" />
+              </div>
           </Box>
             <Box display="flex" justifyContent="flex-end" mb={2} >
                 {/* <Filter filters={filters} onFilterChange={handleFilterChange} /> */}

@@ -84,11 +84,11 @@ const ReferredDialog = ({ id,referDialogCloseHandler,referDialogName }) => {
         setMembers(data);
         console.log(data);
         const downloadData = data.map(item => ({
-          id: item.id,
-          name: item.name,
-          mobile_no: item.father_name,
-          dob: item.mobile_no,
-          address: item.address,
+          'Member Id': item.reference_id,
+          Name: item.name,
+          'Father Name': item.father_name,
+          Mobile_no: item.mobile_no,
+          Address: item.address,
           // profession: item.pro,
         }));
         setDownloadData(downloadData)

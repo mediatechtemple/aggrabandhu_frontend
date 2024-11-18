@@ -151,7 +151,8 @@ const Refral_Report = () => {
                 <td className="p-2 text-center border">{item.mobile_no}</td>
                 <td className="p-2 text-center border">{item.address}</td>
                 <td onClick={() => referDialogOpneHandler(item.id,item.name)} className="p-2 text-center border">
-                <button className="bg-blue-500 text-white font-semibold py-1 px-3 rounded-lg transition-transform transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
+                <button className="bg-blue-500
+                 text-white font-semibold py-1 px-3 rounded-lg transition-transform transform hover:scale-105 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2">
                   {item.referCount}
                 </button>
               </td>

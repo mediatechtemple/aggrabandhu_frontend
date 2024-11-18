@@ -327,6 +327,12 @@ export default function DrawerComponent({ isSidebarOpen, toggleSidebar }) {
                   <ListItemText primary="Add-Member-List" />
                 </ListItem>
               </Link>
+              <Link href="/Events" passHref>
+                <ListItem button sx={{ pl: 4 }}>
+                  <ListItemIcon><ContactMailIcon /></ListItemIcon>
+                  <ListItemText primary="Events" />
+                </ListItem>
+              </Link>
               {/* <Link href="/Contact-Us" passHref>
                 <ListItem button sx={{ pl: 4 }}>
                   <ListItemIcon><ContactMailIcon /></ListItemIcon>

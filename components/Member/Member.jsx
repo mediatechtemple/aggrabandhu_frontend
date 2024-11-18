@@ -11,6 +11,9 @@ import DistrictFilter from './DistrictFilter';
 import StateFilter from './StateFilter';
 import ReferenceSearch from './ReferenceSearch';
 import Iconsss from '../Icons/Iconsss';
+import DownloadCSVButton from '../DataConverters/DownloadCSVButton';
+import DownloadPDFButton from '../DataConverters/DownloadPDFButton';
+import { filter } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
 const Member = () => {
   const [formData, setFormData] = useState({
@@ -61,6 +64,9 @@ const Member = () => {
 
 console.log(members);
 
+
+
+
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [totalPages, setTotalPages] = useState(1);
@@ -74,6 +80,8 @@ console.log(members);
   const [memberRights,setmemberRights]=useState([]);
   
 let temp;
+
+
   
   useEffect(()=>{
     // console.log(filters)
@@ -103,6 +111,7 @@ let temp;
         const data = await response.json();
         console.log(data.data); // Log the fetched data
         setMembers([...data.data]);
+
         const uniqueStates = [...new Set(data.data.map(member => member.state))].filter(Boolean);
         setStateData(uniqueStates);
 
@@ -162,7 +171,17 @@ let temp;
     setFilteredMembers(result.slice((page - 1) * pageSize, page * pageSize));
   }, [filters, members, page, pageSize]);
 
-
+  useEffect(() => {
+    const filteredDistricts = [
+      ...new Set(
+        members
+          .filter((item) => item.state === filters.state) // Filter objects by state
+          .map((item) => item.district) // Extract districts
+      ),
+    ];
+console.log(filteredDistricts);
+    setDistrictData(filteredDistricts); // Output: Unique districts, e.g., ["Pune", "Mumbai"]
+  }, [filters.state, members]);
 
 
   // Member addition, edit, delete handlers
@@ -466,7 +485,11 @@ let temp;
 
       <Box display="flex"  justifyContent='space-between' >
         <Box>
-         <Iconsss dataObject={filteredMembers}  tableId="my-tablee"/>
+         {/* <Iconsss dataObject={filteredMembers}  tableId="my-tablee"/> */}
+         <div>
+      <DownloadCSVButton data={members} filename="my_data.csv" />
+      <DownloadPDFButton data={members} filename="table_data.pdf" />
+    </div>
         </Box>
         <Box display="flex"> 
         <StateFilter states={stateData} selectedState={filters.state} onSelectState={state => handleFilterChange('state', state)} />
