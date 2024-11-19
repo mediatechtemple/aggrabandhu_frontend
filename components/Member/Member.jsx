@@ -58,9 +58,12 @@ const Member = () => {
   const [stateData,setStateData]=useState([]);
   const [districtData,setDistrictData]=useState([]);
   const [filteredMembers, setFilteredMembers] = useState([]);
+  const [token,setToken]=useState(null);
   const [filters, setFilters] = useState({
     searchQuery: '', role: '', isActive: false, startDate: null, endDate: null, state: '', district: '', referenceId: ''
   });
+
+  const [pdfData,setpdfData]=useState([]);
 
 console.log(members);
 
@@ -90,8 +93,7 @@ let temp;
 
   useEffect(()=>{
     setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
-    // console.log(memberRights);
-    // console.log('Asoka rights');
+    setToken(JSON.parse( localStorage.getItem('user')).token);
   },[]);
 
 
@@ -111,6 +113,45 @@ let temp;
         const data = await response.json();
         console.log(data.data); // Log the fetched data
         setMembers([...data.data]);
+        setpdfData(
+          [...data.data].map((item) => {
+            return {
+              aadhar_no: item.aadhar_no,
+              address: item.address,
+              createdAt:new Date(item.createdAt).toLocaleDateString(),
+              declaration: item.declaration,
+              disease: item.disease,
+              district: item.district,
+              dob: new Date(item.dob).toLocaleDateString(),
+              donationCount: item.donationCount,
+              email: item.email,
+              father_name: item.father_name,
+              gender: item.gender,
+              gotra: item.gotra,
+              id_no: item.id_no,
+              id_type: item.id_type, // Using item.id_type dynamically
+              marital_status: item.marital_status, // Using dynamic value if needed
+              marriage_age: item.marriage_age, // Using dynamic value if needed
+              marriage_date: item.marriage_date, // Using dynamic value if needed
+              mobile_no: item.mobile_no, // Using dynamic value if needed
+              mother_name: item.mother_name, // Using dynamic value if needed
+              name: item.name,
+              pincode: item.pincode,
+              profession: item.profession,
+              refer_id: item.refer_id || null,
+              reference_id: item.reference_id,
+              rulesAccepted: item.rulesAccepted,
+              spouse_name: item.spouse_name,
+              state: item.state,
+              status: item.status,
+              tahsil: item.tahsil,
+              totalDonation: item.totalDonation,
+              total_age: item.total_age,
+            };
+          })
+        );
+        
+        
 
         const uniqueStates = [...new Set(data.data.map(member => member.state))].filter(Boolean);
         setStateData(uniqueStates);
@@ -205,11 +246,17 @@ console.log(filteredDistricts);
         // Use editData.id for the PUT request
         response = await fetch(`https://backend.aggrabandhuss.org/api/member/${editData.id}`, {
           method: 'PUT', // Use PUT for updating data
+          headers:{
+            'Authorization':`Bearer ${token}`
+          },
           body: formToSubmit,
         });
       } else {
         response = await fetch('https://backend.aggrabandhuss.org/api/member', {
           method: 'POST', // Use POST for creating a new member
+          headers:{
+            'Authorization':`Bearer ${token}`
+          },
           body: formToSubmit,
         });
       }
@@ -385,6 +432,9 @@ console.log(filteredDistricts);
       try {
         const response = await fetch(`https://backend.aggrabandhuss.org/api/member/${id}`, {
           method: 'DELETE',
+          headers:{
+            'Authorization':`Bearer ${token}`
+          },
         });
   
         if (response.ok) {
@@ -488,7 +538,7 @@ console.log(filteredDistricts);
          {/* <Iconsss dataObject={filteredMembers}  tableId="my-tablee"/> */}
          <div>
       <DownloadCSVButton data={members} filename="my_data.csv" />
-      <DownloadPDFButton data={members} filename="table_data.pdf" />
+      <DownloadPDFButton data={pdfData} filename="table_data.pdf" />
     </div>
         </Box>
         <Box display="flex"> 

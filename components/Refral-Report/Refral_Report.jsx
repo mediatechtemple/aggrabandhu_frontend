@@ -1,6 +1,6 @@
 // Page.js
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useSortableData from './hooks/useSortableData';
 import useFetchMembers from './hooks/useFetchMembers';
 import Pagination from '@/user_component/Pagination/Pagination';
@@ -10,7 +10,8 @@ import Image from 'next/image';
 import ReferredDialog from './ReferalPopup/ReferredDialog';
 
 const Refral_Report = () => {
-  const { data: members, loading, error,downloadData1 } = useFetchMembers('https://backend.aggrabandhuss.org/api/member/referall');
+  const [token,setToken]=useState(null);
+  const { data: members, loading, error,downloadData1 } = useFetchMembers('https://backend.aggrabandhuss.org/api/member/referall',token);
   const[referDialog,setReferDialog]=useState(false);
   const[referDialogId,setReferDialogId]=useState(false);
   const[referDialogName,setReferDialogName]=useState(false);
@@ -61,6 +62,10 @@ const Refral_Report = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredMembers.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
+
+  useEffect(()=>{
+    setToken(JSON.parse( localStorage.getItem('user')).token);
+  },[]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;

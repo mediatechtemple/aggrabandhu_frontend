@@ -34,16 +34,41 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort,
   const [remarkPopup,setRemarkPopup]=useState(false);
   const [remarkData,setRemarkData]=useState({});
 
-  const activeHandler = (member) => {
-    // Map through the sortedRows to find the member with matching id
-    const updatedRows = sortedRows.map((row) =>
-      row.id === member.id 
-        ? { ...row, status: member.status === 'Active' ? 'Inactive' : 'Active' } 
-        : row
-    );
+  async function updateStatus(member) {
+    let status = member.status === "Active" ? "Inactive" : "Active";
+    try {
+      const response = await fetch(
+        `https://backend.aggrabandhuss.org/api/donationreceive/${member.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status }),
+        }
+      );
   
-    setsortedRows(updatedRows); // Set the updated rows
+      if (!response.ok) {
+        alert("Status not updated");
+      } else {
+        const updatedRows = sortedRows.map((row) =>
+          row.id === member.id
+            ? { ...row, status } // Use the updated status variable
+            : row
+        );
+  
+        setsortedRows(updatedRows);
+        alert("Status updated");
+      }
+    } catch (error) {
+      console.log("Error updating status:", error);
+    }
+  }
+  
+  const activeHandler = (member) => {
+    updateStatus(member);
   };
+   
   
 
   const handleRemarkClose=()=>{

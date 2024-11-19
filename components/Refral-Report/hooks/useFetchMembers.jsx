@@ -1,7 +1,7 @@
 // hooks/useFetchMembers.js
 import { useEffect, useState } from 'react';
 
-const useFetchMembers = (url) => {
+const useFetchMembers = (url,token) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -28,7 +28,13 @@ const useFetchMembers = (url) => {
       setError(null); // Reset error state
 
       try {
-        const response = await fetch(url);
+        const Htoken=JSON.parse( localStorage.getItem('user')).token
+        const response = await fetch(url,{
+          method:'GET',
+          headers:{
+            'Authorization':`Bearer ${Htoken}`
+          },
+        });
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -59,6 +65,7 @@ const useFetchMembers = (url) => {
 
     fetchData();
   }, [url]);
+  
 
   return { data, loading, error ,downloadData1};
 };

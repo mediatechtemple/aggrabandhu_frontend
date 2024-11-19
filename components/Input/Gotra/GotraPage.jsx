@@ -12,7 +12,7 @@ const GotraPage = () => {
   const [search, setSearch] = useState('');
   const [editIndex, setEditIndex] = useState(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
-
+  const [token,setToken]=useState(null);
 
   const HeaderData=['Gotra'];
 
@@ -26,10 +26,15 @@ const GotraPage = () => {
   },[]);
 
   useEffect(() => {
-    const fetchGotras = async () => {
+    const fetchGotras = async (toke) => {
       
       try {
-        const response = await fetch('https://backend.aggrabandhuss.org/api/gotra');
+        const response = await fetch('https://backend.aggrabandhuss.org/api/gotra',{
+          method:'GET',
+          headers:{
+            'Authorization':`bearer ${toke}`
+          }
+        });
         const data = await response.json();
         setGotras(data);
         
@@ -37,8 +42,10 @@ const GotraPage = () => {
         console.error('Error fetching gotras:', error);
       }
     };
+    let toke=JSON.parse( localStorage.getItem('user')).token;
+    setToken(toke);
   
-    fetchGotras();
+    fetchGotras(toke);
   }, []);
 
 
@@ -55,6 +62,7 @@ const handleAddGotra = async (gotra) => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorizaton':`bearer ${token}`
         },
         body: JSON.stringify({ name: gotra }), // Updating the gotra with { name: gotra }
       });
@@ -75,6 +83,7 @@ const handleAddGotra = async (gotra) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `bearer ${token}`
         },
         body: JSON.stringify({ name: gotra }), // Adding { name: gotra }
       });
@@ -127,6 +136,9 @@ const handleAddGotra = async (gotra) => {
       // Make an API request to delete the gotra by its id
       const response = await fetch(`https://backend.aggrabandhuss.org/api/gotra/${id}`, {
         method: 'DELETE',
+        headers:{
+          'Authorization':`bearer ${token}`
+        }
       });
   
       if (!response.ok) {

@@ -111,10 +111,12 @@ const [preview, setPreviews] = useState({
   image3: '',
 });
 
+const [pdfData,setPdfData]=useState([]);
 
 const [nomineeCount, setNomineeCount] = useState(1);
 const [editData,setEditData]=useState(null);
 
+const [token,setToken]=useState(null);
 
 // State for storing image preview URL
 
@@ -204,7 +206,11 @@ const handleSubmit = async () => {
       : 'https://backend.aggrabandhuss.org/api/donationreceive/';
     const method = editData ? 'PUT' : 'POST';
 
-    const response = await fetch(url, { method, body: newFormData });
+    const response = await fetch(url, { method,
+      headers:{
+        'Authorization':`Bearer ${token}`
+      },
+      body: newFormData });
     if (!response.ok) throw new Error('Data fetch error');
 
     const message = editData ? 'Edit Successful!' : 'Submission Successful!';
@@ -239,12 +245,13 @@ const handleSubmit = async () => {
 
 
 
-const fetchDonationData = async () => {
+const fetchDonationData = async (toke) => {
   try {
     const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+          'Authorization':`Bearer ${toke}`
       },
     });
 
@@ -255,6 +262,88 @@ const fetchDonationData = async () => {
     const data = await response.json(); // Parse the response JSON
     console.log(data.data);
     setDonationData(data.data); // Store the data in state
+
+
+    
+    setPdfData([...data.data].map((item) => {
+      return {
+        // Member: {
+        //   // id: item.Member?.id || null,
+        //   name: item.Member?.name || null,
+        //   // email: item.Member?.email || null,
+        //   state: item.Member?.state || null,
+        //   district: item.Member?.district || null,
+        // },
+
+        Member_name:item.Member?.name || null,
+        Member_state: item.Member?.state || null,
+        Member_district:item.Member?.district || null,
+
+
+
+
+        bank_detail: item.bank_detail || null,
+        // createdAt: item.createdAt || null,
+        death_date: item.death_date || null,
+        end_date: item.end_date || null,
+        // file: item.file || null,
+        // id: item.id || null,
+        member_id: item.member_id || null,
+        min_amount: item.min_amount || null,
+
+
+        mobile_numbers:item.mobile_no1,
+
+
+        nominee1:item.nominee1,
+        nominee2:item.nominee2,
+        nominee3:item.nominee3,
+        nominee4:item.nominee4,
+
+        // qrcode: item.qrcode || null,
+        // receivingMethods: JSON.parse(item.receivingMethods || "[]"), // String ko array mein convert kiya
+       
+        // receivingMethods:'upi_number',
+       
+       
+        // refer_by: {
+        //   // id: item.refer_by?.id || null,
+        //   name: item.refer_by?.name || null,
+        //   // email: item.refer_by?.email || null,
+        //   state: item.refer_by?.state || null,
+        //   district: item.refer_by?.district || null,
+        // },
+
+
+       refer_by_name:item.refer_by?.name || null,
+       refer_by_state: item.refer_by?.state || null,
+       refer_by_district:item.refer_by?.district || null,
+
+
+
+
+        remark: item.remark || null,
+        start_date: item.start_date || null,
+        status: item.status || "Inactive", // Default "Inactive" set kiya
+        total_donation_received: item.total_donation_received || "0.00",
+        // updatedAt: item.updatedAt || null,
+
+        upi_name:item.upi_name,
+        upi_number:item.upi_number,
+        upi_id:item.upi_id,
+        // upi_details: {
+        //   id: item.upi_id || null,
+        //   name: item.upi_name || null,
+        //   number: item.upi_number || null,
+        // },
+      };
+    }));
+    
+
+
+
+
+
     setLoading(false); // Set loading to false after data is fetched
   } catch (error) {
     setError(error.message); // Handle and store the error
@@ -266,8 +355,9 @@ const fetchDonationData = async () => {
 
 useEffect(() => {
   // Function to fetch data from the API
-
-  fetchDonationData(); // Call the fetch function when the component mounts
+  let toke=JSON.parse( localStorage.getItem('user')).token;
+  setToken(toke);
+  fetchDonationData(toke); // Call the fetch function when the component mounts
 }, []); // Empty dependency array ensures this runs only on mount
 
 
@@ -359,15 +449,16 @@ const handleClose = () => {
 
 
 
-useEffect(()=>{
-  console.log(formData);
-},[formData])
+// useEffect(()=>{
+//   console.log(formData);
+// },[formData])
 
 
 useEffect(()=>{
+  setToken(JSON.parse( localStorage.getItem('user')).token);
   setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
-  console.log(memberRights);
-  console.log('Asoka rights');
+  // console.log(memberRights);
+  // console.log('Asoka rights');
 },[]);
 
 
@@ -660,7 +751,7 @@ const handleDateRangeChange = (start, end) => {
               {/* <Iconsss tableId="my-tablee"/> */}
               <div>
               <DownloadCSVButton data={donationData} filename="my_data.csv" />
-              <DownloadPDFButton data={donationData} filename="table_data.pdf" />
+              <DownloadPDFButton data={pdfData} filename="table_data.pdf" />
               </div>
           </Box>
             <Box display="flex" justifyContent="flex-end" mb={2} >

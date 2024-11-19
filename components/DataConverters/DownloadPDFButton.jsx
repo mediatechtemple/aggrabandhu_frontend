@@ -28,7 +28,7 @@ const DownloadPDFButton = ({ data, filename = 'table_data.pdf' }) => {
       startY: 30,  // Starting position for the table
       theme: 'grid',
       styles: {
-        fontSize: 6,  // Font size for table cells
+        fontSize: 2,  // Font size for table cells
         cellPadding: 1, // Padding inside cells
         valign: 'middle', // Vertical alignment of text in cells
       },

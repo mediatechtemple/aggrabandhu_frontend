@@ -87,6 +87,22 @@ const EventForm = () => {
     }
   };
 
+
+  const convertToClickableLink = (text) => {
+    const urlPattern = /(https?:\/\/[^\s]+)/g;
+    const parts = text.split(urlPattern);
+    return parts.map((part, index) => {
+      if (urlPattern.test(part)) {
+        return (
+          <a key={index} href={part} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+            {part}
+          </a>
+        );
+      }
+      return part;
+    });
+  };
+
   return (
     <>
       <div className="p-4 max-w-md mx-auto">
@@ -158,7 +174,7 @@ const EventForm = () => {
                   <tr key={event.id}>
                     <td className="px-4 py-2 border text-center">{index + 1}</td>
                     <td className="px-4 py-2 border text-center">{event.title}</td>
-                    <td className="px-4 py-2 border text-center">{event.content}</td>
+                    <td className="px-4 py-2 border text-center">{convertToClickableLink(event.content)}</td>
                     <td className="px-4 py-2 border text-center">
                       <button
                         onClick={() => handleEdit(event)}

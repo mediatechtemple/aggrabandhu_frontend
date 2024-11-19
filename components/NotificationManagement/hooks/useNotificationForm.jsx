@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useNotificationForm = (closeModal) => {
+const useNotificationForm = (closeModal,token) => {
   // State to store form data
   const [formData, setFormData] = useState({ 
       title: '',
@@ -91,7 +91,12 @@ const useNotificationForm = (closeModal) => {
 
       const responses = await Promise.all(
         endpoints.map((url) =>
-          fetch(url, { method: 'POST', body: formDataToSubmit })
+          fetch(url, { 
+            method: 'POST', 
+            headers:{
+              'Authorization':`Bearer ${token}`
+            },
+            body: formDataToSubmit })
         )
       );
 
@@ -125,6 +130,9 @@ const useNotificationForm = (closeModal) => {
     try {
       const response = await fetch(`https://backend.aggrabandhuss.org/api/notificationweb/${id}`, {
         method: 'DELETE',
+        headers:{
+          'Authorization':`Bearer ${token}`
+        },
       });
   
       if (!response.ok) {

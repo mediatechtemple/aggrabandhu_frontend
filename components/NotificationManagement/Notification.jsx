@@ -9,6 +9,7 @@ import Link from 'next/link'
 
 const Notification = () => {
     const { isOpen, openModal, closeModal } = useModal();
+    const [token,setToken]=useState(null);
     const {
       formData,
       handleChange,
@@ -18,9 +19,9 @@ const Notification = () => {
       error, // Extract submissions array
       deleteNotification,
       handleFileChange
-      } = useNotificationForm(closeModal);
+      } = useNotificationForm(closeModal,token);
 
-const [memberRights,setMemberRights]=useState([])
+const [memberRights,setMemberRights]=useState([]);
 
       const { filteredMembers,
         filters,
@@ -42,9 +43,10 @@ const [memberRights,setMemberRights]=useState([])
         };
 
         useEffect(()=>{
-          setMemberRights(JSON.parse( localStorage.getItem('user')).rights)
-          console.log(memberRights);
-          console.log('Asoka rights');
+          setMemberRights(JSON.parse( localStorage.getItem('user')).rights);
+          setToken(JSON.parse( localStorage.getItem('user')).token);
+          // console.log(memberRights);
+          // console.log('Asoka rights');
         },[]);
 
   

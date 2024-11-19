@@ -17,6 +17,7 @@ const Profession = () => {
     const HeaderData = ['Professions'];
 
     const [memberRights,setmemberRights]=useState([]);
+    const [token,setToken]=useState(null)
 
     useEffect(()=>{
         setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
@@ -26,9 +27,12 @@ const Profession = () => {
 
 
     useEffect(() => {
-        async function fetchProfession() {
+        async function fetchProfession(toke) {
             try {
-                const response = await fetch('https://backend.aggrabandhuss.org/api/profession');
+                const response = await fetch('https://backend.aggrabandhuss.org/api/profession',{
+                    method:'GET',
+                    'Authorization':`bearer ${toke}`
+                });
                 if (!response.ok) {
                     throw new Error('Error fetching professions');
                 }
@@ -40,8 +44,10 @@ const Profession = () => {
                 setLoading(false);
             }
         }
+        let toke=JSON.parse( localStorage.getItem('user')).token;
+       setToken(toke);
 
-        fetchProfession();
+        fetchProfession(toke);
     }, []);
 
     const handleAddProfession = async (profession) => {
@@ -52,6 +58,7 @@ const Profession = () => {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization':`bearer ${token}`
                     },
                     body: JSON.stringify({ name: profession }),
                 });
@@ -79,6 +86,7 @@ const Profession = () => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization':`bearer ${token}`
                     },
                     body: JSON.stringify({ name: profession }),
                 });
@@ -109,6 +117,7 @@ const Profession = () => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization':`bearer ${token}`
                 },
             });
 
