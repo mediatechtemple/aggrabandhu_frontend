@@ -62,6 +62,7 @@ const Profession = () => {
                     },
                     body: JSON.stringify({ name: profession }),
                 });
+                //hel
 
                 if (!response.ok) {
                     throw new Error('Error updating profession');
