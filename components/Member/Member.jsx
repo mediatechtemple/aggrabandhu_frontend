@@ -18,6 +18,7 @@ import { filter } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 const Member = () => {
   const [formData, setFormData] = useState({
     reference_id: '',
+    refer_id:'',
     Date_Of_Merriage:'',
     gotra: '',
     profile: null,
@@ -398,6 +399,7 @@ console.log(filteredDistricts);
 
 
   const handleEditClick = (member) => {
+    
     handlePincodeChange(member.pincode);
     member.reference_id;
     if (Array.isArray(member.nominees) && member.nominees.length > 0) {
@@ -416,6 +418,7 @@ console.log(filteredDistricts);
       delete member.nominees;
 
     }
+    // member['refer_id']=member.refer_id;
     member['file']=member.aadharUrl;
     member['file2']=member.id_file;
     member['profile']=member.profileUrl;

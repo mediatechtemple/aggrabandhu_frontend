@@ -62,13 +62,13 @@ const BasicInformation = ({
 
 
 
-
+// "refer_id" 
  return <>
 
    <TextField
-      label="Reference id *"
-      name="reference_id"
-      value={formData.reference_id}
+      label={editData ? "refer_id *" :"Reference id *"}
+      name={editData ? "refer_id":"reference_id" }
+      value={editData?formData.refer_id:formData.reference_id}
       onChange={handleChange}
       fullWidth
       margin="normal"
