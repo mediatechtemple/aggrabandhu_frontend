@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, FormControl, InputLabel, Select, MenuItem, Button, Typography } from '@mui/material';
 import Image from 'next/image';
-
+import { usePathname } from 'next/navigation'
 const BasicInformation = ({
   formData,
   handleChange,
@@ -16,6 +16,7 @@ const BasicInformation = ({
   const [professionsOptions, setProfessionsOptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const pathname = usePathname()
   
   
   useEffect(() => {
@@ -65,13 +66,16 @@ const BasicInformation = ({
 // "refer_id" 
  return <>
 
-   <TextField
+ <TextField
       label={editData ? "refer_id *" :"Reference id *"}
       name={editData ? "refer_id":"reference_id" }
       value={editData?formData.refer_id:formData.reference_id}
       onChange={handleChange}
       fullWidth
       margin="normal"
+      InputProps={{
+        readOnly:(pathname==='/Profile'), // Set readonly if editData is true
+      }}
       required
     />
 

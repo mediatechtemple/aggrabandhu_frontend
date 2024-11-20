@@ -8,6 +8,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [editData,setEditData]=useState(true);
+  const [role,setRole]=useState('');
+  const [superAdmin,setSuperAdmin]=useState('');
 
     
   const [formData, setFormData] = useState({
@@ -66,42 +68,44 @@ const Profile = () => {
 
 
 
+  const fetchMemberDetails = async () => {
+    try {
+      
+      const jsonString = localStorage.getItem("user");
+
+      // Check if there is data in local storage
+      if (jsonString) {
+      // Parse the JSON string back into a JavaScript object
+      const parsedObject = JSON.parse(jsonString);
+
+     
+      console.log(typeof parsedObject.userid);          
+      } else {
+      console.log("No data found in local storage");
+      }
+
+
+
+
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/member/detail?key=id&&value=${JSON.parse(jsonString).userid}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch member details");
+      }
+      const data = await response.json();
+      console.log(data);
+      setMember(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-
-    const fetchMemberDetails = async () => {
-      try {
-        
-        const jsonString = localStorage.getItem("user");
-
-        // Check if there is data in local storage
-        if (jsonString) {
-        // Parse the JSON string back into a JavaScript object
-        const parsedObject = JSON.parse(jsonString);
-
-       
-        console.log(typeof parsedObject.userid);          
-        } else {
-        console.log("No data found in local storage");
-        }
-
-
-
-
-        const response = await fetch(`https://backend.aggrabandhuss.org/api/member/detail?key=id&&value=${JSON.parse(jsonString).userid}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch member details");
-        }
-        const data = await response.json();
-        console.log(data);
-        setMember(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    let role=JSON.parse(localStorage.getItem('user')).role;
+    let super_admin=JSON.parse(localStorage.getItem('user')).super_admin;
+    setRole(role);
+    setSuperAdmin(super_admin);
     fetchMemberDetails();
   }, []);
 
@@ -155,6 +159,10 @@ const handleEditClick = (edit) => {
     setFormData(member)
     setOpen(true); // Open the modal
   };
+
+
+
+
 
 
 
@@ -334,6 +342,8 @@ const handleSubmittt = async (e) => {
       handlePincodeChange={handlePincodeChange}
       block={block}
       Cross_handleClose={Cross_handleClose}
+      role={role}
+      superAdmin={superAdmin}
         />
 
         
