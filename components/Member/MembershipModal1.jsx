@@ -11,7 +11,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { FaTimes } from 'react-icons/fa';
 import AadharCardVerification from './MemberComponent/AadharCardVerification';
 import IdentityDocumentVerification from './MemberComponent/IdentityDocumentVerification';
-const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData ,editData,handleSubmit,handlePincodeChange,block,loading=false,Cross_handleClose}) => {
+const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData ,editData,handleSubmit,handlePincodeChange,block,loading=false,Cross_handleClose,role,superAdmin}) => {
   
   const [errorMessage, setErrorMessage] = useState('');
   const [checkImageType,setCheckImageType]=useState('');
@@ -326,6 +326,8 @@ const MembershipModal1 = ({formData,setFormData, open, handleClose, initialData 
          setFormData={setFormData} 
          editData={editData}
          checkImageType={checkImageType}
+         role={role}
+         superAdmin={superAdmin}
          />
          
          {/* <AadharCardVerification
