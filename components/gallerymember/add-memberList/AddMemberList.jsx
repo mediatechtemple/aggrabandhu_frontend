@@ -20,11 +20,14 @@ const AddMemberList = ({memberRights}) => {
   const [memberList, setMemberList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(null); 
-
-  const handleGetMemberList = async () => {
+  const [token,setToken]=useState(null);
+  const handleGetMemberList = async (toke) => {
     setLoading(true);
     try {
-      const apiResponse = await fetch(`https://backend.aggrabandhuss.org/api/designation`);
+      const apiResponse = await fetch(`https://backend.aggrabandhuss.org/api/designation`,{
+        method:'GET',
+        'Authorization':`bearer ${toke}`
+      });
       const response = await apiResponse.json();
       setMemberList(response);
     } catch (error) {
@@ -39,6 +42,9 @@ const AddMemberList = ({memberRights}) => {
     try {
       const apiResponse = await fetch(`https://backend.aggrabandhuss.org/api/designation/${id}`, {
         method: "DELETE",
+        headers:{
+          'Authorization':`bearer ${token}`
+        }
       });
       if (!apiResponse.ok) {
         console.log("Network response was not ok");
@@ -95,6 +101,9 @@ const AddMemberList = ({memberRights}) => {
         "https://backend.aggrabandhuss.org/api/designation",
         {
           method: "POST",
+          headers:{
+            'Authorization':`bearer ${token}`
+          },
           body: formData,
         }
       );
@@ -133,6 +142,9 @@ const AddMemberList = ({memberRights}) => {
         "https://backend.aggrabandhuss.org/api/designation/update/"+isEdit.id,
         {
           method: "PUT",
+          headers:{
+            'Authorization':`bearer ${token}`
+          },
           body: formData,
         }
       );
@@ -258,6 +270,7 @@ const AddMemberList = ({memberRights}) => {
       memberList={memberList}
       loading={loading}
       deleting={deleting}
+      setToken={setToken}
       />
     </div>
   </>

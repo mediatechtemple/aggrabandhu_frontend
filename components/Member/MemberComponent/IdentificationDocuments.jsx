@@ -38,6 +38,10 @@ const[isAdmin,setIsAdmin]=useState(false);
     
     setFormData({ ...formData, file: e.target.files[0] });
 
+    if(editData){
+      setAadharVerificationMessage('file selected');
+      return;
+    }
 
 
     if (file) {
@@ -214,10 +218,7 @@ useEffect(()=>{
 
   return (
     <>
-
-
-
-      <TextField
+     <TextField
         label="Enter 12 digit Aadhar Card no"
         name="aadhar_no"
         value={formData.aadhar_no}
@@ -225,6 +226,9 @@ useEffect(()=>{
         fullWidth
         margin="normal"
         required
+        InputProps={{
+          readOnly: !!editData, // Set readonly if editData is true
+        }}
       />
       
      {isAdmin &&  <p className='text-lg text-blue-600 font-bold font-serif' >Upload high quality Image in .jpg</p>

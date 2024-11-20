@@ -416,8 +416,8 @@ console.log(filteredDistricts);
     if(member['id_type']=='PAN Card'){
       member['id_type']='Pan card';
     }
-    console.log("Ashoka maaa");
-    console.log(member)
+    // console.log("Ashoka maaa");
+    // console.log(member)
     
     setEditData(member); // Set the data of the member you want to edit
     setFormData(member)
@@ -521,6 +521,7 @@ console.log(filteredDistricts);
       block={block}
       loading={loading}
       Cross_handleClose={Cross_handleClose}
+      
         />
         
 

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import ShowGallery from "./ShowGallery";
 
-const AddGallery = ({memberRights}) => {
+const AddGallery = ({memberRights}) => {  
   const [image, setImage] = useState(null);
   const [description, setDescription] = useState("");
   // const [loading, setLoading] = useState(false);
@@ -12,11 +12,17 @@ const AddGallery = ({memberRights}) => {
   const [galleryList, setGalleryList] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [deleting, setDeleting] = useState(null); 
+  const [token,setToken]=useState(null);
 
-  const handleGalleryList = async () => {
+  const handleGalleryList = async (toke) => {
     setLoading(true);
     try {
-      const apiResponse = await fetch(`https://backend.aggrabandhuss.org/api/gallery`);
+      const apiResponse = await fetch(`https://backend.aggrabandhuss.org/api/gallery`,{
+        headers:{
+          Method:'GET',
+          'Authorization':`bearer ${toke}`
+        }
+      });
       const response = await apiResponse.json();
 
       setGalleryList(response);
@@ -32,6 +38,9 @@ const AddGallery = ({memberRights}) => {
     try {
       const apiResponse = await fetch(`https://backend.aggrabandhuss.org/api/gallery/${getCurrentID}`, {
         method: "DELETE",
+        headers:{
+          'Authorization':`bearer ${token}`
+        }
       });
       
       if (!apiResponse.ok) {
@@ -47,7 +56,10 @@ const AddGallery = ({memberRights}) => {
 
   
   useEffect(() => {
-    handleGalleryList();
+    let toke=JSON.parse( localStorage.getItem('user')).token;
+    setToken(toke);
+
+    handleGalleryList(toke);
   }, []);
 
 
@@ -73,6 +85,7 @@ const AddGallery = ({memberRights}) => {
         "https://backend.aggrabandhuss.org/api/gallery",
         {
           method: "POST",
+          'Authorization':`bearer ${token}`,
           body: formData,
         }
       );
@@ -160,6 +173,7 @@ const AddGallery = ({memberRights}) => {
         loading={loading}
         deleting={deleting}
         handleDeleteGallery={handleDeleteGallery}
+        token={token}
         />
     </div>
     </>

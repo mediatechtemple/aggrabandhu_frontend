@@ -9,7 +9,7 @@ const ShowGallery = ({memberRights,
   loading,
   deleting,
   handleDeleteGallery,
-
+  token
 
 }) => {
   

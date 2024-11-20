@@ -9,11 +9,16 @@ const EventForm = () => {
   const [message, setMessage] = useState("");
   const [events, setEvents] = useState([]);
   const [editingId, setEditingId] = useState(null); // For tracking which event is being edited
-
+  const [token,setToken]=useState(null);
   // Fetch existing events
   const fetchEvents = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(API_URL,{
+        method:'GET',
+        headers:{
+          'Authorization':`bearer ${token}`
+        }
+      });
       if (response.ok) {
         const data = await response.json();
         setEvents(data.data); // Assuming API returns an array of events
@@ -26,7 +31,9 @@ const EventForm = () => {
   };
 
   useEffect(() => {
-    fetchEvents();
+    let toke=JSON.parse( localStorage.getItem('user')).token;
+    setToken(toke);
+    fetchEvents(toke);
   }, []);
 
   // Handle form input changes
@@ -47,6 +54,7 @@ const EventForm = () => {
         method,
         headers: {
           "Content-Type": "application/json",
+            'Authorization':`bearer ${token}`
         },
         body: JSON.stringify(formData),
       });
@@ -74,7 +82,12 @@ const EventForm = () => {
   // Handle delete button click
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+      const response = await fetch(`${API_URL}/${id}`, { 
+        method: "DELETE",
+        headers:{
+          'Authorization':`bearer ${token}`
+        }
+       });
 
       if (response.ok) {
         setMessage("Event successfully deleted!");

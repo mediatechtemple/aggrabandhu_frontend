@@ -11,12 +11,12 @@ const ShowMemberList = ({memberRights,handleEditMemberList,
   memberList,
   loading,
   deleting,
-
+  setToken
 
 }) => {
   
   
-
+  // const [token,setToken]=useState(null);
   // const handleEditMemberList =  (item) => {
   //   console.log(item);
   // }
@@ -25,7 +25,9 @@ const ShowMemberList = ({memberRights,handleEditMemberList,
 
 
   useEffect(() => {
-    handleGetMemberList();
+    let toke=JSON.parse( localStorage.getItem('user')).token;
+    setToken(toke);
+    handleGetMemberList(toke);
   }, []); 
 
   // if (loading) {
