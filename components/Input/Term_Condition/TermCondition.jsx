@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 const PrivacyPolicy = () => {
     const [postedData, setPostedData] = useState(null);
     const [content, setContent] = useState(''); // Store editor content
-
+  const [token,setToken]=useState(null);
     // Method to handle form submission
     const handleSubmit = (event) => {
         event.preventDefault(); // Prevent default form submission
@@ -20,6 +20,7 @@ const PrivacyPolicy = () => {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
+                  'Authorization':`bearer ${token}`
                 },
                 body: JSON.stringify({ termcondition: content }), // Sending content as JSON
               });
@@ -57,6 +58,8 @@ const PrivacyPolicy = () => {
               console.error('Error:', error);
             }
         };
+        let toke=JSON.parse( localStorage.getItem('user')).token;
+      setToken(toke);
           
         getContent();
     }, []);
