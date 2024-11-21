@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 const PrivacyPolicy = () => {
     const [postedData, setPostedData] = useState(null);
     const [content, setContent] = useState(''); // Store editor content
-
+    const [token,setToken]=useState(null);
     // Method to handle form submission
     const handleSubmit = (event) => {
         event.preventDefault(); // Prevent default form submission
@@ -20,6 +20,7 @@ const PrivacyPolicy = () => {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
+                  'Authorization':`bearer ${token}`
                 },
                 body: JSON.stringify({ rule: content }), // Sending content as JSON
               });
@@ -40,25 +41,32 @@ const PrivacyPolicy = () => {
         postContent();
     };
 
+    const getContent = async (token) => {
+        try {
+          const response = await fetch('https://backend.aggrabandhuss.org/api/rule/',{
+            method:'GET',
+            headers:{
+              'Authorization':`bearer ${token}`
+            }
+          });
+    
+          if (response.ok) {
+            const data = await response.json();
+            console.log('Fetched content:', data);
+            setPostedData(data[0].rule); // Assuming the API returns the policy
+          } else {
+            console.error('Error fetching content:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+    };
     // Fetch content on component mount
     useEffect(() => {
-        const getContent = async () => {
-            try {
-              const response = await fetch('https://backend.aggrabandhuss.org/api/rule/');
-        
-              if (response.ok) {
-                const data = await response.json();
-                console.log('Fetched content:', data);
-                setPostedData(data[0].rule); // Assuming the API returns the policy
-              } else {
-                console.error('Error fetching content:', response.statusText);
-              }
-            } catch (error) {
-              console.error('Error:', error);
-            }
-        };
-          
-        getContent();
+      let toke=JSON.parse( localStorage.getItem('user')).token;
+      setToken(toke);
+
+        getContent(toke);
     }, []);
 
     return (

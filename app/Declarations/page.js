@@ -7,7 +7,7 @@ const PrivacyPolicy = () => {
     const [postedData, setPostedData] = useState(null);
     const [content, setContent] = useState(''); // Store editor content
     const [memberRights,setmemberRights]=useState([]);
-
+    const [token,setToken]=useState(null);
     useEffect(()=>{
         setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
         // console.log(memberRights);
@@ -28,6 +28,7 @@ const PrivacyPolicy = () => {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
+                  'Authorization':`bearer ${token}`
                 },
                 body: JSON.stringify({ declearation: content }), // Sending content as JSON
               });
@@ -50,9 +51,12 @@ const PrivacyPolicy = () => {
 
     // Fetch content on component mount
     useEffect(() => {
-        const getContent = async () => {
+        const getContent = async (token) => {
             try {
-              const response = await fetch('https://backend.aggrabandhuss.org/api/declearation/');
+              const response = await fetch('https://backend.aggrabandhuss.org/api/declearation/',{
+                method:'GET',
+                'Authorization':`bearer ${token}`
+              });
         
               if (response.ok) {
                 const data = await response.json();
@@ -65,8 +69,12 @@ const PrivacyPolicy = () => {
               console.error('Error:', error);
             }
         };
+
+        let toke=JSON.parse( localStorage.getItem('user')).token;
+      setToken(toke);
+
           
-        getContent();
+        getContent(toke);
     }, []);
 
     return (

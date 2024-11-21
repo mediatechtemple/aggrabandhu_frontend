@@ -57,6 +57,8 @@ const PrivacyPolicy = () => {
               console.error('Error:', error);
             }
         };
+
+        
           
         getContent();
     }, []);

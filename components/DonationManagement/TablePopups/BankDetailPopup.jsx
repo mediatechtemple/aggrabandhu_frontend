@@ -5,6 +5,7 @@ const BankDetailPopup = ({ BankDetailData, onClose }) => {
   const { bank_detail, upi_id, upi_number, upi_name, qrcode } = BankDetailData;
   // this bank_detail is an object that contains the following properties:
   // { "account_number": "a", "bank_name": "a", "ifsc_code": "a" }
+let bankDetail=JSON.parse(bank_detail)
 
   return (
     <div onClick={onClose} className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-[2800]">
@@ -13,17 +14,17 @@ const BankDetailPopup = ({ BankDetailData, onClose }) => {
 
         <div className="mb-3 text-black">
           <label className="block text-gray-600">Bank Name:</label>
-          <p className="bg-gray-100 p-2 rounded">{bank_detail?.bank_name || "No Bank Name"}</p>
+          <p className="bg-gray-100 p-2 rounded">{bankDetail?.bank_name || "No Bank Name"}</p>
         </div>
 
         <div className="mb-3 text-black">
           <label className="block text-gray-600">Account Number:</label>
-          <p className="bg-gray-100 p-2 rounded">{bank_detail?.account_number || "No Account Number"}</p>
+          <p className="bg-gray-100 p-2 rounded">{bankDetail?.account_number || "No Account Number"}</p>
         </div>
 
         <div className="mb-3 text-black">
           <label className="block text-gray-600">IFSC Code:</label>
-          <p className="bg-gray-100 p-2 rounded">{bank_detail?.ifsc_code || "No IFSC Code"}</p>
+          <p className="bg-gray-100 p-2 rounded">{bankDetail?.ifsc_code || "No IFSC Code"}</p>
         </div>
 
         <div className="mb-3 text-black">

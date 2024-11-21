@@ -7,7 +7,7 @@ const LiveDonation = () => {
   const [donationData, setDonationData] = useState([]); // State to store fetched data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
-
+  const [token,setToken]=useState(null);
   
   const [formData,setFormData]=useState({
   });
@@ -41,21 +41,22 @@ const LiveDonation = () => {
     }));
   };
 
-  useEffect(()=>{
-    console.log(formData);
-  },[formData])
+  // useEffect(()=>{
+    
+  // },[]);
   
 
 
 
   useEffect(() => {
     // Function to fetch data from the API
-    const fetchDonationData = async () => {
+    const fetchDonationData = async (token) => {
       try {
         const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
+            'Authorization':`bearer ${token}`
           },
         });
 
@@ -74,7 +75,10 @@ const LiveDonation = () => {
       }
     };
 
-    fetchDonationData(); // Call the fetch function when the component mounts
+    let toke=JSON.parse( localStorage.getItem('user')).token;
+    setToken(toke);
+
+    fetchDonationData(toke); // Call the fetch function when the component mounts
   }, []); // Empty dependency array ensures this runs only on mount
 
 
@@ -110,6 +114,9 @@ const postDataToApi = async (data) => {
   try {
     const response = await fetch('https://backend.aggrabandhuss.org/api/donation/', {
       method: 'POST',
+      headers:{
+        'Authorization':`bearer ${token}`
+      },
       body: data, // No need to stringify FormData
     });
     const result = await response.json();

@@ -52,7 +52,7 @@ const Profile = () => {
   const[block,setBehsil]=useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const[memberId,setMemberId]=useState(null);
-  
+  const[token,setToken]=useState(null);
 
   const [copied, setCopied] = useState(false);
 
@@ -68,7 +68,7 @@ const Profile = () => {
 
 
 
-  const fetchMemberDetails = async () => {
+  const fetchMemberDetails = async (toke) => {
     try {
       
       const jsonString = localStorage.getItem("user");
@@ -87,7 +87,12 @@ const Profile = () => {
 
 
 
-      const response = await fetch(`https://backend.aggrabandhuss.org/api/member/detail?key=id&&value=${JSON.parse(jsonString).userid}`);
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/member/detail?key=id&&value=${JSON.parse(jsonString).userid}`,{
+        method:'GET',
+        headers:{
+          'Authorization':`bearer ${toke}`
+        }
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch member details");
       }
@@ -102,11 +107,16 @@ const Profile = () => {
   };
 
   useEffect(() => {
+
+    let toke=JSON.parse( localStorage.getItem('user')).token;
+    setToken(toke);
+    
     let role=JSON.parse(localStorage.getItem('user')).role;
     let super_admin=JSON.parse(localStorage.getItem('user')).super_admin;
     setRole(role);
     setSuperAdmin(super_admin);
-    fetchMemberDetails();
+
+    fetchMemberDetails(toke);
   }, []);
 
 
@@ -290,6 +300,9 @@ const handleSubmittt = async (e) => {
       let response;
         response = await fetch(`https://backend.aggrabandhuss.org/api/member/${memberId}`, {
           method: 'PUT', // Use POST for creating a new member
+          headers:{
+            Authorization:`bearer ${token}`
+          },
           body: formToSubmit,
         });
       
