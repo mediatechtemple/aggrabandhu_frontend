@@ -40,7 +40,7 @@ const Page =  () => {
               <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Amount</th>
               <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Donation Date</th>
               <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Transaction ID</th>
-              <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Payment Method</th>
+              {/* <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Payment Method</th> */}
               <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Status</th>
               <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">State</th>
               <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">District</th>
@@ -55,7 +55,7 @@ const Page =  () => {
                 <td className="py-2 px-4 border border-spacing-1">{donator.amount}</td>
                 <td className="py-2 px-4 border border-spacing-1">{new Date(donator.donation_date).toLocaleDateString()}</td>
                 <td className="py-2 px-4 border border-spacing-1">{donator.transaction_id}</td>
-                <td className="py-2 px-4 border border-spacing-1">{donator.payment_method}</td>
+                {/* <td className="py-2 px-4 border border-spacing-1">{donator.payment_method}</td> */}
                 <td className="py-2 px-4 border border-spacing-1">{donator.status}</td>
                 <td className="py-2 px-4 border border-spacing-1">{donator.Member.state}</td>
                 <td className="py-2 px-4 border border-spacing-1">{donator.Member.district}</td>

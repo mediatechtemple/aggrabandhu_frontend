@@ -6,7 +6,7 @@ const Donation_Receiever_List = () => {
 
   useEffect(() => {
     // Fetching data from the API
-    fetch('https://backend.aggrabandhuss.org/api/donationreceive/endlist')
+    fetch('https://backend.aggrabandhuss.org/api/donationreceive')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
