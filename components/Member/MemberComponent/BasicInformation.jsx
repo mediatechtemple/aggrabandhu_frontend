@@ -17,7 +17,8 @@ const BasicInformation = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const pathname = usePathname()
-  
+
+  let aaa=formData.referData?.reference_id;
   
   useEffect(() => {
     const fetchGotras = async () => {
@@ -69,7 +70,7 @@ const BasicInformation = ({
  <TextField
       label={editData ? "refer_id *" :"Reference id *"}
       name={editData ? "refer_id":"reference_id" }
-      value={editData?formData.referData?.reference_id:formData.reference_id}
+      value={editData?formData.refer_id:formData.reference_id}
       onChange={handleChange}
       fullWidth
       margin="normal"

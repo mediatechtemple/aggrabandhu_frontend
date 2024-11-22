@@ -428,6 +428,7 @@ console.log(filteredDistricts);
     if(member['id_type']=='PAN Card'){
       member['id_type']='Pan card';
     }
+    member['refer_id']=member.referData.reference_id;
     // console.log("Ashoka maaa");
     // console.log(member)
     
