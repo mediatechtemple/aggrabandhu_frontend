@@ -69,6 +69,7 @@ const Profile = () => {
 
 
   const fetchMemberDetails = async (toke) => {
+    
     try {
       
       const jsonString = localStorage.getItem("user");
@@ -108,8 +109,9 @@ const Profile = () => {
 
   useEffect(() => {
 
-    let toke=JSON.parse( localStorage.getItem('user')).token;
+    let toke=JSON.parse(localStorage.getItem('user')).token;
     setToken(toke);
+  
     
     let role=JSON.parse(localStorage.getItem('user')).role;
     let super_admin=JSON.parse(localStorage.getItem('user')).super_admin;

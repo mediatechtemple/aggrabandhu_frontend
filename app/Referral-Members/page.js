@@ -19,7 +19,7 @@ const Page = () => {
   const [error, setError] = useState(false);
   const [sortConfig, setSortConfig] = useState(null);
   const [searchTerm, setSearchTerm] = useState(''); // search term for filtering
-
+  const [token,setToken]=useState(null);
   function getIcon(key) {
     if (!sortConfig || sortConfig.key !== key) {
       return '↑↓';
@@ -54,12 +54,23 @@ const Page = () => {
   );
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (token) => {
       try {
-        const response = await fetch('https://backend.aggrabandhuss.org/api/member/referal/' + JSON.parse(localStorage.getItem('user')).userid);
+        const response = await fetch(
+          `https://backend.aggrabandhuss.org/api/member/referal/${JSON.parse(localStorage.getItem('user')).userid}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
+        );
+  
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
+  
+        console.log(response);
         const data = await response.json();
         setMembers(data);
       } catch (error) {
@@ -68,10 +79,19 @@ const Page = () => {
         setLoading(false);
       }
     };
-
-    fetchData();
-  }, []);
-
+  
+    // Check if user exists in localStorage
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.token) {
+      const token = user.token;
+      setToken(token); // Assuming setToken is defined in your component
+      fetchData(token);
+    } else {
+      setError('User not logged in or invalid token');
+      setLoading(false);
+    }
+  }, []); // Dependency array is intentionally empty
+  
   if (loading) {
     return <div>Loading...</div>;
   }

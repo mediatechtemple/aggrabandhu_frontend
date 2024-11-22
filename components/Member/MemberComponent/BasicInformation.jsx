@@ -69,7 +69,7 @@ const BasicInformation = ({
  <TextField
       label={editData ? "refer_id *" :"Reference id *"}
       name={editData ? "refer_id":"reference_id" }
-      value={editData?formData.refer_id:formData.reference_id}
+      value={editData?formData.referData?.reference_id:formData.reference_id}
       onChange={handleChange}
       fullWidth
       margin="normal"
