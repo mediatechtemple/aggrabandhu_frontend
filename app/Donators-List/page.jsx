@@ -1,13 +1,31 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 
-const page = async () => {
-  const response = await fetch('https://backend.aggrabandhuss.org/api/donation/');
-  if (!response.ok) {
-    return <h1>Error fetching data</h1>;
+const Page =  () => {
+  const [donators,setDonators]=useState([]);
+  async function getData(){
+    try{
+      const response = await fetch('https://backend.aggrabandhuss.org/api/donation/');
+      if(!response){
+        throw new Error('Network Error')
+      }
+      
+      const data=await response.json();
+      console.log(data);
+      setDonators(data.data);
+    }catch(error){
+      
+    }
   }
 
-  const donators = await response.json();
+  useEffect(()=>{
+    getData()
+  },[])
 
+  if(donators.length==0){
+    <p>Loading...</p>
+  }
+  
   return (
     <div className="p-5">
       <h2 className="text-3xl text-center font-bold mb-4 bg-blue-500 text-white">Donators List</h2>
@@ -29,7 +47,7 @@ const page = async () => {
             </tr>
           </thead>
           <tbody>
-            {donators.data.map((donator) => (
+            {donators.map((donator) => (
               <tr key={donator.id}>
                 <td className="py-2 px-4 border border-spacing-1">{donator.id}</td>
                 <td className="py-2 px-4 border border-spacing-1">{donator.Member.name}</td>
@@ -50,4 +68,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default Page;

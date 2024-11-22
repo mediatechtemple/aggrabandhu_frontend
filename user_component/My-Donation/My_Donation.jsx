@@ -4,23 +4,25 @@ import React, { useEffect, useState } from 'react';
 const My_Donation = () => {
   const [memberList, setmemberList] = useState([]);
 
+  async function getData(id){
+    try{
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/donation/mydonation/${id}`);
+      if(!response){
+        throw new Error('Network Error')
+      }
+      
+      const data=await response.json();
+      console.log(data);
+      setmemberList(data.data);
+    }catch(error){
+      
+    }
+  }
+
   useEffect(() => {
-    // Fetching data from the API
-    fetch('https://backend.aggrabandhuss.org/api/donation/mydonation/50')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setmemberList(data.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching memberList data:', error);
-      });
-
-
+    let id=JSON.parse(localStorage.getItem('user')).userid;
+    console.log(id);
+    getData(id);
   }, []);
 
   return (
