@@ -298,6 +298,7 @@ console.log(filteredDistricts);
       setLoading(false);
       console.log('Form submitted successfully:', result);
       handleClose(); // Close the modal on successful submission
+      fetchMembers();
     } catch (error) {
       setLoading(false);
       alert(error);
