@@ -52,7 +52,8 @@ const Member = () => {
     diseaseFile: '',
     rulesAccepted: false,
     id_type:'',
-    declaration:false
+    declaration:false,
+    blood_group:''
   });
 
   const [members, setMembers] = useState([]);
@@ -429,7 +430,7 @@ console.log(filteredDistricts);
     if(member['id_type']=='PAN Card'){
       member['id_type']='Pan card';
     }
-    member['refer_id']=member.referData.reference_id;
+    member['refer_id']=member?.referData?.reference_id;
     // console.log("Ashoka maaa");
     // console.log(member)
     

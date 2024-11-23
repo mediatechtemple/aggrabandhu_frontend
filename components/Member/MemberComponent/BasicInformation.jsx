@@ -161,6 +161,38 @@ const BasicInformation = ({
     />
 
 <FormControl fullWidth margin="normal">
+  <InputLabel>Blood Group</InputLabel>
+  <Select
+    value={formData.blood_group}
+    onChange={handleChange}
+    name="blood_group"
+    label="Blood Group"
+    required
+    MenuProps={{
+      PaperProps: {
+        style: {
+          maxHeight: 200, // Set the max height for the dropdown
+          overflowY: 'auto', // Enable vertical scrolling
+        },
+      },
+    }}
+  >
+    <MenuItem value="">Select Blood Group</MenuItem>
+    <MenuItem value="A+">A+</MenuItem>
+    <MenuItem value="A-">A-</MenuItem>
+    <MenuItem value="B+">B+</MenuItem>
+    <MenuItem value="B-">B-</MenuItem>
+    <MenuItem value="AB+">AB+</MenuItem>
+    <MenuItem value="AB-">AB-</MenuItem>
+    <MenuItem value="O+">O+</MenuItem>
+    <MenuItem value="O-">O-</MenuItem>
+  </Select>
+</FormControl>
+
+
+
+
+<FormControl fullWidth margin="normal">
       <InputLabel>Gender</InputLabel>
       <Select
         value={formData.gender}

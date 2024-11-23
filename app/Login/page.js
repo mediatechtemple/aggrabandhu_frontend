@@ -51,7 +51,8 @@ const LoginPage = () => {
     diseaseFile: '',
     rulesAccepted: false,
     id_type:'',
-    declaration:false
+    declaration:false,
+    blood_group:''
   });
 
   const[block,setBehsil]=useState([]);

@@ -45,7 +45,8 @@ const Profile = () => {
     diseaseFile: '',
     rulesAccepted: false,
     id_type:'',
-    declaration:false
+    declaration:false,
+    blood_group:''
   });
 
   const [open,setOpen]=useState(false);
