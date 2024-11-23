@@ -288,6 +288,7 @@ const MemberTable = ({ members, removeMember, handleEditClick, id,setMembers,mem
     { key: 'createdAt', label: 'Joining Date' },
     { key: 'profileUrl', label: 'Photo', sortable: false },
     { key: 'name', label: 'Name' },
+    { key: 'blood_group', label: 'Blood Group' },
     { key: 'district', label: 'District' },
     { key: 'state', label: 'State' },
     { key: 'pincode', label: 'No of Times Donation Made' },

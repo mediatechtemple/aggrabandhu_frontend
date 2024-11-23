@@ -24,7 +24,7 @@ const ReferenceSearch = React.lazy(() => import('../Member/ReferenceSearch'));
 
 const DonationFormDialog = React.lazy(() => import('./DonationFormDialog'));
 const SearchMemberDialog = React.lazy(() => import('./SearchMemberDialog'));
-const     SortableTable = React.lazy(() => import('./SortableTable'));
+const       SortableTable = React.lazy(() => import('./SortableTable'));
 
 
 

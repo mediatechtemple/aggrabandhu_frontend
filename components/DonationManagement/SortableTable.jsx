@@ -34,8 +34,19 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort,
   const [remarkPopup,setRemarkPopup]=useState(false);
   const [remarkData,setRemarkData]=useState({});
 
+
+
+
+
+
+
   async function updateStatus(member) {
+
+    let toke=JSON.parse(localStorage.getItem('user')).token;
+    // setToken(toke);
+
     let status = member.status === "Active" ? "Inactive" : "Active";
+
     try {
       const response = await fetch(
         `https://backend.aggrabandhuss.org/api/donationreceive/${member.id}`,
@@ -43,6 +54,7 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort,
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            'Authorization':`bearer ${toke}`
           },
           body: JSON.stringify({ status }),
         }
@@ -65,6 +77,19 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort,
     }
   }
   
+
+
+
+
+
+
+
+
+
+
+
+
+
   const activeHandler = (member) => {
     updateStatus(member);
   };

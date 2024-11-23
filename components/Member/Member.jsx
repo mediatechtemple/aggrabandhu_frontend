@@ -15,7 +15,7 @@ import DownloadCSVButton from '../DataConverters/DownloadCSVButton';
 import DownloadPDFButton from '../DataConverters/DownloadPDFButton';
 import { filter } from 'draft-js/lib/DefaultDraftBlockRenderMap';
 
-const Member = () => {
+const       Member = () => {
   const [formData, setFormData] = useState({
     reference_id: '',
     refer_id:'',
@@ -62,7 +62,7 @@ const Member = () => {
   const [filteredMembers, setFilteredMembers] = useState([]);
   const [token,setToken]=useState(null);
   const [filters, setFilters] = useState({
-    searchQuery: '', role: '', isActive: false, startDate: null, endDate: null, state: '', district: '', referenceId: ''
+    searchQuery: '', role: '', isActive: false, startDate: null, endDate: null, state: '', district: '', referenceId: '',blood_group:''
   });
 
   const [pdfData,setpdfData]=useState([]);
@@ -153,6 +153,7 @@ let temp;
             tahsil: item.tahsil,
             totalDonation: item.totalDonation,
             total_age: item.total_age,
+            blood_group:item.blood_group
           };
         })
       );
@@ -207,10 +208,11 @@ let temp;
 
   useEffect(() => {
     let result = members.filter(member => {
-      const { searchQuery, role, isActive, state, district, referenceId, startDate, endDate } = filters;
+      const { searchQuery, role, isActive, state, district, referenceId, startDate, endDate,blood_group } = filters;
       return (
         (!searchQuery || member.name.toLowerCase().includes(searchQuery.toLowerCase())) &&
         (!role || member.role === role) &&
+        (!blood_group || member.blood_group === blood_group) &&
         (!isActive || member.status === 'active') &&
         (!state || member.state === state) &&
         (!district || member.district === district) &&
