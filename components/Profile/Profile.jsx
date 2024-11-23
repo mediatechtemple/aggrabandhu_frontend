@@ -162,7 +162,7 @@ const handleEditClick = (edit) => {
     delete member.aadharUrl;
     delete member.profileUrl;
     delete member.password;
-    delete member.reference_id;
+    // delete member.reference_id;
     delete member.id_file;
     delete member.id;
     console.log("Ashoka maaa");
@@ -429,6 +429,10 @@ const handleSubmittt = async (e) => {
                     <tr>
                     <th className="pr-4 py-2 text-gray-500">Age:</th>
                     <td>{member.total_age} years</td>
+                    </tr>
+                    <tr>
+                    <th className="pr-4 py-2 text-gray-500">Blood Group:</th>
+                    <td>{member.blood_group || 'Not Mention'}</td>
                     </tr>
                 </tbody>
                 </table>
