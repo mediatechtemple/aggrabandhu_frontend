@@ -54,7 +54,7 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort,
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            'Authorization':`bearer ${toke}`
+            'Authorization':`${toke}`
           },
           body: JSON.stringify({ status }),
         }
