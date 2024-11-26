@@ -121,6 +121,7 @@ const postDataToApi = async (data) => {
     });
     const result = await response.json();
     console.log('Response:', result);
+    alert('donation successfull')
   } catch (error) {
     console.error('Error:', error);
   }

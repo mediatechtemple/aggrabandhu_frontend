@@ -121,6 +121,13 @@ const MultiFilterComponent = () => {
                 </div>
             </div>
 
+
+
+
+
+
+
+
             {/* Filtered Results */}
             <div className="bg-gray-100 p-4 rounded shadow">
                 <h3 className="text-lg font-semibold mb-2">Filtered Users</h3>

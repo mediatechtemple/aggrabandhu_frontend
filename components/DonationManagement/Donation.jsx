@@ -2,48 +2,14 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { Button, Box,Typography} from '@mui/material';
 
-import { FaSort, FaSortDown, FaSortUp } from 'react-icons/fa';
-
-import Iconsss from '../Icons/Iconsss';
-
-import data from '@/utils/donationTableData'
 import DownloadCSVButton from '../DataConverters/DownloadCSVButton';
 import DownloadPDFButton from '../DataConverters/DownloadPDFButton';
-
-
-
-const Pagination = React.lazy(() => import('../Member/Pagination'));
-const StateFilter = React.lazy(() => import('../Member/StateFilter'));
-const DistrictFilter = React.lazy(() => import('../Member/DistrictFilter'));
-const Search = React.lazy(() => import('../Member/Search'));
-const ReferenceSearch = React.lazy(() => import('../Member/ReferenceSearch'));
-
-
-
-
-
 const DonationFormDialog = React.lazy(() => import('./DonationFormDialog'));
 const SearchMemberDialog = React.lazy(() => import('./SearchMemberDialog'));
 const  SortableTable = React.lazy(() => import('./SortableTable'));
 
-
-
-/////////////////////////////////////////////////////////////////////
-  const getSortIcon = (key, sortConfig) => {
-    if (sortConfig.key === key) {
-      return sortConfig.direction === 'asc' ? <FaSortUp /> : <FaSortDown />;
-    }
-    return <FaSort />;
-  };
-  //////////////////////////////////////////////////////////////////////////////
-
   const Loading = () => <div>Loading...</div>;
 
-
-
-
-
-//////////////////////////////////
 const ParentComponent = () => {
     // const classes=useStyles();
     const [popupOpen, setPopupOpen] = useState(false);
@@ -67,31 +33,35 @@ const ParentComponent = () => {
     const [state,setState]=useState('');
     const [district,setDistrict]=useState('');
 
+
+    /////////////////////////////////////////////////////////
+    // Here i will make formState and and one function to  fill the form here
+    
+    const [donationData, setDonationData] = useState([]); // State to store API data
+      const [error, setError] = useState(null); // State to handle errors
+      const [loading, setLoading] = useState(true); // State to show loading indicator
     const [filters, setFilters] = useState({
       name: '',
-      ageRange: '',
-      status: '',
       state: '',
       district: '',
+      ReferenceId:''
   });
 
   const handleFilterInputChange = (e) => {
       setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
-  // const filteredUsers = users.filter((user) => {
-  //     const matchesName = user.name.toLowerCase().includes(filters.name.toLowerCase());
-  //     const matchesAgeRange = !filters.ageRange || (
-  //         (filters.ageRange === '20-30' && user.age >= 20 && user.age <= 30) ||
-  //         (filters.ageRange === '31-40' && user.age >= 31 && user.age <= 40)
-  //     );
-  //     const matchesStatus = !filters.status || user.status === filters.status;
-  //     const matchesState = !filters.state || user.state === filters.state;
-  //     const matchesDistrict = !filters.district || user.district === filters.district;
+  
+  const filteredUsers = donationData.filter((user) => {
+      const matchesName = !filters.name || user.Member.name.toLowerCase().includes(filters.name.toLowerCase());
+     
+      const matchesState = !filters.state || user.Member.state === filters.state;
+      const matchesDistrict = !filters.district || user.Member.district  === filters.district;
 
-  //     return matchesName && matchesAgeRange && matchesStatus && matchesState && matchesDistrict;
-  // });
-
+      const matchReferenceId = !filters.ReferenceId || user.Member.reference_id.toLowerCase().includes(filters.ReferenceId.toLowerCase())
+   
+      return matchesName && matchesState && matchesDistrict && matchReferenceId;
+  });
 
 
 
@@ -114,12 +84,7 @@ const ParentComponent = () => {
 
 
 
-/////////////////////////////////////////////////////////
-// Here i will make formState and and one function to  fill the form here
 
-const [donationData, setDonationData] = useState([]); // State to store API data
-  const [error, setError] = useState(null); // State to handle errors
-  const [loading, setLoading] = useState(true); // State to show loading indicator
 
 
 
@@ -470,19 +435,6 @@ const handleClose = () => {
   setReceivingMethods([])
 };
 
-
-
-
-
-
-
-
-
-// useEffect(()=>{
-//   console.log(formData);
-// },[formData])
-
-
 useEffect(()=>{
   setToken(JSON.parse( localStorage.getItem('user')).token);
   setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
@@ -495,88 +447,6 @@ useEffect(()=>{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-  
-
-
-  
-
-//   ---------------------------------------------------------------------------------------------------------------
-//   ---------------------------------------------------------------------------------------------------------------
-
- 
 
   const handleFileChange = (e) => {
     setQrCode(e.target.files[0]);
@@ -647,123 +517,151 @@ useEffect(()=>{
 
   return (
     <div>
+  <div className="flex justify-between items-center mb-2">
+    <h1 className="text-2xl font-semibold text-[#007bff]">
+      Donation Management
+    </h1>
 
-    <Box  display="flex" justifyContent="space-between" alignItems="center" mb={2} >
+    {memberRights['Donation Management']?.['add'] && (
+      <button
+        onClick={handleOpen}
+        className="bg-[#1976d2] text-white py-2 px-4 rounded"
+      >
+        New Donation
+      </button>
+    )}
+  </div>
 
-        <Typography variant="h4" gutterBottom color='#007bff' >
-          Donation Management
-        </Typography>
+  <div className="border-b border-[#bcd1c2] mb-2"></div>
 
-       {memberRights['Donation Management']?.['add'] && <Button variant="contained" onClick={handleOpen} sx={{ backgroundColor: '#1976d2' }}>
-            New Donation
-        </Button>}
-      </Box>
+  <div className="border-b border-[#bcd1c2] p-2 mb-2 bg-[#007bff] text-white">
+    <h2>Member List</h2>
+  </div>
 
-
-      <Box borderBottom='1px solid #bcd1c2' display="flex" justifyContent="space-between" alignItems="center" mb={2} >
-      </Box>
-        
-
-          <Box borderBottom="1px solid #bcd1c2" padding="5px" marginBottom='5px' bgcolor="#007bff" color="white">
-          <Typography>Member List</Typography>
-        </Box>
-          <Box display="flex" justifyContent="space-between" >
-          <Box padding='1px'>
-              {/* <Iconsss tableId="my-tablee"/> */}
-              <div>
-              <DownloadCSVButton data={donationData} filename="my_data.csv" />
-              <DownloadPDFButton data={pdfData} filename="table_data.pdf" />
-              </div>
-          </Box>
-
-            <Box display="flex" justifyContent="flex-end" mb={2} >
-                {/* <Filter filters={filters} onFilterChange={handleFilterChange} /> */}
-                <Box display="flex" justifyContent="flex-end" mb={2}>
-                <Suspense fallback={<Loading />}>
-                  {/* <StateFilter states={state} selectedState={setState} onSelectState={handleStateChange}/>
-
-                  <DistrictFilter  districts={district} selectedDistrict={setDistrict} onSelectDistrict={handleDistrictChange}/>
-
-                  <Search onSearch={handleNameSearch} />  */}
-                </Suspense>
-                </Box>
-            </Box>
-
-            
-        </Box>
-        <Box display="flex" justifyContent="flex-end" mb={2}>
-          {/* <DateRangeFilter onDateRangeChange={handleDateRangeChange} /> */}
-          <Suspense fallback={<Loading />}>
-          {/* <ReferenceSearch onSearch={RefernceHandler} /> */}
-          </Suspense>
-        </Box>
-
-      <Box borderBottom="1px solid #bcd1c2"  marginBottom='5px'  color="white" sx={{  overflowX: 'auto',  }}>
-          
-          <Suspense fallback={<Loading />}>
-          <SortableTable
-                sortedRows={donationData}
-                openHandler={handleEditOpen}
-                setsortedRows={setDonationData}
-                memberRights={memberRights}
-                />
-          </Suspense>
-            
-        </Box>
-
-        
-
-        <Suspense fallback={<Loading />}>
-        {/* <Pagination
-                page={page}
-                pageSize={pageSize}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-                onPageSizeChange={handlePageSizeChange}
-            /> */}
-
-   {/* here donation form dialog will open so today it this would be our task */}
-
-            <DonationFormDialog
-              popupOpen={popupOpen}
-              handleClose={handleClose}
-             
-              handleFileChange={handleFileChange}
-
-
-              handleSubmit={handleSubmit}
-              handleSearchDialogOpen={handleSearchDialogOpen}
-
-
-              receivingMethods={receivingMethods}
-              setReceivingMethods={setReceivingMethods}
-
-
-              formData={formData}
-              handleInputChange={handleInputChange}
-              handleImageChange={handleImageChange}
-              preview={preview}
-              handleReceivingMethodsChange={handleReceivingMethodsChange}
-              
-              addNominee={addNominee}
-              removeNominee={removeNominee}
-              nomineeCount={nomineeCount}
-            />
-
-
-            <SearchMemberDialog
-              searchDialogOpen={searchDialogOpen}
-              handleSearchDialogClose={handleSearchDialogClose}
-              searchQuery={searchQuery}
-              setSearchQuery={setSearchQuery}
-              // handleSearch={handleSearch}
-              searchResults={searchResults}
-              handleSelectMember={handleSelectMember}
-              
-            />
-      </Suspense>
-             
+  <div className="flex justify-between">
+    <div className="p-1">
+      {/* Download buttons */}
+      <div>
+        <DownloadCSVButton data={donationData} filename="my_data.csv" />
+        <DownloadPDFButton data={pdfData} filename="table_data.pdf" />
+      </div>
     </div>
+
+    <div className="flex justify-end mb-2">
+      <div className="flex justify-end mb-2">
+      
+
+{/* Filters */}
+<div className="grid grid-cols-1 gap-4 md:grid-cols-3 mb-1">
+   
+    <div>
+        <label className="block text-sm font-medium">State</label>
+        <select
+            name="state"
+            value={filters.state}
+            onChange={handleFilterInputChange}
+            className="border rounded px-2 py-1 w-full"
+        >
+            <option value="">All</option>
+            {state.map((state) => (
+                <option key={state} value={state}>
+                    {state}
+                </option>
+            ))}
+        </select>
+    </div>
+
+    <div>
+        <label className="block text-sm font-medium">District</label>
+        <select
+            name="district"
+            value={filters.district}
+            onChange={handleFilterInputChange}
+            className="border rounded px-2 py-1 w-full"
+        >
+            <option value="">All</option>
+            {district.map((district) => (
+                <option key={district} value={district}>
+                    {district}
+                </option>
+            ))}
+        </select>
+    </div>
+
+    <div>
+        <label className="block text-sm font-medium">Name</label>
+        <input
+            type="text"
+            name="name"
+            value={filters.name}
+            onChange={handleFilterInputChange}
+            placeholder="Enter name"
+            className="border rounded px-2 py-1 w-full"
+        />
+    </div>
+</div>
+      </div>
+    </div>
+  </div>
+
+  <div className="flex justify-end mb-2">
+    <Suspense fallback={<Loading />}>
+    <div>
+        <label className="block text-sm font-medium">Member Id</label>
+        <input
+            type="text"
+            name="ReferenceId"
+            value={filters.ReferenceId}
+            onChange={handleFilterInputChange}
+            placeholder="Enter MemberId"
+            className="border rounded px-2 py-1 w-full"
+        />
+    </div>
+    </Suspense>
+  </div>
+
+  <div className="border-b border-[#bcd1c2] mb-2 overflow-x-auto">
+    <Suspense fallback={<Loading />}>
+      <SortableTable
+        sortedRows={filteredUsers}
+        openHandler={handleEditOpen}
+        setsortedRows={setDonationData}
+        memberRights={memberRights}
+      />
+    </Suspense>
+  </div>
+
+  <Suspense fallback={<Loading />}>
+    <DonationFormDialog
+      popupOpen={popupOpen}
+      handleClose={handleClose}
+      handleFileChange={handleFileChange}
+      handleSubmit={handleSubmit}
+      handleSearchDialogOpen={handleSearchDialogOpen}
+      receivingMethods={receivingMethods}
+      setReceivingMethods={setReceivingMethods}
+      formData={formData}
+      handleInputChange={handleInputChange}
+      handleImageChange={handleImageChange}
+      preview={preview}
+      handleReceivingMethodsChange={handleReceivingMethodsChange}
+      addNominee={addNominee}
+      removeNominee={removeNominee}
+      nomineeCount={nomineeCount}
+    />
+
+    <SearchMemberDialog
+      searchDialogOpen={searchDialogOpen}
+      handleSearchDialogClose={handleSearchDialogClose}
+      searchQuery={searchQuery}
+      setSearchQuery={setSearchQuery}
+      // handleSearch={handleSearch}
+      searchResults={searchResults}
+      handleSelectMember={handleSelectMember}
+    />
+  </Suspense>
+</div>
+
   );
 };
 
