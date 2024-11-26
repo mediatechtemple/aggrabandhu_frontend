@@ -24,7 +24,7 @@ const ReferenceSearch = React.lazy(() => import('../Member/ReferenceSearch'));
 
 const DonationFormDialog = React.lazy(() => import('./DonationFormDialog'));
 const SearchMemberDialog = React.lazy(() => import('./SearchMemberDialog'));
-const       SortableTable = React.lazy(() => import('./SortableTable'));
+const  SortableTable = React.lazy(() => import('./SortableTable'));
 
 
 
@@ -38,6 +38,10 @@ const       SortableTable = React.lazy(() => import('./SortableTable'));
   //////////////////////////////////////////////////////////////////////////////
 
   const Loading = () => <div>Loading...</div>;
+
+
+
+
 
 //////////////////////////////////
 const ParentComponent = () => {
@@ -59,9 +63,34 @@ const ParentComponent = () => {
 
   
     const [memberRights, setmemberRights] = useState([]);
+    
+    const [state,setState]=useState('');
+    const [district,setDistrict]=useState('');
 
+    const [filters, setFilters] = useState({
+      name: '',
+      ageRange: '',
+      status: '',
+      state: '',
+      district: '',
+  });
 
+  const handleFilterInputChange = (e) => {
+      setFilters({ ...filters, [e.target.name]: e.target.value });
+  };
 
+  // const filteredUsers = users.filter((user) => {
+  //     const matchesName = user.name.toLowerCase().includes(filters.name.toLowerCase());
+  //     const matchesAgeRange = !filters.ageRange || (
+  //         (filters.ageRange === '20-30' && user.age >= 20 && user.age <= 30) ||
+  //         (filters.ageRange === '31-40' && user.age >= 31 && user.age <= 40)
+  //     );
+  //     const matchesStatus = !filters.status || user.status === filters.status;
+  //     const matchesState = !filters.state || user.state === filters.state;
+  //     const matchesDistrict = !filters.district || user.district === filters.district;
+
+  //     return matchesName && matchesAgeRange && matchesStatus && matchesState && matchesDistrict;
+  // });
 
 
 
@@ -265,6 +294,11 @@ const fetchDonationData = async (toke) => {
 
 
     
+    setState(data.data.map((item)=>item.Member.state));
+    setDistrict(data.data.map((item)=>item.Member.district));
+
+    // console.log(statdist);
+    
     setPdfData([...data.data].map((item) => {
       return {
         // Member: {
@@ -339,11 +373,6 @@ const fetchDonationData = async (toke) => {
       };
     }));
     
-
-
-
-
-
     setLoading(false); // Set loading to false after data is fetched
   } catch (error) {
     setError(error.message); // Handle and store the error
@@ -512,59 +541,35 @@ useEffect(()=>{
 
 
 
-  /////////////////////////////////////////////////////////////
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(100);
-  const [totalPages, setTotalPages] = useState(1);
-
-  ////////////////////////////////////////////////////////////
-// /////////////////////////////////////////////////////////////////////////////////////////
-
-//here state,districst,name and id filter......... filtering will comes into picture 
-const[selectedState,setSelectedState]=useState('');
-const[selectedDistrict,setSelectedDistrict]=useState('');
-const[nameQuery,setNameQuery]=useState('');
-const [referenceId,setReferenceId]=useState('');
-// const [startDate, setStartDate] = useState(null);
-// const [endDate, setEndDate] = useState(null);
-
-const states = ['State 1', 'PQR', 'STU'];
-const districts = ['District 1', 'District 2', 'GHI'];
 
 
-function handleStateChange(state){
-  setSelectedState(state);
-}
 
-function handleDistrictChange(district){
-  setSelectedDistrict(district);
-}
-const handleNameSearch = query => {
-  setNameQuery(query);
-};
 
-function RefernceHandler(refId){
-  setReferenceId(refId);
-}
 
-const handleDateRangeChange = (start, end) => {
-  setStartDate(start);
-  setEndDate(end);
-};
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 
 
-  //bhai yaha sorting icon is going to work brotehr........
-// --------------------------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------------------------
 
-  const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
+  
+  
 
-  const handleSort = (key) => {
-    const direction = sortConfig.key === key && sortConfig.direction === 'asc' ? 'desc' : 'asc';
-    setSortConfig({ key, direction });
-  };
 
   
 
@@ -597,103 +602,19 @@ const handleDateRangeChange = (start, end) => {
     handleSearchDialogClose(); // Close search dialog after selection
   };
 
-  const getSortIcon = (key) => {
-    if (sortConfig.key === key) {
-      return sortConfig.direction === 'asc' ? <FaSortUp /> : <FaSortDown />;
-    }
-    return <FaSort />;
-  };
-
-  const handleSearch = () => {
-    // Implement search logic here
-    // For demonstration, use static data
-    if (searchQuery === '') {
-      setSearchResults([]);
-      return;
-    }
-
-    const dummyResults = [
-      { id: '1', name: 'John Doe' },
-      { id: '2', name: 'Jane Smith' }
-    ];
-
-    const filteredResults = dummyResults.filter(member =>
-      member.id.toLowerCase().includes(searchQuery.toLowerCase())
-    //    || member.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setSearchResults(filteredResults);
-  };
-
-
-
-
-  //////////////////////////////////////////////////////////////////////////////////
-  useEffect(() => {
-    let result = data;
-
-     result = [...data].sort((a, b) => {
-        if (sortConfig.key) {
-          if (a[sortConfig.key] < b[sortConfig.key]) {
-            return sortConfig.direction === 'asc' ? -1 : 1;
-          }
-          if (a[sortConfig.key] > b[sortConfig.key]) {
-            return sortConfig.direction === 'asc' ? 1 : -1;
-          }
-        }
-        return 0;
-      });
-    // Apply search filter
-    if (nameQuery) {
-      result = result.filter(member =>
-        member.name.toLowerCase().includes(nameQuery.toLowerCase())
-      );
-    }
-
-    
-    // // Apply state filter
-    if (selectedState) {
-      result = result.filter(member => member.state === selectedState);
-    }
-
-    // Apply district filter
-    if (selectedDistrict) {
-      result = result.filter(member => member.district === selectedDistrict);
-    }
-
-    // // Apply reference ID filter
-    if (referenceId) {
-      result = result.filter(member => member.code && member.code.toString() === referenceId);
-    }
-
-    //apply for refrence id brother here
-    
-
   
 
-    // Calculate total pages for pagination
-    setTotalPages(Math.ceil(result.length / pageSize));
+ 
 
-    // Apply pagination and update filtered members
-    setSearchResults(result.slice((page - 1) * pageSize, page * pageSize));
-  }, [ page, pageSize,sortConfig,selectedState,selectedDistrict,nameQuery,referenceId]);
+
+
+
+
 
 
 
 /////////////////////////////////////////////////////////////////////////////////////
-  const handlePageChange = newPage => {
-    setPage(newPage);
-  };
-
-  const handlePageSizeChange = newSize => {
-    if (newSize === 'all') {
-      setPageSize(data.length); // Set pageSize to total length of members array
-    } else {
-      setPageSize(newSize);
-    }
-    setPage(1); // Reset page to 1 when page size changes
-  };
-
-  ////////////////////////////////////////////////////////////////////////////////
+ 
 
 
 
@@ -754,23 +675,26 @@ const handleDateRangeChange = (start, end) => {
               <DownloadPDFButton data={pdfData} filename="table_data.pdf" />
               </div>
           </Box>
+
             <Box display="flex" justifyContent="flex-end" mb={2} >
                 {/* <Filter filters={filters} onFilterChange={handleFilterChange} /> */}
                 <Box display="flex" justifyContent="flex-end" mb={2}>
                 <Suspense fallback={<Loading />}>
-                  <StateFilter states={states} selectedState={selectedState} onSelectState={handleStateChange}/>
+                  {/* <StateFilter states={state} selectedState={setState} onSelectState={handleStateChange}/>
 
-                  <DistrictFilter  districts={districts} selectedDistrict={selectedDistrict} onSelectDistrict={handleDistrictChange}/>
+                  <DistrictFilter  districts={district} selectedDistrict={setDistrict} onSelectDistrict={handleDistrictChange}/>
 
-                  <Search onSearch={handleNameSearch} /> 
+                  <Search onSearch={handleNameSearch} />  */}
                 </Suspense>
                 </Box>
             </Box>
+
+            
         </Box>
         <Box display="flex" justifyContent="flex-end" mb={2}>
           {/* <DateRangeFilter onDateRangeChange={handleDateRangeChange} /> */}
           <Suspense fallback={<Loading />}>
-          <ReferenceSearch onSearch={RefernceHandler} />
+          {/* <ReferenceSearch onSearch={RefernceHandler} /> */}
           </Suspense>
         </Box>
 
@@ -779,9 +703,6 @@ const handleDateRangeChange = (start, end) => {
           <Suspense fallback={<Loading />}>
           <SortableTable
                 sortedRows={donationData}
-                sortConfig={sortConfig}
-                handleSort={handleSort}
-                getSortIcon={getSortIcon}
                 openHandler={handleEditOpen}
                 setsortedRows={setDonationData}
                 memberRights={memberRights}
@@ -793,13 +714,13 @@ const handleDateRangeChange = (start, end) => {
         
 
         <Suspense fallback={<Loading />}>
-        <Pagination
+        {/* <Pagination
                 page={page}
                 pageSize={pageSize}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
                 onPageSizeChange={handlePageSizeChange}
-            />
+            /> */}
 
    {/* here donation form dialog will open so today it this would be our task */}
 
@@ -835,7 +756,7 @@ const handleDateRangeChange = (start, end) => {
               handleSearchDialogClose={handleSearchDialogClose}
               searchQuery={searchQuery}
               setSearchQuery={setSearchQuery}
-              handleSearch={handleSearch}
+              // handleSearch={handleSearch}
               searchResults={searchResults}
               handleSelectMember={handleSelectMember}
               

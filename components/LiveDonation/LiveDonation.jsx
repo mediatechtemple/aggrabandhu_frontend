@@ -134,7 +134,8 @@ const handleRowSubmit = (item) => {
   const formDataToSend = new FormData();
 
   // Append all fields to FormData object
-  formDataToSend.append('member_id', item.member_id);
+  
+  formDataToSend.append('member_id', JSON.parse( localStorage.getItem('user')).userid);
   formDataToSend.append('donation_id', item.id);
   formDataToSend.append('amount', formData[item.id]?.donatedAmounts || '');
   formDataToSend.append('transaction_id', formData[item.id]?.transactionNos || '');

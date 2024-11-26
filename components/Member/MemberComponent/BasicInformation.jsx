@@ -167,7 +167,6 @@ const BasicInformation = ({
     onChange={handleChange}
     name="blood_group"
     label="Blood Group"
-    required
     MenuProps={{
       PaperProps: {
         style: {

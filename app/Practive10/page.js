@@ -1,81 +1,143 @@
 'use client'
 import React, { useState } from 'react';
 
-const data = [
-  { id: 1, name: 'Arjun', fatherName: 'Rajesh', date: '2024-11-01' },
-  { id: 2, name: 'Ravi', fatherName: 'Suresh', date: '2024-11-05' },
-  { id: 3, name: 'Anita', fatherName: 'Rakesh', date: '2024-11-08' },
-  { id: 4, name: 'Pooja', fatherName: 'Mohan', date: '2024-11-10' },
-  { id: 5, name: 'Kiran', fatherName: 'Jagdish', date: '2024-11-12' },
+// Sample data
+const users = [
+    { id: 1, name: 'Alice', age: 25, status: 'Active', state: 'California', district: 'District A' },
+    { id: 2, name: 'Bob', age: 30, status: 'Inactive', state: 'Texas', district: 'District B' },
+    { id: 3, name: 'Charlie', age: 35, status: 'Active', state: 'California', district: 'District C' },
+    { id: 4, name: 'David', age: 40, status: 'Inactive', state: 'Texas', district: 'District D' },
+    { id: 5, name: 'Eve', age: 22, status: 'Active', state: 'New York', district: 'District E' },
 ];
 
-const DateRangeFilterTable = () => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+const MultiFilterComponent = () => {
+    const [filters, setFilters] = useState({
+        name: '',
+        ageRange: '',
+        status: '',
+        state: '',
+        district: '',
+    });
 
-  const filteredData = data.filter((item) => {
-    const itemDate = new Date(item.date);
-    const start = startDate ? new Date(startDate) : null;
-    const end = endDate ? new Date(endDate) : null;
-  
-    if (start && end) {
-      return itemDate >= start && itemDate <= end;
-    } else if (start) {
-      return itemDate >= start;
-    } else if (end) {
-      return itemDate <= end;
-    } else {
-      return true; // No filter applied, include all items
-    }
-  });
-  
+    const handleInputChange = (e) => {
+        setFilters({ ...filters, [e.target.name]: e.target.value });
+    };
 
-  return (
-    <div className="p-4">
-      <div className="flex space-x-4 mb-4">
-        <input
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          className="border rounded p-2"
-          placeholder="Start Date"
-        />
-        <input
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          className="border rounded p-2"
-          placeholder="End Date"
-        />
-      </div>
-      
-      <table className="min-w-full bg-white border rounded">
-        <thead>
-          <tr>
-            <th className="py-2 px-4 border-b text-center">Name</th>
-            <th className="py-2 px-4 border-b text-center" >Father Name</th>
-            <th className="py-2 px-4 border-b text-center">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((item) => (
-            <tr key={item.id}>
-              <td className="py-2 px-4 border-b text-center">{item.name}</td>
-              <td className="py-2 px-4 border-b text-center">{item.fatherName}</td>
-              <td className="py-2 px-4 border-b text-center">{item.date}</td>
-            </tr>
-          ))}
-          {filteredData.length === 0 && (
-            <tr>
-              <td colSpan="3" className="text-center py-2 px-4">
-                No records found
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
+    const filteredUsers = users.filter((user) => {
+        const matchesName = user.name.toLowerCase().includes(filters.name.toLowerCase());
+        const matchesAgeRange = !filters.ageRange || (
+            (filters.ageRange === '20-30' && user.age >= 20 && user.age <= 30) ||
+            (filters.ageRange === '31-40' && user.age >= 31 && user.age <= 40)
+        );
+        const matchesStatus = !filters.status || user.status === filters.status;
+        const matchesState = !filters.state || user.state === filters.state;
+        const matchesDistrict = !filters.district || user.district === filters.district;
+
+        return matchesName && matchesAgeRange && matchesStatus && matchesState && matchesDistrict;
+    });
+
+    // Unique states and districts for dropdowns
+    const uniqueStates = [...new Set(users.map((user) => user.state))];
+    const uniqueDistricts = [...new Set(users.map((user) => user.district))];
+
+    return (
+        <div className="p-4 max-w-lg mx-auto">
+            <h2 className="text-2xl font-bold mb-4">Filter Users</h2>
+
+            {/* Filters */}
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3 mb-4">
+                <div>
+                    <label className="block text-sm font-medium">Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        value={filters.name}
+                        onChange={handleInputChange}
+                        placeholder="Enter name"
+                        className="border rounded px-2 py-1 w-full"
+                    />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium">Age Range</label>
+                    <select
+                        name="ageRange"
+                        value={filters.ageRange}
+                        onChange={handleInputChange}
+                        className="border rounded px-2 py-1 w-full"
+                    >
+                        <option value="">All</option>
+                        <option value="20-30">20-30</option>
+                        <option value="31-40">31-40</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium">Status</label>
+                    <select
+                        name="status"
+                        value={filters.status}
+                        onChange={handleInputChange}
+                        className="border rounded px-2 py-1 w-full"
+                    >
+                        <option value="">All</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium">State</label>
+                    <select
+                        name="state"
+                        value={filters.state}
+                        onChange={handleInputChange}
+                        className="border rounded px-2 py-1 w-full"
+                    >
+                        <option value="">All</option>
+                        {uniqueStates.map((state) => (
+                            <option key={state} value={state}>
+                                {state}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium">District</label>
+                    <select
+                        name="district"
+                        value={filters.district}
+                        onChange={handleInputChange}
+                        className="border rounded px-2 py-1 w-full"
+                    >
+                        <option value="">All</option>
+                        {uniqueDistricts.map((district) => (
+                            <option key={district} value={district}>
+                                {district}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            {/* Filtered Results */}
+            <div className="bg-gray-100 p-4 rounded shadow">
+                <h3 className="text-lg font-semibold mb-2">Filtered Users</h3>
+                {filteredUsers.length > 0 ? (
+                    <ul className="list-disc pl-4">
+                        {filteredUsers.map((user) => (
+                            <li key={user.id}>
+                                {user.name} - {user.age} - {user.status} - {user.state} - {user.district}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No users match the filters.</p>
+                )}
+            </div>
+        </div>
+    );
 };
 
-export default DateRangeFilterTable;
+export default MultiFilterComponent;

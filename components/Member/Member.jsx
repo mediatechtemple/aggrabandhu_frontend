@@ -513,6 +513,43 @@ console.log(filteredDistricts);
   };
 
 
+  const formatMemberData = (members) => {
+    return members.map((item) => ({
+      aadhar_no: item.aadhar_no,
+      address: item.address,
+      createdAt: new Date(item.createdAt).toLocaleDateString(),
+      declaration: item.declaration,
+      disease: item.disease,
+      district: item.district,
+      dob: new Date(item.dob).toLocaleDateString(),
+      donationCount: item.donationCount,
+      email: item.email,
+      father_name: item.father_name,
+      gender: item.gender,
+      gotra: item.gotra,
+      id_no: item.id_no,
+      id_type: item.id_type,
+      marital_status: item.marital_status,
+      marriage_age: item.marriage_age,
+      marriage_date: item.marriage_date,
+      mobile_no: item.mobile_no,
+      mother_name: item.mother_name,
+      name: item.name,
+      pincode: item.pincode,
+      profession: item.profession,
+      refer_id: item.refer_id || null,
+      reference_id: item.reference_id,
+      rulesAccepted: item.rulesAccepted,
+      spouse_name: item.spouse_name,
+      state: item.state,
+      status: item.status,
+      tahsil: item.tahsil,
+      totalDonation: item.totalDonation,
+      total_age: item.total_age,
+      blood_group: item.blood_group,
+    }));
+  };
+  
   
   
 
@@ -555,9 +592,10 @@ console.log(filteredDistricts);
       <Box display="flex"  justifyContent='space-between' >
         <Box>
          {/* <Iconsss dataObject={filteredMembers}  tableId="my-tablee"/> */}
-         <div>
-      <DownloadCSVButton data={members} filename="my_data.csv" />
-      <DownloadPDFButton data={pdfData} filename="table_data.pdf" />
+         <div>  
+      <DownloadCSVButton data={formatMemberData(filteredMembers)} filename="my_data.csv" />
+      <DownloadPDFButton data={formatMemberData(filteredMembers)
+      } filename="table_data.pdf" />
     </div>
         </Box>
         <Box display="flex"> 
