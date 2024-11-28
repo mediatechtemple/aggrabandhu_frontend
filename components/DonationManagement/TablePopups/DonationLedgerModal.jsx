@@ -45,12 +45,12 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
         setSearchText(e.target.value);
     }
 
-    async function disputeDelete(){
+    async function disputeDelete(id){
       // alert(ledgerData.id)
       // return;
       
         try{
-            const response=await fetch(`https://backend.aggrabandhuss.org/api/donation/status/${ledgerData.id}`,{
+            const response=await fetch(`https://backend.aggrabandhuss.org/api/donation/status/${id}`,{
                 method:'DELETE',
             })
             if(!response.ok){
@@ -63,19 +63,26 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
     }
 
     
-    async function disputePut(){
-      try{
-          const response=await fetch(`https://backend.aggrabandhuss.org/api/donation/status/${ledgerData.id}`,{
-              method:'DELETE',
-          })
-          if(!response){
-              throw new Error('dispute error')
-          }
-          alert('data disputed');
-      }catch(error){
-          console.log(error)
+    async function disputePut(id) {
+      try {
+        const response = await fetch(`https://backend.aggrabandhuss.org/api/donation/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json', // Specify JSON content type
+          },
+          body: JSON.stringify({ status: 'Approved' }) // Properly format JSON body
+        });
+    
+        if (!response.ok) { // Check response status
+          throw new Error('Dispute error');
+        }
+    
+        alert('Data disputed successfully');
+      } catch (error) {
+        console.log(error);
       }
-  }
+    }
+    
     
 
     async function getData(){
@@ -86,6 +93,7 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
             }
             const data=await response.json();
             setLoading(false);
+            // console.log('Ashoka yadav')
             console.log(data.data);
             setDonatorsData(data.data);
 
@@ -111,6 +119,22 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
       setCurrentPage(1)
       setitemsPerPage(pageNumber);
     };
+
+    function ExportData(data){
+
+      return data.map((item)=>{
+        return {
+          name:item.Member.name,
+          email:item.Member.email,
+          state:item.Member.state,
+          district:item.Member.district,
+          donationDate:new Date(item.donation_date).toLocaleDateString('en-GB'),  
+          transactionId:item.transaction_id,
+          Amount:item.amount
+        }
+      })
+      // return data;
+    }
 
     
 
@@ -189,8 +213,8 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
 
     <div className="flex justify-between items-center my-4">
   <div>
-    <DownloadCSVButton data={datafilter} />
-    <DownloadPDFButton data={datafilter} />
+    <DownloadCSVButton data={ExportData(datafilter)} />
+    <DownloadPDFButton data={ExportData(datafilter)} />
   </div>
 
   <div className="flex justify-end items-center gap-4">
@@ -302,12 +326,12 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
               </td>
               <td className="border border-gray-300 px-4 py-2">
                 {item.status === 'Approved' ? (
-                  <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded" onClick={disputeDelete}>
+                  <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded" onClick={()=>disputeDelete(item.id)}>
                     Dispute
                   </button>
                 ) :
                 (
-                  <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded" onClick={disputePut}>
+                  <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded" onClick={()=>disputePut(item.id)}>
                     Undispute
                   </button>
                 )

@@ -1,8 +1,25 @@
 'use client'
+import useSortableData from '@/components/DonationManagement/Hooks/useSortableData';
+import Pagination from '@/user_component/Pagination/Pagination';
 import React, { useEffect, useState } from 'react';
+const headers = [
+  { key: "id", label: "ID" },
+  { key: "name", label: "Member Name" },
+  { key: "email", label: "Email" },
+  { key: "amount", label: "Amount" },
+  { key: "donation_date", label: "Donation Date" },
+  { key: "transaction_id", label: "Transaction ID" },
+  { key: "status", label: "Status" },
+  { key: "state", label: "State" },
+  { key: "district", label: "District" }
+];
 
 const Page =  () => {
   const [donators,setDonators]=useState([]);
+  const { items: sortedData, requestSort, getSortIcon } = useSortableData(donators);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage,setitemsPerPage] = useState(2);
+
   async function getData(){
     try{
       const response = await fetch('https://backend.aggrabandhuss.org/api/donation/');
@@ -18,9 +35,24 @@ const Page =  () => {
     }
   }
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleItemPerChange = (pageNumber) => {
+    setCurrentPage(1)
+    setitemsPerPage(pageNumber);
+  };
+
   useEffect(()=>{
     getData()
   },[])
+
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedData.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
 
   if(donators.length==0){
     <p>Loading...</p>
@@ -33,21 +65,20 @@ const Page =  () => {
       <div className="overflow-x-auto overflow-y-auto max-h-[80vh]">
         <table className="min-w-full bg-white border border-gray-300">
           <thead>
-            <tr>
-              <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">ID</th>
-              <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Member Name</th>
-              <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Email</th>
-              <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Amount</th>
-              <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Donation Date</th>
-              <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Transaction ID</th>
-              {/* <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Payment Method</th> */}
-              <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">Status</th>
-              <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">State</th>
-              <th className="py-2 px-4 border border-spacing-1 bg-blue-500 text-white">District</th>
-            </tr>
+          <tr>
+            {headers.map((header) => (
+              <th
+                key={header.key}
+                onClick={() => requestSort(header.key)}
+                 className="border bg-blue-500 text-white text-center border-gray-300 px-4 py-2 cursor-pointer"
+              >
+                {header.label}{getSortIcon(header.key)}
+              </th>
+            ))}
+          </tr>
           </thead>
           <tbody>
-            {donators.map((donator) => (
+            {currentItems.map((donator) => (
               <tr key={donator.id}>
                 <td className="py-2 px-4 border border-spacing-1">{donator.id}</td>
                 <td className="py-2 px-4 border border-spacing-1">{donator.Member.name}</td>
@@ -55,7 +86,6 @@ const Page =  () => {
                 <td className="py-2 px-4 border border-spacing-1">{donator.amount}</td>
                 <td className="py-2 px-4 border border-spacing-1">{new Date(donator.donation_date).toLocaleDateString()}</td>
                 <td className="py-2 px-4 border border-spacing-1">{donator.transaction_id}</td>
-                {/* <td className="py-2 px-4 border border-spacing-1">{donator.payment_method}</td> */}
                 <td className="py-2 px-4 border border-spacing-1">{donator.status}</td>
                 <td className="py-2 px-4 border border-spacing-1">{donator.Member.state}</td>
                 <td className="py-2 px-4 border border-spacing-1">{donator.Member.district}</td>
@@ -64,6 +94,13 @@ const Page =  () => {
           </tbody>
         </table>
       </div>
+        <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        handleItemPerChange={handleItemPerChange}
+        membersLength={currentItems.length}
+      />
     </div>
   );
 };
