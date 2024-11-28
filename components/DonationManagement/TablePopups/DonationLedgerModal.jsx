@@ -65,7 +65,7 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
     
     async function disputePut(id) {
       try {
-        const response = await fetch(`https://backend.aggrabandhuss.org/api/donation/${id}`, {
+        const response = await fetch(`https://backend.aggrabandhuss.org/api/donation/status/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json', // Specify JSON content type
