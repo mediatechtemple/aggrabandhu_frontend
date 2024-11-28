@@ -60,6 +60,9 @@ const handleFilterInputChange = (e) => {
   },[])
 
 
+  use
+
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = sortedData.slice(indexOfFirstItem, indexOfLastItem);

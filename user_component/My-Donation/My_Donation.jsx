@@ -53,7 +53,7 @@ const My_Donation = () => {
               </td>
               <td className="py-2 px-4 border">{donation.to.name}</td>
               <td className="py-2 px-4 border">₹{donation.amount}</td>
-              <td className="py-2 px-4 border">₹{donation.status}</td>
+              <td className={`py-2 px-4 border ${donation.status==='Rejected'? 'text-red-500' :'text-green-500'}`}>{donation.status}</td>
               
               <td className="py-2 px-4 border">
                 {donation.to.state}-{donation.to.district}
