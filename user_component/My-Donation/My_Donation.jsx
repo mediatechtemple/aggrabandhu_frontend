@@ -35,6 +35,7 @@ const My_Donation = () => {
             <th className="py-2 px-4 border bg-blue-500 text-white">Photo</th>
             <th className="py-2 px-4 border  bg-blue-500 text-white">Name</th>
             <th className="py-2 px-4 border  bg-blue-500 text-white">Amount</th>
+            <th className="py-2 px-4 border  bg-blue-500 text-white">Status</th>
             <th className="py-2 px-4 border  bg-blue-500 text-white">Address</th>
             <th className="py-2 px-4 border  bg-blue-500 text-white">Date</th>
           </tr>
@@ -52,6 +53,8 @@ const My_Donation = () => {
               </td>
               <td className="py-2 px-4 border">{donation.to.name}</td>
               <td className="py-2 px-4 border">₹{donation.amount}</td>
+              <td className="py-2 px-4 border">₹{donation.status}</td>
+              
               <td className="py-2 px-4 border">
                 {donation.to.state}-{donation.to.district}
               </td>
