@@ -8,8 +8,8 @@ import RemarkPopup from './TablePopups/RemarkPopup';
 import Image from 'next/image';
 import DonationLedgerModal from './TablePopups/DonationLedgerModal';
 
-const SortableTable = ({ sortedRows=[], sortConfig, handleSort, 
-  getSortIcon, openHandler,setsortedRows,
+const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
+  requestSort, getSortIcon,
   memberRights
  }) => {
   
@@ -184,11 +184,11 @@ const SortableTable = ({ sortedRows=[], sortConfig, handleSort,
         <th 
           key={column} 
           className="border border-gray-300 p-2 text-center cursor-pointer"
-          // onClick={() => handleSort(column)}
+          onClick={() => requestSort(column)}
         >
           <div className="flex justify-center items-center">
             {column === 'srNo' ? 'Sr. No' : column.charAt(0).toUpperCase() + column.slice(1).replace(/([A-Z])/g, ' $1').trim()}
-            {/* {getSortIcon(column, sortConfig)} */}
+            {getSortIcon(column)}
           </div>
         </th>
       )

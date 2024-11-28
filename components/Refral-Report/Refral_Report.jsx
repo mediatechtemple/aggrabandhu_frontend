@@ -18,6 +18,7 @@ const Refral_Report = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage,setitemsPerPage] = useState(100);
+  
   const [searchTerm, setSearchTerm] = useState('');
   
   const { items: sortedMembers, requestSort, getSortIcon } = useSortableData(members);

@@ -4,6 +4,8 @@ import { Button, Box,Typography} from '@mui/material';
 
 import DownloadCSVButton from '../DataConverters/DownloadCSVButton';
 import DownloadPDFButton from '../DataConverters/DownloadPDFButton';
+import useSortableData from '../Refral-Report/hooks/useSortableData';
+import Pagination from '@/user_component/Pagination/Pagination';
 const DonationFormDialog = React.lazy(() => import('./DonationFormDialog'));
 const SearchMemberDialog = React.lazy(() => import('./SearchMemberDialog'));
 const  SortableTable = React.lazy(() => import('./SortableTable'));
@@ -40,6 +42,7 @@ const ParentComponent = () => {
     const [donationData, setDonationData] = useState([]); // State to store API data
       const [error, setError] = useState(null); // State to handle errors
       const [loading, setLoading] = useState(true); // State to show loading indicator
+      const { items: sortedMembers, requestSort, getSortIcon } = useSortableData(donationData);
     const [filters, setFilters] = useState({
       name: '',
       state: '',
@@ -52,7 +55,7 @@ const ParentComponent = () => {
   };
 
   
-  const filteredUsers = donationData.filter((user) => {
+  const filteredUsers = sortedMembers.filter((user) => {
       const matchesName = !filters.name || user.Member.name.toLowerCase().includes(filters.name.toLowerCase());
      
       const matchesState = !filters.state || user.Member.state === filters.state;
@@ -111,6 +114,15 @@ const [nomineeCount, setNomineeCount] = useState(1);
 const [editData,setEditData]=useState(null);
 
 const [token,setToken]=useState(null);
+
+const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage,setitemsPerPage] = useState(100);
+
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
 // State for storing image preview URL
 
@@ -227,6 +239,14 @@ const handleSubmit = async () => {
 
 
 
+const handlePageChange = (pageNumber) => {
+  setCurrentPage(pageNumber);
+};
+
+const handleItemPerChange = (pageNumber) => {
+  setCurrentPage(1)
+  setitemsPerPage(pageNumber);
+};
 
 
 
@@ -627,6 +647,8 @@ useEffect(()=>{
         openHandler={handleEditOpen}
         setsortedRows={setDonationData}
         memberRights={memberRights}
+        requestSort={requestSort}
+         getSortIcon={getSortIcon}
       />
     </Suspense>
   </div>
@@ -659,6 +681,13 @@ useEffect(()=>{
       searchResults={searchResults}
       handleSelectMember={handleSelectMember}
     />
+    <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        handleItemPerChange={handleItemPerChange}
+        membersLength={filteredUsers.length}
+      />
   </Suspense>
 </div>
 
