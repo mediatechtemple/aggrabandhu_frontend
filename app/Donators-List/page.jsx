@@ -19,6 +19,8 @@ const headers = [
 const Page =  () => {
   const [donators,setDonators]=useState([]);
   const { items: sortedData, requestSort, getSortIcon } = useSortableData(donators);
+  const[state,setState]=useState([]);
+  const[district,setDistrict]=useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage,setitemsPerPage] = useState(2);
   const [filters, setFilters] = useState({
@@ -41,6 +43,10 @@ const handleFilterInputChange = (e) => {
       const data=await response.json();
       console.log(data);
       setDonators(data.data);
+      setState([...new Set(data.data.map(item => item.Member.state))]);
+
+      // Extract unique districts
+      setDistrict([...new Set(data.data.map(item => item.Member.district))])
     }catch(error){
       
     }
@@ -54,19 +60,46 @@ const handleFilterInputChange = (e) => {
     setCurrentPage(1)
     setitemsPerPage(pageNumber);
   };
+  function ExportData(data){
+
+    return data.map((item)=>{
+      return {
+        name:item.Member.name,
+        email:item.Member.email,
+        state:item.Member.state,
+        district:item.Member.district,
+        donationDate:new Date(item.donation_date).toLocaleDateString('en-GB'),  
+        transactionId:item.transaction_id,
+        status:item.status,
+        Amount:item.amount
+      }
+    })
+    // return data;
+  }
 
   useEffect(()=>{
     getData()
   },[])
 
 
-  use
+  useEffect(()=>{
+    console.log(filters);
+  },[filters])
+
+
+  const datafilter = sortedData.filter((donator) => {
+    const stateMatch = filters.state ? donator.Member.state.toLowerCase().includes(filters.state.toLowerCase()) : true;
+    const districtMatch = filters.district ? donator.Member.district.toLowerCase().includes(filters.district.toLowerCase()) : true;
+    const searchTextMatch = filters.searchText ? JSON.stringify(donator).toLowerCase().includes(filters.searchText.toLowerCase()) : true;
+  
+    return stateMatch && districtMatch && searchTextMatch;
+  });
 
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = sortedData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(sortedData.length / itemsPerPage);
+  const currentItems = datafilter.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(datafilter.length / itemsPerPage);
 
   if(donators.length==0){
     <p>Loading...</p>
@@ -78,8 +111,8 @@ const handleFilterInputChange = (e) => {
       <h2 className="text-3xl text-center font-bold mb-4 bg-blue-500 text-white">Donators List</h2>
     <div className="flex justify-between items-center my-4">
   <div>
-    <DownloadCSVButton data={sortedData} />
-    <DownloadPDFButton data={sortedData} />
+    <DownloadCSVButton data={ExportData(sortedData)} />
+    <DownloadPDFButton data={ExportData(sortedData)} />
   </div>
 
   <div className="flex justify-end items-center gap-4">
@@ -93,7 +126,7 @@ const handleFilterInputChange = (e) => {
         className="border rounded px-2 py-1 w-[200px]"
       >
         <option value="">All</option>
-        {[].map((state) => (
+        {state.map((state) => (
           <option key={state} value={state}>
             {state}
           </option>
@@ -111,7 +144,7 @@ const handleFilterInputChange = (e) => {
         className="border rounded px-2 py-1 w-[200px]"
       >
         <option value="">All</option>
-        {[].map((district) => (
+        {district.map((district) => (
           <option key={district} value={district}>
             {district}
           </option>
