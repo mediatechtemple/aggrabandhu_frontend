@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
+import { FaWhatsapp } from 'react-icons/fa';
 
 const My_Donation = () => {
   const [memberList, setmemberList] = useState([]);
@@ -38,6 +39,7 @@ const My_Donation = () => {
             <th className="py-2 px-4 border  bg-blue-500 text-white">Status</th>
             <th className="py-2 px-4 border  bg-blue-500 text-white">Address</th>
             <th className="py-2 px-4 border  bg-blue-500 text-white">Date</th>
+            <th className="py-2 px-4 border  bg-blue-500 text-white">Support</th>
           </tr>
         </thead>
         <tbody>
@@ -61,6 +63,17 @@ const My_Donation = () => {
               <td className="py-2 px-4 border">
                 {new Date(donation.createdAt).toLocaleDateString()}
               </td>
+              {donation.status === 'Rejected' && (
+                <td className="py-2 px-4 border ">
+                  <div className='flex justify-center items-center'>
+                  <FaWhatsapp
+                    className="text-green-500 text-2xl cursor-pointer hover:text-green-600 transition-all duration-300" 
+                    onClick={() => window.open(`https://wa.me/?text=Your+custom+message+here`)} 
+                  />
+                  </div>
+                </td>
+              )}
+
             </tr>
           ))}
         </tbody>

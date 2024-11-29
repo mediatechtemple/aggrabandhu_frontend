@@ -7,6 +7,9 @@ import BankDetailPopup from './TablePopups/BankDetailPopup';
 import RemarkPopup from './TablePopups/RemarkPopup';
 import Image from 'next/image';
 import DonationLedgerModal from './TablePopups/DonationLedgerModal';
+import Link from 'next/link';
+import { FaTrashAlt } from 'react-icons/fa'; // Trash icon for delete
+import { FaDownload } from 'react-icons/fa'; // Download icon for download
 
 const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
   requestSort, getSortIcon,
@@ -179,7 +182,7 @@ const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
         <table className="min-w-full table-auto border border-gray-300">
         <thead>
   <tr className="bg-blue-600 text-white">
-    {['srNo', 'member_id', 'profile', 'name', 'referenced_by', 'mobileNo', 'district', 'state', 'deathDate', 'Nominee_Detail', 'startDate', 'endDate', 'noOfDonation', 'totalDonation', 'paymentDetails', 'donationLedger', 'action', 'status', 'remark'].map((column) => (
+    {['srNo', 'member_id', 'profile', 'name', 'referenced_by', 'mobileNo', 'district', 'state', 'deathDate', 'Nominee_Detail', 'startDate', 'endDate', 'noOfDonation', 'totalDonation', 'paymentDetails', 'donationLedger', 'action', 'status', 'remark','files'].map((column) => (
       (column === 'action' || column === 'status') && !memberRights['Donation Management']?.['edit'] ? null : (
         <th 
           key={column} 
@@ -321,6 +324,34 @@ const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
                     Add
                   </button>
                 </td>
+
+
+
+                <td className="border border-gray-300 p-2">
+  <div className="flex items-center justify-center space-x-4">
+    {/* Delete Icon with Border */}
+    <div className="border border-red-500 p-2 rounded-md hover:bg-red-500 hover:text-white transition-all duration-300 cursor-pointer">
+      <FaTrashAlt 
+        className="text-red-500 hover:text-white"
+        onClick={() => handleDelete(member.id)} 
+      />
+    </div>
+
+    {/* Download Icon with Border */}
+    <div className="border border-green-500 p-2 rounded-md hover:bg-green-500 hover:text-white transition-all duration-300 cursor-pointer">
+      <Link href={`/details/${member.id}`}>
+        <FaDownload 
+          className="text-green-500 hover:text-white"
+        />
+      </Link>
+    </div>
+  </div>
+</td>
+
+
+
+
+
               </tr>
             ))}
           </tbody>

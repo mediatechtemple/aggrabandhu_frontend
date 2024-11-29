@@ -56,7 +56,9 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
             if(!response.ok){
                 throw new Error('dispute error')
             }
+
             alert('data disputed');
+            getData();
         }catch(error){
             console.log(error)
         }
@@ -78,6 +80,7 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
         }
     
         alert('Data disputed successfully');
+        getData();
       } catch (error) {
         console.log(error);
       }
@@ -307,7 +310,7 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
         <tbody>
           {currentItems.map((item, index) => (
             <tr key={index}>
-              <td className="border border-gray-300 px-4 py-2">{index + 1}</td>
+              <td className="border border-gray-300 px-4 py-2">{item.Member.reference_id}</td>
               <td className="border border-gray-300 px-4 py-2">{item.Member.name}</td>
               <td className="border border-gray-300 px-4 py-2">{item.Member.email}</td>
               <td className="border border-gray-300 px-4 py-2">{item.Member.state}</td>
