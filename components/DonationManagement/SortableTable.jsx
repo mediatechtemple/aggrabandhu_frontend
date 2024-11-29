@@ -176,6 +176,19 @@ const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
     window.alert('Hello brother, how are you!!!!! ' + index);
   };
 
+  const handleDelete=async(id)=>{
+    try{
+      const response=await fetch(`https://backend.aggrabandhuss.org/api/donation/download/${id}`);
+      if(!response.ok){
+        throw new Error('not deleted');
+      }
+      const data=await response.json();
+      alert('deleted succesfully');
+    }catch(error){
+      console.log(error)
+    }
+  }
+
   return (
     <>
       <div className="overflow-x-auto w-full">
