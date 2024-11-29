@@ -185,7 +185,7 @@ const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
       const data=await response.json();
       alert('deleted succesfully');
     }catch(error){
-      console.log(error)
+      alert(error);
     }
   }
 
