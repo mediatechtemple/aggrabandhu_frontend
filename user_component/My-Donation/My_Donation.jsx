@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 
@@ -64,12 +65,16 @@ const My_Donation = () => {
                 {new Date(donation.createdAt).toLocaleDateString()}
               </td>
               {donation.status === 'Rejected' && (
-                <td className="py-2 px-4 border ">
-                  <div className='flex justify-center items-center'>
-                  <FaWhatsapp
-                    className="text-green-500 text-2xl cursor-pointer hover:text-green-600 transition-all duration-300" 
-                    onClick={() => window.open(`https://wa.me/?text=Your+custom+message+here`)} 
-                  />
+                <td >
+                  <div className="flex justify-center items-center">
+                  <Link
+                    href="https://whatsapp.com/channel/0029VajOtfp59PwSxSNdHT1W" // Replace with your WhatsApp number
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-green-500 hover:text-green-600"
+                  >
+                    <FaWhatsapp size={48} />
+                  </Link>
                   </div>
                 </td>
               )}

@@ -339,7 +339,7 @@ const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
 
     {/* Download Icon with Border */}
     <div className="border border-green-500 p-2 rounded-md hover:bg-green-500 hover:text-white transition-all duration-300 cursor-pointer">
-      <Link href={`/details/${member.id}`}>
+      <Link href={`https://backend.aggrabandhuss.org/api/donation/download/${member.id}`}>
         <FaDownload 
           className="text-green-500 hover:text-white"
         />
