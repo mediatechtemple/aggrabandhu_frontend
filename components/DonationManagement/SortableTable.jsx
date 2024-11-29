@@ -178,7 +178,9 @@ const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
 
   const handleDelete=async(id)=>{
     try{
-      const response=await fetch(`https://backend.aggrabandhuss.org/api/donation/download/${id}`);
+      const response=await fetch(`https://backend.aggrabandhuss.org/api/donation/download/${id}`,{
+        method:'DELETE'
+      });
       if(!response.ok){
         throw new Error('not deleted');
       }
