@@ -5,7 +5,7 @@ import useSelectedUsers from './AdminCustomHook/useSelectedUsers';
 import useDialog from './AdminCustomHook/useDialog';
 // import useCheckboxes from './AdminCustomHook/useCheckboxes';
 import PermissionsDialog from './PermissionsDialog';
-import AdminForm from './adminForm';
+import AdminForm from './AdminForm'
 
 const UserManagement = () => {
   const { dialogOpen, 
