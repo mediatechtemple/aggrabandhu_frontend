@@ -51,8 +51,10 @@ const LiveDonation = () => {
   useEffect(() => {
     // Function to fetch data from the API
     const fetchDonationData = async (token) => {
+     let id= JSON.parse(localStorage.getItem('user')).userid;
       try {
-        const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
+
+        const response = await fetch(`https://backend.aggrabandhuss.org/api/donationreceive/donating/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -231,6 +233,8 @@ const handleRowSubmit = (item) => {
             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Donated Amount</th>
             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Screenshot</th>
             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Action</th>
+            <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Donated</th>
+
           </tr>
         </thead>
         <tbody>

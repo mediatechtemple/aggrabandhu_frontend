@@ -5,7 +5,8 @@
 const PermissionsDialog = ({ open, onClose,
   permissions, handleCheckboxChange, 
   selectedAdmin,
-  handleSubmitPermissions
+  handleSubmitPermissions,
+ 
  }) => {
  
 // !initialPermissions &&  return;

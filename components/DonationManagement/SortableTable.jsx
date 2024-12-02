@@ -197,7 +197,7 @@ const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
         <table className="min-w-full table-auto border border-gray-300">
         <thead>
   <tr className="bg-blue-600 text-white">
-    {['srNo', 'member_id', 'profile', 'name', 'referenced_by', 'mobileNo', 'district', 'state', 'deathDate', 'Nominee_Detail', 'startDate', 'endDate', 'noOfDonation', 'totalDonation', 'paymentDetails', 'donationLedger', 'action', 'status', 'remark','files'].map((column) => (
+    {['member_id', 'member_id', 'profile', 'name', 'referenced_by', 'mobileNo', 'district', 'state', 'deathDate', 'Nominee_Detail', 'startDate', 'endDate', 'noOfDonation', 'totalDonation', 'paymentDetails', 'donationLedger', 'action', 'status', 'remark','files'].map((column) => (
       (column === 'action' || column === 'status') && !memberRights['Donation Management']?.['edit'] ? null : (
         <th 
           key={column} 

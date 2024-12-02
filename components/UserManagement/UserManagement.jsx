@@ -5,6 +5,7 @@ import useSelectedUsers from './AdminCustomHook/useSelectedUsers';
 import useDialog from './AdminCustomHook/useDialog';
 // import useCheckboxes from './AdminCustomHook/useCheckboxes';
 import PermissionsDialog from './PermissionsDialog';
+import AdminForm from './adminForm';
 
 const UserManagement = () => {
   const { dialogOpen, 
@@ -16,9 +17,10 @@ const UserManagement = () => {
     // selectedAdmin
   } = useDialog();
 
-  const { allUsers, searchQuery, setSearchQuery, filteredUsers } = useAdminData();
+  const { allUsers, searchQuery, setSearchQuery, filteredUsers,getAdminData } = useAdminData();
   const { selectedUsers, addUser } = useSelectedUsers();
   const [selectedAdmin, setSelectedAdmin] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
 
 
   // const initialPermissions = useMemo(() => ({
@@ -111,12 +113,48 @@ const UserManagement = () => {
       handleDialogClose();
     }
   };
+
+  const deleteAdmin=async(id)=>{
+   try{
+    const response=await fetch(`https://backend.aggrabandhuss.org/api/auth/users/${id}`,{
+      method:'DELETE'
+    })
+    if(!response.ok){
+      throw new Error(' Admin Not deleted')
+    }
+    const data=await response.json();
+    alert('Admin Deleted');
+
+   }catch(error){
+    alert(error)
+   }
+
+  }
   
 
 
   return (
+    <>
+    
+
+      {showPopup && <AdminForm 
+      onClose={() => setShowPopup(false)}
+      getAdminData={getAdminData}
+       />}
+
     <div className="container mx-auto p-4">
       <h2 className="bg-blue-700 text-white text-center py-2 my-4">User Management</h2>
+
+      <div className='flex justify-end pb-2'>
+      <button 
+        className="bg-blue-500 text-white px-4 py-2 rounded" 
+        onClick={() => setShowPopup(true)}
+      >
+        Create Admin
+      </button>
+
+      </div>
+
 
       <div className="flex justify-end mb-4">
         {/* <button
@@ -179,8 +217,8 @@ const UserManagement = () => {
                   </button>
                 </td>
                 <td className="border border-gray-300 px-4 py-2 text-center space-x-2">
-                  <button className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Edit</button>
-                  <button className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Delete</button>
+                  {/* <button className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Edit</button> */}
+                  <button onClick={()=>deleteAdmin(user.id)} className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Delete</button>
                 </td>
               </tr>
             ))}
@@ -286,6 +324,7 @@ const UserManagement = () => {
 
       
     </div>
+    </>
   );
 };
 

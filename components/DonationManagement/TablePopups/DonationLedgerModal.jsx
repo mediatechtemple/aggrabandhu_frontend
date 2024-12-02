@@ -127,13 +127,15 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
 
       return data.map((item)=>{
         return {
+
           name:item.Member.name,
           email:item.Member.email,
           state:item.Member.state,
           district:item.Member.district,
           donationDate:new Date(item.donation_date).toLocaleDateString('en-GB'),  
           transactionId:item.transaction_id,
-          Amount:item.amount
+          Amount:item.amount,
+          Status:item.status
         }
       })
       // return data;

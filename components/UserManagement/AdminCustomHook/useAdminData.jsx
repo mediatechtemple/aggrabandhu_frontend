@@ -25,7 +25,7 @@ const useAdminData = () => {
 
   // const filteredUsers=[];
 
-  return { allUsers, searchQuery, setSearchQuery, filteredUsers };
+  return { allUsers, searchQuery, setSearchQuery, filteredUsers ,getAdminData};
 };
 
 export default useAdminData;
