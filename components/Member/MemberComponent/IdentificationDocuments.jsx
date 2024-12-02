@@ -299,6 +299,7 @@ useEffect(()=>{
         <MenuItem value="Pan card">Pan Card</MenuItem>
         <MenuItem value="Voter ID">Voter ID</MenuItem>
         <MenuItem value="Driving License">Driving License</MenuItem>
+        <MenuItem value="marksheet">Marksheet</MenuItem>
       </Select>
     </FormControl>
 
