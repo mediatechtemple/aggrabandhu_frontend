@@ -124,9 +124,12 @@ const UserManagement = () => {
     }
     const data=await response.json();
     alert('Admin Deleted');
+    getAdminData()
 
    }catch(error){
     alert(error)
+   }finally{
+    
    }
 
   }
