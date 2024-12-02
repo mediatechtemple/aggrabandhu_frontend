@@ -218,7 +218,7 @@ const UserManagement = () => {
                 </td>
                 <td className="border border-gray-300 px-4 py-2 text-center space-x-2">
                   {/* <button className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Edit</button> */}
-                  <button onClick={()=>deleteAdmin(user.adimin_id)} className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Delete</button>
+                  <button onClick={()=>deleteAdmin(user.admin_id)} className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Delete</button>
                 </td>
               </tr>
             ))}
