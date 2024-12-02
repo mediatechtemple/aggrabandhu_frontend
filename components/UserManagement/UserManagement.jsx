@@ -226,7 +226,7 @@ const UserManagement = () => {
         </table>
       </div>
 
-{/* here we added stud there */}
+
 
 
 
