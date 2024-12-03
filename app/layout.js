@@ -4,24 +4,25 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Layout from "@/components/Layout/Layout";
 import { usePathname } from 'next/navigation';
+import { useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
-  
-
   const isLoginRelatedPage = ['/Login', '/forget-password', '/forget-id'].includes(pathname);
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        {isLoginRelatedPage ? (
+        {
+        isLoginRelatedPage ? (
           <>{children}</>
         ) : (
           <Layout>{children}</Layout>
-        )}
+        )
+        }
       </body>
     </html>
   );

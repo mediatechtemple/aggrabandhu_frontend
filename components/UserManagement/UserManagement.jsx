@@ -6,6 +6,7 @@ import useDialog from './AdminCustomHook/useDialog';
 // import useCheckboxes from './AdminCustomHook/useCheckboxes';
 import PermissionsDialog from './PermissionsDialog';
 import AdminForm from './AdminForm'
+import ChangePassword from './ChangePassword';
 
 const UserManagement = () => {
   const { dialogOpen, 
@@ -21,8 +22,8 @@ const UserManagement = () => {
   const { selectedUsers, addUser } = useSelectedUsers();
   const [selectedAdmin, setSelectedAdmin] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-
-
+  const [chanegepaswordShowPopup, setChanegepaswordShowPopup] = useState(false);
+  const [changepasswordId,setChangepasswordId]=useState(null);
   // const initialPermissions = useMemo(() => ({
   //   "User Management": { view: false, add: false, edit: false, delete: false },
   //   "Member Management": { view: false, add: false, edit: false, delete: false },
@@ -128,8 +129,6 @@ const UserManagement = () => {
 
    }catch(error){
     alert(error)
-   }finally{
-    
    }
 
   }
@@ -142,6 +141,14 @@ const UserManagement = () => {
 
       {showPopup && <AdminForm 
       onClose={() => setShowPopup(false)}
+      getAdminData={getAdminData}
+       />}
+
+
+
+     {chanegepaswordShowPopup && <ChangePassword 
+     changepasswordId={changepasswordId}
+      onClose={() => setChanegepaswordShowPopup(false)}
       getAdminData={getAdminData}
        />}
 
@@ -220,8 +227,11 @@ const UserManagement = () => {
                   </button>
                 </td>
                 <td className="border border-gray-300 px-4 py-2 text-center space-x-2">
-                  {/* <button className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Edit</button> */}
                   <button onClick={()=>deleteAdmin(user.admin_id)} className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600">Delete</button>
+                  <button onClick={()=>{
+                    setChangepasswordId(user.admin_id)
+                    setChanegepaswordShowPopup(true);
+                  }} className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600">Change Password</button>
                 </td>
               </tr>
             ))}
