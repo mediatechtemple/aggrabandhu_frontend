@@ -35,6 +35,7 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
     const [filters, setFilters] = useState({
         state: '',
         district: '',
+        isDispute:''
     });
   
     const handleFilterInputChange = (e) => {
@@ -159,8 +160,9 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
         const stateMatch = filters.state ? donator.Member.state.toLowerCase().includes(filters.state.toLowerCase()) : true;
         const districtMatch = filters.district ? donator.Member.district.toLowerCase().includes(filters.district.toLowerCase()) : true;
         const searchTextMatch = searchText ? JSON.stringify(donator).toLowerCase().includes(searchText.toLowerCase()) : true;
-      
-        return stateMatch && districtMatch && searchTextMatch;
+        const isDispachh = filters.isDispute ? donator.status.toLowerCase().includes(filters.isDispute.toLowerCase()) : true;
+
+        return stateMatch && districtMatch && searchTextMatch && isDispachh;
       });
 
 
@@ -224,6 +226,23 @@ const BankDetailPopup = ({ledgerData, handleLedgerClose}) => {
 
   <div className="flex justify-end items-center gap-4">
     {/* State filter */}
+    <div>
+      <label className="block text-sm font-medium">Dispute</label>
+      <select
+        name="isDispute"
+        value={filters.isDispute}
+        onChange={handleFilterInputChange}
+        className="border rounded px-2 py-1 w-[200px]"
+      >
+        <option value="">All</option>
+        {['Approved','Rejected'].map((state) => (
+          <option key={state} value={state}>
+            {state}
+          </option>
+        ))}
+      </select>
+    </div>
+
     <div>
       <label className="block text-sm font-medium">State</label>
       <select
