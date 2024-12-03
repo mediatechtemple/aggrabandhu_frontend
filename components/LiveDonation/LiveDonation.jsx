@@ -297,6 +297,7 @@ const handleRowSubmit = (item) => {
                   Submit
                 </button>
               </td>
+              <td className={`p-2 text-center border ${donation.donated=='yes'? 'text-green-500':donation.donated=='no'? 'text-red-500':'text-yellow-500'}`}>{donation.donated.charAt(0).toUpperCase()+donation.donated.slice(1)}</td>
             </tr>
           ))}
 

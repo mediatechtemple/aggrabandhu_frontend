@@ -68,7 +68,7 @@ const My_Donation = () => {
                 <td >
                   <div className="flex justify-center items-center">
                   <Link
-                    href="https://whatsapp.com/channel/0029VajOtfp59PwSxSNdHT1W" // Replace with your WhatsApp number
+                    href="https://wa.me/7830305040" // Replace with your WhatsApp number
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-green-500 hover:text-green-600"
