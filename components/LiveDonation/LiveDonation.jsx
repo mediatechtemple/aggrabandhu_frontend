@@ -2,16 +2,32 @@
 import React, { useEffect, useState } from 'react';
 import PaymentPopUp from './LiveDonationPopUp/PaymentPopUp';
 import DeathCertificateModal from './LiveDonationPopUp/DeathCertificateModal';
+import useSortableData from '@/hooks/TablesortingHook';
+import Pagination from '@/user_component/Pagination/Pagination';
+
+const getAllValues = (obj) => {
+  let values = [];
+  for (let key in obj) {
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      values = values.concat(getAllValues(obj[key]));
+    } else {
+      values.push(obj[key]);
+    }
+  }
+  return values;
+};
+
 
 const LiveDonation = () => {
   const [donationData, setDonationData] = useState([]); // State to store fetched data
+  const { sortedItems, requestSort, getSortIcon } = useSortableData(donationData); 
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
   const [token,setToken]=useState(null);
   
   const [formData,setFormData]=useState({
   });
-
+  const [searchQuery, setSearchQuery] = useState('');
 
   const [paymentPopUp, setpaymentPopUp] = useState(false); // State for Screenshot inputs
   const [paymentData, setPaymentData] = useState({}); 
@@ -19,6 +35,10 @@ const LiveDonation = () => {
 
   const [showDeathPage,setshowDeathPage]=useState(false);
   const [certificateUrl,setcertificateUrl]=useState(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage,setitemsPerPage] = useState(100);
+
 
 
   const handleInputChange = (id, field, value) => {
@@ -31,6 +51,15 @@ const LiveDonation = () => {
     }));
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  const handleItemPerChange = (pageNumber) => {
+    setCurrentPage(1)
+    setitemsPerPage(pageNumber);
+  };
+
 
 
   // Handle Screenshot file input change
@@ -41,9 +70,7 @@ const LiveDonation = () => {
     }));
   };
 
-  // useEffect(()=>{
-    
-  // },[]);
+ 
   
 
 
@@ -159,66 +186,45 @@ const handleRowSubmit = (item) => {
 };
 
 
+const filteredDonations = sortedItems.filter((item) =>
+  getAllValues(item).some((value) =>
+    typeof value === 'string' && value.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+);
 
 
-  // const handleSubmit = async (member) => {
-  //   console.log(member.id);
-  //   console.log(member.member_id);
-
-  //   const formData = new FormData();
-  //   formData.append('member_id', transactionNos);
-  //   formData.append('donation_id', donatedAmounts);
-
-  //   console.log(formData);
-
-
-  //   console.log(formData);
-
-  //   return ;
-
-  //   try {
-  //     const response = await fetch('https://backend.aggrabandhuss.org/api/donation', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(dataToPost), // Send the data as JSON
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Failed to post data');
-  //     }
-
-  //     const result = await response.json(); // Parse the response JSON
-  //     console.log('Success:', result); // Log the result on success
-  //   } catch (error) {
-  //     console.error('Error posting data:', error); // Handle errors
-  //   }
-  // };
-
-
-
-
-
-
-
-
-
-
-
-
-
+const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredDonations.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredDonations.length / itemsPerPage);
 
 
 
   if (loading) return <div>Loading...</div>; // Loading state
   if (error) return <div>Error: {error}</div>; // Error state
+  
+  const headers = [
+    { key: 'member_id', label: 'Member ID' },
+    { key: 'Member.name', label: 'Name' },
+    { key: 'death_date', label: 'Death Date' },
+    // { key: 'min_amount', label: 'Min Donate Amount' },
+    // { key: 'donated', label: 'Donated' },
+  ];
 
   return (
     <>
+     <div className="flex justify-end mb-4">
+        <input
+          type="text"
+          placeholder="Search Donations"
+          className="p-2 border border-black"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
     <div className="overflow-x-auto">
       <table className="table-auto border-collapse border border-spacing-1 w-full">
-        <thead>
+        {/* <thead>
           <tr>
             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">S.No</th>
             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Member ID</th>
@@ -236,9 +242,36 @@ const handleRowSubmit = (item) => {
             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Donated</th>
 
           </tr>
-        </thead>
+        </thead> */}
+         <thead>
+    <tr>
+      <th className="bg-blue-500 text-white p-2 border">S.No</th>
+      {headers.map((header) => (
+        <th
+          key={header.key}
+          onClick={() => requestSort(header.key)}
+          className="bg-blue-500 text-white p-2 border cursor-pointer"
+        >
+          {header.label} {getSortIcon(header.key)}
+        </th>
+      ))}
+      <th className="bg-blue-500 text-white p-2 border">Death Certificate</th>
+      <th className="bg-blue-500 text-white p-2 border">Payment Method</th>
+      <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Min Donate Amount</th>
+      <th className="bg-blue-500 text-white p-2 border">Payment Date</th>
+
+      <th className="bg-blue-500 text-white p-2 border">Transaction ID</th>
+      <th className="bg-blue-500 text-white p-2 border">Donated Amount</th>
+      <th className="bg-blue-500 text-white p-2 border">Screenshot</th>
+      <th className="bg-blue-500 text-white p-2 border">Action</th>
+      <th 
+      className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400"
+      >Donated</th>
+
+    </tr>
+  </thead>
         <tbody>
-        {donationData.map((donation, index) => (
+        {currentItems.map((donation, index) => (
             <tr key={donation.id}>
               <td className="p-2 text-center border">{index + 1}</td>
               <td className="p-2 text-center border">{donation.member_id}</td>
@@ -302,10 +335,15 @@ const handleRowSubmit = (item) => {
           ))}
 
         </tbody>
-
-        
       </table>
     </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        handleItemPerChange={handleItemPerChange}
+        membersLength={filteredDonations.length}
+      />
     
 
 
@@ -328,222 +366,4 @@ const handleRowSubmit = (item) => {
 };
 
 export default LiveDonation;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// {donationData.map((donation, index) => (
-//   <tr key={donation.id}> {/* Use a unique key for each row */}
-//     <td className="p-2 text-center border">{index + 1}</td> {/* Serial number */}
-//     <td className="p-2 text-center border">{donation.member_id}</td>
-//     <td className="p-2 text-center border">{donation.Member.name || 'N/A'}</td> {/* Member Name */}
-//     <td className="p-2 text-center border">{new Date(donation.death_date).toLocaleDateString() || 'N/A'}</td> {/* Death Date */}
-//     <td className="p-2 text-center border">
-//     <button onClick={()=>handleOpenModal(donation)} className='bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600'>
-//           View
-//     </button>
-//     </td>
-//     <td className="p-2 text-center border">
-//       <button onClick={()=>paymentPopUpHandler(donation)} className='bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600'>
-//           Payment
-//       </button>
-//     </td>
-//       <td className="p-2 text-center border">₹{ donation.min_amount || 'N/A'}</td> {/* Min Donate Amount */}
-//     <td className="p-2 text-center border">
-//     <input 
-//       type="date" 
-//       name="donationDate" // Adding name attribute for date input
-//       value={formData.donationDate} 
-//       onChange={handleInputChange} // Use handleInputChange for date input
-//       className="border p-2 rounded" 
-//       required 
-//     />
-//     </td>
-//     <td className="p-2 text-center border">
-//       <input 
-//         type="text" 
-//         placeholder='Transaction No' 
-//         className="border p-1" 
-//         name='transactionNos'
-//         value={formData.transactionNos || ''} 
-//         onChange={(e) => handleInputChange(e)} 
-//       />
-//     </td>
-//     <td className="p-2 text-center border">
-//       <input 
-//         type="text" 
-//         placeholder='Donated Amount' 
-//         className="border p-1" 
-//         name='donatedAmounts'
-//         value={formData.donatedAmounts || ''} 
-//         onChange={(e) => handleInputChange(e)} 
-//       />
-//     </td>
-//     <td className="p-2 text-center border">
-//       <input 
-//         type="file" 
-//         name='screenshots'
-//         accept="image/*" 
-//         onChange={(e) => handleScreenshotChange(e)} 
-//       />
-//     </td>
-//     <td className="p-2 text-center border">
-//       <button 
-//         className="bg-green-500 text-white px-4 py-2 rounded" 
-//         onClick={() => handleSubmit(donation)} 
-//       >
-//         Submit
-//       </button>
-//     </td>
-//   </tr>
-// ))}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react';
-
-// const Page = () => {
-//   return (
-//     <div className="overflow-x-auto">
-//       <table className="table-auto border-collapse border border-spacing-1 w-full">
-//         <thead>
-//           <tr>
-//             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">S.No</th>
-//             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Member ID</th>
-//             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Name</th>
-//             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Death Date</th>
-//             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Death Certificate</th>
-//             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Min Donate Amount</th>
-//             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Transaction ID</th>
-//             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Donated Amount</th>
-//             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Screenshot</th>
-//             <th className="bg-blue-500 text-white p-2 border border-spacing-1 border-gray-400">Action</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           <tr>
-//             <td className="p-2 text-center border">1</td>
-//             <td className="p-2 text-center border">1234</td>
-//             <td className="p-2 text-center border">John Doe</td>
-//             <td className="p-2 text-center border">01-01-2022</td>
-//             <td className="p-2 text-center border">
-//               <a href="#" className="text-blue-500 underline">View</a>
-//             </td>
-//             <td className="p-2 text-center border">$500</td>
-//             <td className="p-2 text-center border">
-//                 <input type="text" placeholder='transaction no' className="border p-1" />
-//             </td>
-//             <td className="p-2 text-center border">
-//                 <input type="text" placeholder='donated amount' className="border p-1"/>
-//             </td>
-//             <td className="p-2 text-center border">
-//                 <input type="file" className="border p-1"/>
-//             </td>
-//             <td className="p-2 text-center border">
-//               <button className="bg-green-500 text-white px-4 py-2 rounded">Approve</button>
-//             </td>
-//           </tr>
-//           {/* Add more rows as needed */}
-//         </tbody>
-//       </table>
-//     </div>
-//   );
-// };
-
-// export default Page;
-
-
-
-
-
 
