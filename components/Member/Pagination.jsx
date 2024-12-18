@@ -2,8 +2,17 @@
 import React, { useState } from 'react';
 import { Box, Button, Select, MenuItem, FormControl, InputLabel, Pagination as MuiPagination, Stack } from '@mui/material';
 
-const Pagination = ({ page, pageSize, totalPages, onPageChange, onPageSizeChange }) => {
+const Pagination = ({ page, pageSize, totalPages, onPageChange, onPageSizeChange,fetchMembers }) => {
   const[pageNo,setPageNo]=useState('');
+  const [pageSize1, setPageSize1] = useState(100);
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+      
+    setPageSize1(value);
+    fetchMembers(value)
+    // handlePageSizeChange(value);
+  };
   
   const handlePageChange = (event, value) => {
     onPageChange(value);
@@ -42,23 +51,55 @@ const Pagination = ({ page, pageSize, totalPages, onPageChange, onPageSizeChange
           Go
         </button>
       </Box>
+
+
+
+
+
       <Box display="flex" alignItems="center">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handlePageSizeChange(100)}
-          sx={{ mr: 2 }}
-        >
-          100
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => handlePageSizeChange('all')}
-        >
-          All
-        </Button>
-      </Box>
+  <FormControl variant="outlined" sx={{ minWidth: 120 }}>
+    <InputLabel id="page-size-label">Get Members</InputLabel>
+    <Select
+      labelId="page-size-label"
+      value={pageSize1}
+      onChange={handleChange}
+      label="Page Size"
+      MenuProps={{
+        anchorOrigin: {
+          vertical: "top",
+          horizontal: "left", // Dropdown opens from the top
+        },
+        transformOrigin: {
+          vertical: "bottom",
+          horizontal: "left", // Aligning dropdown to start from the bottom
+        },
+        disablePortal: true, // Prevent dropdown from rendering outside the container
+      }}
+    >
+      <MenuItem value={100}>100</MenuItem>
+      <MenuItem value={200}>200</MenuItem>
+      <MenuItem value={500}>500</MenuItem>
+      <MenuItem value={1000}>1000</MenuItem>
+      <MenuItem value="all">All</MenuItem>
+    </Select>
+  </FormControl>
+</Box>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
     </Box>
   );
 };

@@ -110,9 +110,9 @@ let temp;
     return true;
   };
 
-  const fetchMembers = async () => {
+  const fetchMembers = async (lim) => {
     try {
-      const response = await fetch('https://backend.aggrabandhuss.org/api/member?limit=1000');
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/member?limit=${lim}`);
       if(!response.ok){
         throw new Error('Failed to fetch Donars');
       }
@@ -178,7 +178,7 @@ let temp;
     let super_admin=JSON.parse(localStorage.getItem('user')).super_admin;
     setRole(role);
     setSuperAdmin(super_admin);
-    fetchMembers();
+    fetchMembers(100);
   }, []);
 
 
@@ -621,7 +621,7 @@ console.log(filteredDistricts);
       memberRights={memberRights}
       />
 
-      <Pagination page={page} pageSize={pageSize} totalPages={totalPages} onPageChange={setPage} onPageSizeChange={newSize => setPageSize(newSize === 'all' ? members.length : newSize)} />
+      <Pagination page={page} pageSize={pageSize} totalPages={totalPages} onPageChange={setPage} onPageSizeChange={newSize => setPageSize(newSize === 'all' ? members.length : newSize)} fetchMembers={fetchMembers} />
     </>
   );
 };
