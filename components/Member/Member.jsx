@@ -75,6 +75,8 @@ console.log(members);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(100);
   const [totalPages, setTotalPages] = useState(1);
+  const [apiData,setApiData]=useState('');
+
   const [open, setOpen] = useState(false);
   const [editData, setEditData] = useState(null);
   const [loading,setLoading]=useState(false);
@@ -93,11 +95,7 @@ let temp;
 
 
   
-  // useEffect(()=>{
-  //   // console.log(filters)
-  //  console.log(memberRights['Member Management']?.['add'])
-  // },[filters,memberRights]);
-
+  
   useEffect(()=>{
     setmemberRights(JSON.parse( localStorage.getItem('user')).rights)
     setToken(JSON.parse( localStorage.getItem('user')).token);
@@ -110,15 +108,20 @@ let temp;
     return true;
   };
 
-  const fetchMembers = async (lim) => {
+  const fetchMembers = async (lim,page=1) => {
+    setPage(1);
+    // setApiData(lim);
     try {
-      const response = await fetch(`https://backend.aggrabandhuss.org/api/member?limit=${lim}`);
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/member?limit=${lim}&&page=${page}`);
       if(!response.ok){
         throw new Error('Failed to fetch Donars');
       }
       const data = await response.json();
-      console.log(data.data); // Log the fetched data
+      console.log(data); // Log the fetched data
       setMembers([...data.data]);
+      setTotalPages(data.totalPages);
+      setPage(data.currentPage)
+      // setFilteredMembers(result)
       setpdfData(
         [...data.data].map((item) => {
           return {
@@ -185,24 +188,6 @@ let temp;
 
 
 
-  // Filter and paginate members
-  // useEffect(() => {
-  //   let result = members.filter(member => {
-  //     const { searchQuery, role, isActive, state, district, referenceId, startDate, endDate } = filters;
-  //     return (
-  //       (!searchQuery || member.name.toLowerCase().includes(searchQuery.toLowerCase())) &&
-  //       (!role || member.role === role) &&
-  //       (!isActive || member.status === 'active') &&
-  //       (!state || member.state === state) &&
-  //       (!district || member.district === district) &&
-  //       (!referenceId || member.code?.toString() === referenceId) &&
-  //       (!startDate || !endDate || (new Date(member.joiningDate) >= startDate && new Date(member.joiningDate) <= endDate))
-  //     );
-  //   });
-
-  //   setTotalPages(Math.ceil(result.length / pageSize));
-  //   setFilteredMembers(result.slice((page - 1) * pageSize, page * pageSize));
-  // }, [filters, members, page, pageSize]);
 
 
 
@@ -220,10 +205,8 @@ let temp;
         (!startDate || !endDate || (new Date(member.createdAt) >= startDate && new Date(member.createdAt) <= endDate))
       );
     });
-
-    setTotalPages(Math.ceil(result.length / pageSize));
-    setFilteredMembers(result.slice((page - 1) * pageSize, page * pageSize));
-  }, [filters, members, page, pageSize]);
+    setFilteredMembers(result);
+  }, [filters, members, page, pageSize,apiData]);
 
   useEffect(() => {
     const filteredDistricts = [
@@ -621,7 +604,13 @@ console.log(filteredDistricts);
       memberRights={memberRights}
       />
 
-      <Pagination page={page} pageSize={pageSize} totalPages={totalPages} onPageChange={setPage} onPageSizeChange={newSize => setPageSize(newSize === 'all' ? members.length : newSize)} fetchMembers={fetchMembers} />
+      <Pagination 
+      page={page} 
+      totalPages={totalPages} 
+        fetchMembers={fetchMembers} 
+       />
+
+
     </>
   );
 };

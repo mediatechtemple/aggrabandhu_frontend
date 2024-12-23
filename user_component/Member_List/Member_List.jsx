@@ -1,7 +1,8 @@
 'use client'
+import Pagination from '@/components/Member/Pagination';
 import useSortableData from '@/hooks/TablesortingHook';
 import React, { useEffect, useState } from 'react';
-import Pagination from '../Pagination/Pagination';
+// import Pagination from '../Pagination/Pagination';
 
 const Member_List = () => {
   const [memberList, setMemberList] = useState([]);
@@ -11,22 +12,28 @@ const Member_List = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage,setitemsPerPage] = useState(100);
 
+  const [page,setPage]=useState(1);
+  const [totalPages,setTotalPages]=useState(1);
+
  
 
+  const fetchMemberList = async (lim,page=1) => {
+    try {
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/member?limit=${lim}&&page=${page}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setMemberList(data.data);
+      setPage(data.currentPage);
+    setTotalPages(data.totalpages)
+    } catch (error) {
+      console.error('Error fetching memberList data:', error);
+    }
+  };
   useEffect(() => {
-    fetch('https://backend.aggrabandhuss.org/api/member')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setMemberList(data.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching memberList data:', error);
-      });
+
+    fetchMemberList();
   }, []);
 
   
@@ -46,10 +53,11 @@ const handleItemPerChange = (pageNumber) => {
     )
   );
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems=filteredData;
+  // const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
   // Column configuration for mapping headers
   const columns = [
@@ -110,12 +118,10 @@ const handleItemPerChange = (pageNumber) => {
         </tbody>
       </table>
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={handlePageChange}
-        handleItemPerChange={handleItemPerChange}
-        membersLength={sortedItems.length}
-      />
+      page={page} 
+      totalPages={totalPages} 
+        fetchMembers={fetchMemberList} 
+       />
     </div>
   );
 };

@@ -5,7 +5,8 @@ import { Button, Box,Typography} from '@mui/material';
 import DownloadCSVButton from '../DataConverters/DownloadCSVButton';
 import DownloadPDFButton from '../DataConverters/DownloadPDFButton';
 import useSortableData from '../Refral-Report/hooks/useSortableData';
-import Pagination from '@/user_component/Pagination/Pagination';
+import Pagination from '../Member/Pagination';
+// import Pagination from '@/user_component/Pagination/Pagination';
 const DonationFormDialog = React.lazy(() => import('./DonationFormDialog'));
 const SearchMemberDialog = React.lazy(() => import('./SearchMemberDialog'));
 const  SortableTable = React.lazy(() => import('./SortableTable'));
@@ -34,6 +35,9 @@ const ParentComponent = () => {
     
     const [state,setState]=useState('');
     const [district,setDistrict]=useState('');
+
+    const [page,setPage]=useState(1);
+    const [totalPages,setTotalPages]=useState(1);
 
 
     /////////////////////////////////////////////////////////
@@ -122,7 +126,7 @@ const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filteredUsers.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  // const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
 
 // State for storing image preview URL
 
@@ -259,9 +263,12 @@ const handleItemPerChange = (pageNumber) => {
 
 
 
-const fetchDonationData = async (toke) => {
+const fetchDonationData = async (lim,page=1) => {
+  console.log(lim,page);
+  let toke=JSON.parse( localStorage.getItem('user')).token;
+  setToken(toke);
   try {
-    const response = await fetch('https://backend.aggrabandhuss.org/api/donationreceive/', {
+    const response = await fetch(`https://backend.aggrabandhuss.org/api/donationreceive?limit=${lim}&&${page}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -274,7 +281,9 @@ const fetchDonationData = async (toke) => {
     }
 
     const data = await response.json(); // Parse the response JSON
-    console.log(data.data);
+    console.log(data);
+    setPage(data.currentPage);
+    setTotalPages(data.totalpages)
     setDonationData(data.data); // Store the data in state
 
 
@@ -369,9 +378,8 @@ const fetchDonationData = async (toke) => {
 
 useEffect(() => {
   // Function to fetch data from the API
-  let toke=JSON.parse( localStorage.getItem('user')).token;
-  setToken(toke);
-  fetchDonationData(toke); // Call the fetch function when the component mounts
+ 
+  fetchDonationData(); // Call the fetch function when the component mounts
 }, []); // Empty dependency array ensures this runs only on mount
 
 
@@ -681,13 +689,19 @@ useEffect(()=>{
       searchResults={searchResults}
       handleSelectMember={handleSelectMember}
     />
-    <Pagination
+    {/* <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
         handleItemPerChange={handleItemPerChange}
         membersLength={filteredUsers.length}
-      />
+      /> */}
+      <Pagination 
+      page={page} 
+      totalPages={totalPages} 
+        fetchMembers={fetchDonationData} 
+       />
+
   </Suspense>
 </div>
 

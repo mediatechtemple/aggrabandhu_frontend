@@ -2,7 +2,8 @@
 import DownloadCSVButton from '@/components/DataConverters/DownloadCSVButton';
 import DownloadPDFButton from '@/components/DataConverters/DownloadPDFButton';
 import useSortableData from '@/components/DonationManagement/Hooks/useSortableData';
-import Pagination from '@/user_component/Pagination/Pagination';
+import Pagination from '@/components/Member/Pagination';
+// import Pagination from '@/user_component/Pagination/Pagination';
 import React, { useEffect, useState } from 'react';
 const headers = [
   { key: "id", label: "ID" },
@@ -29,19 +30,29 @@ const Page =  () => {
     searchText:''
 });
 
+const [page,setPage]=useState(1);
+const [totalPages,setTotalPages]=useState(1);
+
 const handleFilterInputChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
 };
 
-  async function getData(){
+
+
+
+
+  async function getData(lim,page=1){
+    console.log(lim,page);
     try{
-      const response = await fetch('https://backend.aggrabandhuss.org/api/donation/');
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/donation?limit=${lim}&&page=${page}`);
       if(!response){
         throw new Error('Network Error')
       }
       
       const data=await response.json();
       console.log(data);
+      setPage(data.currentPage);
+      setTotalPages(data.totalpages)
       setDonators(data.data);
       setState([...new Set(data.data.map(item => item.Member.state))]);
 
@@ -60,6 +71,7 @@ const handleFilterInputChange = (e) => {
     setCurrentPage(1)
     setitemsPerPage(pageNumber);
   };
+
   function ExportData(data){
 
     return data.map((item)=>{
@@ -78,7 +90,7 @@ const handleFilterInputChange = (e) => {
   }
 
   useEffect(()=>{
-    getData()
+    getData(100)
   },[])
 
 
@@ -96,10 +108,11 @@ const handleFilterInputChange = (e) => {
   });
 
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = datafilter.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(datafilter.length / itemsPerPage);
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = datafilter.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems=datafilter;
+  // const totalPages = Math.ceil(datafilter.length / itemsPerPage);
 
   if(donators.length==0){
     <p>Loading...</p>
@@ -200,13 +213,18 @@ const handleFilterInputChange = (e) => {
           </tbody>
         </table>
       </div>
-        <Pagination
+        {/* <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
         handleItemPerChange={handleItemPerChange}
         membersLength={currentItems.length}
-      />
+      /> */}
+      <Pagination
+      page={page} 
+      totalPages={totalPages} 
+        fetchMembers={getData} 
+       />
     </div>
   );
 };

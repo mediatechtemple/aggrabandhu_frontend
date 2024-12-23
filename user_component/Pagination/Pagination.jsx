@@ -80,6 +80,23 @@ const Pagination = ({ currentPage, totalPages, onPageChange ,handleItemPerChange
       </ul>
     </nav>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <nav className="flex space-x-2 list-none mt-4">
   {/* Previous Button */}
   <li>

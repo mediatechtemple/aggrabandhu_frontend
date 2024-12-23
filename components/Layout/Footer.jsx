@@ -19,9 +19,12 @@ const Footer = () => {
       }}
     >
       <Typography variant="body2">
-        &copy; All Right Reserved to Agrabandhu Sewarth Sansthan (ABSS) - Desing & Developed by.{' '}
+        &copy; All Right Reserved to Agrabandhu Sewarth Sansthan (ABSS) - <Link href="https://www.mediatechtemple.com/web-design-and-development-services/"
+        target="_blank" rel="noopener noreferrer" color="inherit"
+        >Desing & Developed  </Link>{'  '}
+  by{' '}
         <Link href="https://mediatechtemple.com" target="_blank" rel="noopener noreferrer" color="inherit">
-          Media Tech Temple
+           Media Tech Temple
         </Link>
       </Typography>
     </Box>

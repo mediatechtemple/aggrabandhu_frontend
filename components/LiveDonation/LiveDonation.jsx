@@ -76,7 +76,6 @@ const LiveDonation = () => {
 
 
   useEffect(() => {
-    // Function to fetch data from the API
     const fetchDonationData = async (token) => {
      let id= JSON.parse(localStorage.getItem('user')).userid;
       try {
@@ -103,6 +102,7 @@ const LiveDonation = () => {
         setLoading(false); // Set loading to false in case of error
       }
     };
+    // Function to fetch data from the API
 
     let toke=JSON.parse( localStorage.getItem('user')).token;
     setToken(toke);

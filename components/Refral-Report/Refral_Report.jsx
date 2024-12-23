@@ -3,21 +3,23 @@
 import React, { useEffect, useState } from 'react';
 import useSortableData from './hooks/useSortableData';
 import useFetchMembers from './hooks/useFetchMembers';
-import Pagination from '@/user_component/Pagination/Pagination';
+// import Pagination from '@/user_component/Pagination/Pagination';
 import DownloadCSVButton from '../DataConverters/DownloadCSVButton';
 import DownloadPDFButton from '../DataConverters/DownloadPDFButton';
 import Image from 'next/image';
 import ReferredDialog from './ReferalPopup/ReferredDialog';
+import Pagination from '../Member/Pagination';
 
 const Refral_Report = () => {
   const [token,setToken]=useState(null);
-  const { data: members, loading, error,downloadData1 } = useFetchMembers('https://backend.aggrabandhuss.org/api/member/referall',token);
+  const { data: members, loading, error,downloadData1,page,totalPages,fetchData } = useFetchMembers(`https://backend.aggrabandhuss.org/api/member/referall?limit=100`,token);
   const[referDialog,setReferDialog]=useState(false);
   const[referDialogId,setReferDialogId]=useState(false);
   const[referDialogName,setReferDialogName]=useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage,setitemsPerPage] = useState(100);
+  
   
   const [searchTerm, setSearchTerm] = useState('');
   
@@ -59,10 +61,11 @@ const Refral_Report = () => {
   );
 
   // Pagination logic with filtered results
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredMembers.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentItems = filteredMembers.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems=filteredMembers;
+  // const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
 
   useEffect(()=>{
     setToken(JSON.parse( localStorage.getItem('user')).token);
@@ -141,7 +144,7 @@ const Refral_Report = () => {
           <tbody>
             {currentItems.map((item, index) => (
               <tr key={item.id}>
-                <td className="p-2 text-center border">{index + 1 + indexOfFirstItem}</td>
+                <td className="p-2 text-center border">{index + 1}</td>
                 <td className="p-2 text-center border">{item.reference_id}</td>
                 <td className="p-2 text-center border">{item.referFrom}</td>
                 <td className="p-2 text-center border">{item.refer_name}</td>
@@ -168,13 +171,22 @@ const Refral_Report = () => {
         </table>
       </div>
 
-      <Pagination
+      {/* <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
         handleItemPerChange={handleItemPerChange}
         membersLength={members.length}
-      />
+      /> */}
+
+
+
+    <Pagination
+      page={page} 
+      totalPages={totalPages} 
+        // fetchMembers={fetchMembers} 
+       />
+
 
       {referDialog && <ReferredDialog id={referDialogId}
        referDialogCloseHandler={referDialogCloseHandler} 
