@@ -12,7 +12,7 @@ import Pagination from '../Member/Pagination';
 
 const Refral_Report = () => {
   const [token,setToken]=useState(null);
-  const { data: members, loading, error,downloadData1,page,totalPages,fetchData } = useFetchMembers(`https://backend.aggrabandhuss.org/api/member/referall?limit=100`,token);
+  const { data: members, loading, error,downloadData1,page,totalPage,fetchData } = useFetchMembers(`https://backend.aggrabandhuss.org/api/member/referall`,token);
   const[referDialog,setReferDialog]=useState(false);
   const[referDialogId,setReferDialogId]=useState(false);
   const[referDialogName,setReferDialogName]=useState(false);
@@ -144,7 +144,7 @@ const Refral_Report = () => {
           <tbody>
             {currentItems.map((item, index) => (
               <tr key={item.id}>
-                <td className="p-2 text-center border">{index + 1}</td>
+                <td className="p-2 text-center border">{item.id}</td>
                 <td className="p-2 text-center border">{item.reference_id}</td>
                 <td className="p-2 text-center border">{item.referFrom}</td>
                 <td className="p-2 text-center border">{item.refer_name}</td>
@@ -183,8 +183,8 @@ const Refral_Report = () => {
 
     <Pagination
       page={page} 
-      totalPages={totalPages} 
-        // fetchMembers={fetchMembers} 
+      totalPages={totalPage} 
+        fetchMembers={fetchData} 
        />
 
 

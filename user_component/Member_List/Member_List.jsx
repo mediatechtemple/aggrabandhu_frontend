@@ -26,7 +26,7 @@ const Member_List = () => {
       const data = await response.json();
       setMemberList(data.data);
       setPage(data.currentPage);
-    setTotalPages(data.totalpages)
+    setTotalPages(data.totalPages)
     } catch (error) {
       console.error('Error fetching memberList data:', error);
     }

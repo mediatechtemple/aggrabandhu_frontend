@@ -25,13 +25,18 @@ const useFetchMembers = (url,token) => {
   //   { key: 'referCount', label: 'Total Referred' },
   // ];
 // done
-const fetchData = async () => {
+
+
+
+
+const fetchData = async (pageSize,page=1) => {
+  alert(page);
   setLoading(true);
   setError(null); // Reset error state
 
   try {
     const Htoken=JSON.parse( localStorage.getItem('user')).token
-    const response = await fetch(url,{
+    const response = await fetch(`${url}?pageSize=${pageSize}&&page=${page}`,{
       method:'GET',
       headers:{
         'Authorization':`Bearer ${Htoken}`
@@ -41,9 +46,13 @@ const fetchData = async () => {
       throw new Error('Network response was not ok');
     }
     const result = await response.json();
-    setData(result); // Assuming the data is in the "data" field of the response
+    setData(result.members); // Assuming the data is in the "data" field of the response
+    setTotalPage(result.pagination.totalPages);
+    setPage(result.pagination.page);
+
     console.log(result);
-    const downloadData = result.map(item => ({
+    
+    const downloadData = result.members.map(item => ({
       'S.No':item.id,
       'Member Id': item.reference_id,
       'Referred Member':item.referFrom,
@@ -69,7 +78,7 @@ const fetchData = async () => {
 };
 
   useEffect(() => {
-    fetchData();
+    fetchData(100);
   }, []);
   
 
