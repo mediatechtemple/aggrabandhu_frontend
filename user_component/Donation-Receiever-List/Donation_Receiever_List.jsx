@@ -1,7 +1,8 @@
 'use client'
 import React, { useEffect, useState } from 'react';
 import useSortableData from '@/hooks/TablesortingHook';
-import Pagination from '../Pagination/Pagination';
+import Pagination from '@/components/Member/Pagination';
+// import Pagination from '../Pagination/Pagination';
 
 const getAllValues = (obj) => {
   let values = [];
@@ -23,23 +24,29 @@ const Donation_Receiever_List = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage,setitemsPerPage] = useState(100);
+  const [page,setPage]=useState(1);
+  const [totalPage,setTotalPage]=useState(1);
 
+  const fetchDonations = async (lim,page=1) => {
+    try {
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/donationreceive?limit=${lim}&&page=${page}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setDonations(data.data);
+      console.log(data);
+      setPage(data.currentPage);
+      setTotalPage(data.totalPages);
+    } catch (error) {
+      console.error('Error fetching donations data:', error);
+    }
+  };
   useEffect(() => {
-    fetch('https://backend.aggrabandhuss.org/api/donationreceive')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setDonations(data.data);
-        console.log(data.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching donations data:', error);
-      });
+  
+    fetchDonations();
   }, []);
+  
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -132,12 +139,17 @@ const Donation_Receiever_List = () => {
         </tbody>
       </table>
       <Pagination
+      page={page} 
+      totalPages={totalPages} 
+        fetchMembers={fetchDonations} 
+       />
+      {/* <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
         handleItemPerChange={handleItemPerChange}
         membersLength={filteredDonations.length}
-      />
+      /> */}
     </div>
   );
 };

@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import PaymentPopUp from './LiveDonationPopUp/PaymentPopUp';
 import DeathCertificateModal from './LiveDonationPopUp/DeathCertificateModal';
 import useSortableData from '@/hooks/TablesortingHook';
-import Pagination from '@/user_component/Pagination/Pagination';
+import Pagination from '../Member/Pagination';
+// import Pagination from '@/user_component/Pagination/Pagination';
 
 const getAllValues = (obj) => {
   let values = [];
@@ -38,6 +39,9 @@ const LiveDonation = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage,setitemsPerPage] = useState(100);
+
+  const [page,setPage]=useState(1);
+  const [totalPage,setTotalPage]=useState(1);
 
 
 
@@ -74,40 +78,44 @@ const LiveDonation = () => {
   
 
 
+  const fetchDonationData = async () => {
+   let id= JSON.parse(localStorage.getItem('user')).userid;
+   let token=JSON.parse( localStorage.getItem('user')).token;
+    setToken(token);
+    try {
+
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/donationreceive/donating/${id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization':`bearer ${token}`
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json(); // Parse the response JSON
+      console.log('hi brother');
+      console.log(data);
+      setPage(data.currentPage);
+      setTotalPage(data.totalPages)
+      setDonationData(data.data); // Store the data in state
+      setLoading(false); // Set loading to false after data is fetched
+    } catch (error) {
+      setError(error.message); // Handle and store the error
+      setLoading(false); // Set loading to false in case of error
+    }
+  };
 
   useEffect(() => {
-    const fetchDonationData = async (token) => {
-     let id= JSON.parse(localStorage.getItem('user')).userid;
-      try {
-
-        const response = await fetch(`https://backend.aggrabandhuss.org/api/donationreceive/donating/${id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization':`bearer ${token}`
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-
-        const data = await response.json(); // Parse the response JSON
-        console.log('hi brother');
-        console.log(data.data);
-        setDonationData(data.data); // Store the data in state
-        setLoading(false); // Set loading to false after data is fetched
-      } catch (error) {
-        setError(error.message); // Handle and store the error
-        setLoading(false); // Set loading to false in case of error
-      }
-    };
     // Function to fetch data from the API
 
-    let toke=JSON.parse( localStorage.getItem('user')).token;
-    setToken(toke);
+    // let toke=JSON.parse( localStorage.getItem('user')).token;
+    // setToken(toke);
 
-    fetchDonationData(toke); // Call the fetch function when the component mounts
+    fetchDonationData(); // Call the fetch function when the component mounts
   }, []); // Empty dependency array ensures this runs only on mount
 
 
@@ -337,13 +345,19 @@ const indexOfLastItem = currentPage * itemsPerPage;
         </tbody>
       </table>
     </div>
-      <Pagination
+
+      {/* <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={handlePageChange}
         handleItemPerChange={handleItemPerChange}
         membersLength={filteredDonations.length}
-      />
+      /> */}
+      <Pagination
+      page={page} 
+      totalPages={totalPage} 
+        fetchMembers={fetchDonationData} 
+       />
     
 
 

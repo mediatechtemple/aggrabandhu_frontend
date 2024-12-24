@@ -85,6 +85,7 @@ const Refral_Report = () => {
     { key: 'name', label: 'Member Name' },
     { key: 'Member Photo', label: 'Member Photo' },
     { key: 'father_name', label: 'Father Name' },
+    { key: 'blood_group', label: 'Blood Group' },
     { key: 'mobile_no', label: 'Phone No' },
     { key: 'address', label: 'Address' },
     { key: 'referCount', label: 'Total Referred' },
@@ -157,6 +158,7 @@ const Refral_Report = () => {
                  { item.profileUrl && <Image src={`https://backend.aggrabandhuss.org${item.profileUrl}`} width={60} height={60} />
                } </td>
                 <td className="p-2 text-center border">{item.father_name}</td>
+                <td className="p-2 text-center border">{item.blood_group}</td>
                 <td className="p-2 text-center border">{item.mobile_no}</td>
                 <td className="p-2 text-center border">{item.address}</td>
                 <td onClick={() => referDialogOpneHandler(item.id,item.name)} className="p-2 text-center border">

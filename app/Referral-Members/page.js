@@ -20,6 +20,12 @@ const Page = () => {
   const [sortConfig, setSortConfig] = useState(null);
   const [searchTerm, setSearchTerm] = useState(''); // search term for filtering
   const [token,setToken]=useState(null);
+
+  const [page,setPage]=useState(1);
+  const [totalPages,setTotalPages]=useState(1);
+
+
+
   function getIcon(key) {
     if (!sortConfig || sortConfig.key !== key) {
       return '↑↓';
@@ -53,45 +59,97 @@ const Page = () => {
     )
   );
 
-  useEffect(() => {
-    const fetchData = async (token) => {
-      try {
-        const response = await fetch(
-          `https://backend.aggrabandhuss.org/api/member/referal/${JSON.parse(localStorage.getItem('user')).userid}`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `${token}`,
-            },
-          }
-        );
+  // useEffect(() => {
+  //   const fetchData = async (token) => {
+  //     try {
+  //       const response = await fetch(
+  //         `https://backend.aggrabandhuss.org/api/member/referal/${JSON.parse(localStorage.getItem('user')).userid}`,
+  //         {
+  //           method: 'GET',
+  //           headers: {
+  //             Authorization: `${token}`,
+  //           },
+  //         }
+  //       );
   
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
+  //       if (!response.ok) {
+  //         throw new Error('Failed to fetch data');
+  //       }
   
-        console.log(response);
-        const data = await response.json();
-        setMembers(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+  //       console.log(response);
+  //       const data = await response.json();
+  //       setMembers(data);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  
+  //   // Check if user exists in localStorage
+  //   const user = JSON.parse(localStorage.getItem('user'));
+  //   if (user && user.token) {
+  //     const token = user.token;
+  //     setToken(token); // Assuming setToken is defined in your component
+  //     fetchData(token);
+  //   } else {
+  //     setError('User not logged in or invalid token');
+  //     setLoading(false);
+  //   }
+  // }, []); 
+
+  const fetchData = async (lim,page=1) => {
+    try {
+      // Retrieve user from localStorage
+      const user = JSON.parse(localStorage.getItem('user'));
+
+      // Check if user exists and has a valid token
+      if (!user || !user.token) {
+        throw new Error('User not logged in or invalid token');
       }
-    };
-  
-    // Check if user exists in localStorage
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user && user.token) {
-      const token = user.token;
-      setToken(token); // Assuming setToken is defined in your component
-      fetchData(token);
-    } else {
-      setError('User not logged in or invalid token');
+
+      // Set token if needed
+      setToken(user.token);
+
+      const response = await fetch(
+        `https://backend.aggrabandhuss.org/api/member/referal/${user.userid}?limit=${lim}&&page=${page}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `${user.token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json();
+      setMembers(data);
+      setPage(data.currentPage);
+      setTotalPages(data.totalPages);
+    } catch (error) {
+      setError(error.message);
+    } finally {
       setLoading(false);
     }
-  }, []); // Dependency array is intentionally empty
+  };
+
+  useEffect(() => {
   
+    fetchData();
+  }, []);
+  
+ 
+  
+
+
+
+
+
+
+
   if (loading) {
     return <div>Loading...</div>;
   }

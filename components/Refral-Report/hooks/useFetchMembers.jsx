@@ -30,7 +30,6 @@ const useFetchMembers = (url,token) => {
 
 
 const fetchData = async (pageSize,page=1) => {
-  alert(page);
   setLoading(true);
   setError(null); // Reset error state
 

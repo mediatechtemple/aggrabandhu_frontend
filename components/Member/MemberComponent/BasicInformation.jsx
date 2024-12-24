@@ -209,7 +209,7 @@ const BasicInformation = ({
 
 
     <TextField
-      label="Father's Name*/Husband's Name"
+      label="Father's Name*"
       name="father_name"
       value={formData.father_name}
       onChange={handleChange}

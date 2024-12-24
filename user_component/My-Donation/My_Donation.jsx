@@ -1,14 +1,19 @@
 'use client'
+import Pagination from '@/components/Member/Pagination';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 
 const My_Donation = () => {
   const [memberList, setmemberList] = useState([]);
+  const [page,setPage]=useState(1);
+  const [totalPages,setTotalPages]=useState(1);
 
-  async function getData(id){
+  async function getData(lim,page=1){
+    let id=JSON.parse(localStorage.getItem('user')).userid;
+    console.log(id);
     try{
-      const response = await fetch(`https://backend.aggrabandhuss.org/api/donation/mydonation/${id}`);
+      const response = await fetch(`https://backend.aggrabandhuss.org/api/donation/mydonation/${id}?limit=${lim}&&page=${page}`);
       if(!response){
         throw new Error('Network Error')
       }
@@ -16,15 +21,18 @@ const My_Donation = () => {
       const data=await response.json();
       console.log(data);
       setmemberList(data.data);
+      setPage(data.currentPage);
+      setTotalPages(data.totalPages)
+
     }catch(error){
       
     }
   }
 
   useEffect(() => {
-    let id=JSON.parse(localStorage.getItem('user')).userid;
-    console.log(id);
-    getData(id);
+    // let id=JSON.parse(localStorage.getItem('user')).userid;
+    // console.log(id);
+    getData();
   }, []);
 
   return (
@@ -83,7 +91,13 @@ const My_Donation = () => {
           ))}
         </tbody>
       </table>
+      <Pagination
+      page={page} 
+      totalPages={totalPages} 
+        fetchMembers={getData} 
+       />
     </div>
+    
   );
 };
 
