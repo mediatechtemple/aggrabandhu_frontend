@@ -78,7 +78,33 @@ export default function Layout({ children }) {
     setChangePasswordOpen(false);
   };
 
+  async function logoutMember(memberId) {
+    const url = `https://backend.aggrabandhuss.org/api/member/logout/${memberId}`;
+    
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log('Logout successful:', data);
+      return data;
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  }
+  
+
   const rediretLogin=()=>{
+   
+    logoutMember(JSON.parse(localStorage.getItem('user')).userid);
     window.localStorage.clear();
     router.push('/Login');
   }

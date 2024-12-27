@@ -148,7 +148,9 @@ const LoginPage = () => {
         }
 
         
-      } else {
+      }else if (response.status == 413){
+        alert('User is already login in another device')
+      }else {
         // Handle error if login failed
         setError(data.message || 'Login failed. Please try again.');
       }

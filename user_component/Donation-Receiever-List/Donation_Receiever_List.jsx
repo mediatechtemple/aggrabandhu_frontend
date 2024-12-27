@@ -25,7 +25,7 @@ const Donation_Receiever_List = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage,setitemsPerPage] = useState(100);
   const [page,setPage]=useState(1);
-  const [totalPage,setTotalPage]=useState(1);
+  const [totalPage,setTotalPages]=useState(1);
 
   const fetchDonations = async (lim,page=1) => {
     try {
@@ -37,7 +37,7 @@ const Donation_Receiever_List = () => {
       setDonations(data.data);
       console.log(data);
       setPage(data.currentPage);
-      setTotalPage(data.totalPages);
+      setTotalPages(data.totalPages);
     } catch (error) {
       console.error('Error fetching donations data:', error);
     }
