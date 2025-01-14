@@ -89,8 +89,9 @@ const useNotificationForm = (closeModal,token) => {
 
     try {
       const endpoints = [];
-      if (formData.web) endpoints.push('https://backend.aggrabandhuss.org/api/notificationweb');
-      if (formData.app) endpoints.push('https://backend.aggrabandhuss.org/api/notification');
+      // if (formData.web || formData.app)
+       endpoints.push('https://backend.aggrabandhuss.org/api/notificationweb');
+      // if (formData.app) endpoints.push('https://backend.aggrabandhuss.org/api/notification');
 
       const responses = await Promise.all(
         endpoints.map((url) =>
