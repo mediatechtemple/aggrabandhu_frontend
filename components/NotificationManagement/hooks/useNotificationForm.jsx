@@ -8,7 +8,6 @@ const useNotificationForm = (closeModal,token) => {
       file:null,
       web:false,
       app:false
-
      });
   // State to store an array of submissions
   const [submissions, setSubmissions] = useState([]);
@@ -82,7 +81,11 @@ const useNotificationForm = (closeModal,token) => {
     const formDataToSubmit = new FormData();
     formDataToSubmit.append('title', formData.title);
     formDataToSubmit.append('content', formData.content);
+    formDataToSubmit.append('web', formData.web);
+    formDataToSubmit.append('app', formData.app);
     if (formData.file) formDataToSubmit.append('file', formData.file);
+    // console.log(formData)
+    // return;
 
     try {
       const endpoints = [];
