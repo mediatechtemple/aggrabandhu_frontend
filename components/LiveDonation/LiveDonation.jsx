@@ -147,20 +147,64 @@ const handleCloseModal=()=>{
 }
 
 
+// const postDataToApi = async (data) => {
+//   try {
+//     const response = await fetch('https://backend.aggrabandhuss.org/api/donation/', {
+//       method: 'POST',
+//       headers:{
+//         'Authorization':`bearer ${token}`
+//       },
+//       body: data, // No need to stringify FormData
+//     });
+//     const result = await response.json();
+//     console.log('Response:', result);
+//     alert('donation successfull');
+//     if(response.status==400){
+//       alert('doantion failed');
+//     }
+//     fetchDonationData();
+
+//   } catch (error) {
+//     console.error('Error:', error);
+//   }
+// };
+
+
 const postDataToApi = async (data) => {
   try {
     const response = await fetch('https://backend.aggrabandhuss.org/api/donation/', {
       method: 'POST',
-      headers:{
-        'Authorization':`bearer ${token}`
+      headers: {
+        'Authorization': `Bearer ${token}`, // 'bearer' को 'Bearer' करना अच्छा practice है
       },
-      body: data, // No need to stringify FormData
+      body: data, // FormData को JSON.stringify की जरूरत नहीं है
     });
+
+    // Parsing JSON response
     const result = await response.json();
-    console.log('Response:', result);
-    alert('donation successfull')
+
+    if (response.ok) {
+      // 200-299 HTTP status codes are considered success
+      console.log('Response:', result);
+      alert('Donation successful!');
+      fetchDonationData(); // Fetch updated data
+    } else {
+      // Handle specific error codes
+      console.error('Error Response:', result);
+      if (response.status === 400) {
+        alert('Donation failed! Please check your input.');
+      } else if (response.status === 401) {
+        alert('Unauthorized! Please login again.');
+      } else if (response.status === 500) {
+        alert('Server error! Please try again later.');
+      } else {
+        alert(`Unexpected error: ${response.statusText}`);
+      }
+    }
   } catch (error) {
-    console.error('Error:', error);
+    // Handle network or other unexpected errors
+    // console.error('Network Error:', error);
+    alert('Something went wrong! Please check your internet connection and try again.');
   }
 };
 
