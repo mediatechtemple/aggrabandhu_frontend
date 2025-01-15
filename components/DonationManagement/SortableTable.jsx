@@ -244,7 +244,7 @@ const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
                     View
                   </button>
                 </td>
-                <td className="border border-gray-300 text-black p-2 text-center">9876514254</td>
+                <td className="border border-gray-300 text-black p-2 text-center">{member.Member.mobile_no}</td>
                 <td className="border border-gray-300 text-black p-2 text-center">{member.Member.district}</td>
                 <td className="border border-gray-300 text-black p-2 text-center">{member.Member.state}</td>
                 <td  
@@ -276,7 +276,7 @@ const SortableTable = ({ sortedRows=[],  openHandler,setsortedRows,
                 <td className="border border-gray-300 text-black p-2 text-center">
                   {new Date(member.end_date).toLocaleDateString('en-GB')}
                 </td>
-                <td className="border border-gray-300 text-black  p-2 text-center">0</td>
+                <td className="border border-gray-300 text-black  p-2 text-center">{member.total_donation}</td>
                 <td className="border border-gray-300 text-black  p-2 text-center">{member.total_donation_received}</td>
                 <td className="border border-gray-300 text-black p-2 text-center">
                   <button 
