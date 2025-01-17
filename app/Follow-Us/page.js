@@ -7,6 +7,7 @@ const page = () => {
     <>
     {/* <ContactForm/> */}
     <Support/>
+    {/* <h2>why you did this</h2> */}
     </>
   )
 }
